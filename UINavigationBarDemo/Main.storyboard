@@ -69,7 +69,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oYe-vv-Sjt" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-180" y="-60"/>
+            <point key="canvasLocation" x="-126" y="-53"/>
         </scene>
         <!--NavigationBar外观属性调整-->
         <scene sceneID="wvH-eH-yXC">
