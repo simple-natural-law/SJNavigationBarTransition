@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A0F588F1F7CF2C2001B5EE9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AEA33DA1F7CEE1A00A2D3B4 /* LaunchScreen.storyboard */; };
+		1A0F58901F7CF2C2001B5EE9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AEA33DB1F7CEE1A00A2D3B4 /* Main.storyboard */; };
 		1A1511AD1F7B3F1600A12D5E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1511AC1F7B3F1600A12D5E /* AppDelegate.m */; };
 		1A1511B01F7B3F1600A12D5E /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1511AF1F7B3F1600A12D5E /* HomeViewController.m */; };
-		1A1511B31F7B3F1600A12D5E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A1511B11F7B3F1600A12D5E /* Main.storyboard */; };
 		1A1511B51F7B3F1600A12D5E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A1511B41F7B3F1600A12D5E /* Assets.xcassets */; };
-		1A1511B81F7B3F1600A12D5E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A1511B61F7B3F1600A12D5E /* LaunchScreen.storyboard */; };
 		1A1511BB1F7B3F1600A12D5E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1511BA1F7B3F1600A12D5E /* main.m */; };
 		1A1511C31F7B401D00A12D5E /* RootNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1511C21F7B401D00A12D5E /* RootNavigationViewController.m */; };
 		1A1511CA1F7B85B400A12D5E /* BarAppearanceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1511C91F7B85B400A12D5E /* BarAppearanceViewController.m */; };
@@ -24,9 +24,7 @@
 		1A1511AC1F7B3F1600A12D5E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		1A1511AE1F7B3F1600A12D5E /* HomeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		1A1511AF1F7B3F1600A12D5E /* HomeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
-		1A1511B21F7B3F1600A12D5E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1A1511B41F7B3F1600A12D5E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		1A1511B71F7B3F1600A12D5E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1A1511B91F7B3F1600A12D5E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1A1511BA1F7B3F1600A12D5E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		1A1511C11F7B401D00A12D5E /* RootNavigationViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootNavigationViewController.h; sourceTree = "<group>"; };
@@ -35,6 +33,8 @@
 		1A1511C91F7B85B400A12D5E /* BarAppearanceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BarAppearanceViewController.m; sourceTree = "<group>"; };
 		1A1511CE1F7B9D7E00A12D5E /* BaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		1A1511CF1F7B9D8000A12D5E /* BaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
+		1AEA33DA1F7CEE1A00A2D3B4 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		1AEA33DB1F7CEE1A00A2D3B4 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,11 +76,11 @@
 				1A1511C21F7B401D00A12D5E /* RootNavigationViewController.m */,
 				1A1511AE1F7B3F1600A12D5E /* HomeViewController.h */,
 				1A1511AF1F7B3F1600A12D5E /* HomeViewController.m */,
-				1A1511B11F7B3F1600A12D5E /* Main.storyboard */,
 				1A1511B41F7B3F1600A12D5E /* Assets.xcassets */,
-				1A1511B61F7B3F1600A12D5E /* LaunchScreen.storyboard */,
 				1A1511B91F7B3F1600A12D5E /* Info.plist */,
 				1A1511BA1F7B3F1600A12D5E /* main.m */,
+				1AEA33DA1F7CEE1A00A2D3B4 /* LaunchScreen.storyboard */,
+				1AEA33DB1F7CEE1A00A2D3B4 /* Main.storyboard */,
 			);
 			path = UINavigationBarDemo;
 			sourceTree = "<group>";
@@ -152,9 +152,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1A1511B81F7B3F1600A12D5E /* LaunchScreen.storyboard in Resources */,
+				1A0F588F1F7CF2C2001B5EE9 /* LaunchScreen.storyboard in Resources */,
+				1A0F58901F7CF2C2001B5EE9 /* Main.storyboard in Resources */,
 				1A1511B51F7B3F1600A12D5E /* Assets.xcassets in Resources */,
-				1A1511B31F7B3F1600A12D5E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -175,25 +175,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		1A1511B11F7B3F1600A12D5E /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1A1511B21F7B3F1600A12D5E /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		1A1511B61F7B3F1600A12D5E /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				1A1511B71F7B3F1600A12D5E /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		1A1511BC1F7B3F1600A12D5E /* Debug */ = {
@@ -244,7 +225,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -293,7 +274,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -307,11 +288,12 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = UINavigationBarDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.xunxin.UINavigationBarDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -322,11 +304,12 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = UINavigationBarDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.xunxin.UINavigationBarDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
