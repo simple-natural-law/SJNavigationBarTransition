@@ -22,7 +22,8 @@
     
     self.title = @"UINavigationBarDemo";
     
-    self.dataArray = @[@{@"title":@"NavigationBar外观属性设置", @"target":@"BarAppearanceViewController"}];
+    self.dataArray = @[@{@"title":@"NavigationBar外观属性设置", @"target":@"BarAppearanceViewController"},
+                       @{@"title":@"页面跳转时NavigationBar渐变效果", @"target":@"GradientBarViewController"}];
 }
 
 - (void)viewWillAppear:(BOOL)animated

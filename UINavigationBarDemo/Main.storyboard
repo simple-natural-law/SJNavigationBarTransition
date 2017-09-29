@@ -71,6 +71,50 @@
             </objects>
             <point key="canvasLocation" x="-126" y="-53"/>
         </scene>
+        <!--NavigationBar渐变切换-->
+        <scene sceneID="6hk-ra-3qc">
+            <objects>
+                <viewController storyboardIdentifier="GradientBarViewController" title="NavigationBar渐变切换" id="tps-ge-jGx" customClass="GradientBarViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="PVG-Bv-9G7"/>
+                        <viewControllerLayoutGuide type="bottom" id="xCA-q3-F4R"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="oCO-SB-Cwg">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ehe-Ch-igO">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" red="0.15686274510000001" green="0.56862745100000001" blue="0.94117647059999998" alpha="1" colorSpace="calibratedRGB"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" id="s6s-ad-BO1">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="s6s-ad-BO1" id="RD3-xG-vvS">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="tps-ge-jGx" id="KHB-65-fRB"/>
+                                    <outlet property="delegate" destination="tps-ge-jGx" id="oEb-Oo-wlQ"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ehe-Ch-igO" firstAttribute="top" secondItem="oCO-SB-Cwg" secondAttribute="top" id="Hxd-Pq-gbi"/>
+                            <constraint firstAttribute="trailing" secondItem="ehe-Ch-igO" secondAttribute="trailing" id="Leu-DH-fu3"/>
+                            <constraint firstItem="ehe-Ch-igO" firstAttribute="leading" secondItem="oCO-SB-Cwg" secondAttribute="leading" id="l3x-LX-EHy"/>
+                            <constraint firstItem="xCA-q3-F4R" firstAttribute="top" secondItem="ehe-Ch-igO" secondAttribute="bottom" id="n6a-RI-NwB"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nPH-9I-iN3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="636" y="282.90854572713647"/>
+        </scene>
         <!--NavigationBar外观属性调整-->
         <scene sceneID="wvH-eH-yXC">
             <objects>
@@ -375,7 +419,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hO9-UB-axp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="631" y="-295"/>
+            <point key="canvasLocation" x="638" y="-388"/>
         </scene>
     </scenes>
 </document>
