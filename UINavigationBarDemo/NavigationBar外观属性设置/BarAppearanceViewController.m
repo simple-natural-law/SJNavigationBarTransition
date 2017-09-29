@@ -10,6 +10,10 @@
 
 @interface BarAppearanceViewController ()
 
+@property (nonatomic, weak) UIColor *tintColor;
+
+@property (nonatomic, weak) NSDictionary<NSAttributedStringKey, id> *titleTextAttributes;
+
 @end
 
 @implementation BarAppearanceViewController
@@ -17,6 +21,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    self.tintColor = self.navigationController.navigationBar.tintColor;
+    self.titleTextAttributes = self.navigationController.navigationBar.titleTextAttributes;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -26,8 +39,8 @@
     self.navigationController.navigationBar.barStyle = UIBarStyleDefault;
     self.navigationController.navigationBar.translucent = YES;
     self.navigationController.navigationBar.barTintColor = nil;
-    self.navigationController.navigationBar.tintColor = [UIColor lightGrayColor];
-    self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName:[UIColor blackColor],NSFontAttributeName:[UIFont boldSystemFontOfSize:17.0]};
+    self.navigationController.navigationBar.tintColor = self.tintColor;
+    self.navigationController.navigationBar.titleTextAttributes = self.titleTextAttributes;
     [self.navigationController.navigationBar setTitleVerticalPositionAdjustment:0.0 forBarMetrics:UIBarMetricsDefault];
     [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     [self.navigationController.navigationBar setShadowImage:nil];

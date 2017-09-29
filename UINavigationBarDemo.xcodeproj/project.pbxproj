@@ -48,6 +48,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1A0F58911F7DE8D0001B5EE9 /* 页面跳转时NavigationBar渐变效果 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "页面跳转时NavigationBar渐变效果";
+			sourceTree = "<group>";
+		};
 		1A15119F1F7B3F1600A12D5E = {
 			isa = PBXGroup;
 			children = (
@@ -67,6 +74,7 @@
 		1A1511AA1F7B3F1600A12D5E /* UINavigationBarDemo */ = {
 			isa = PBXGroup;
 			children = (
+				1A0F58911F7DE8D0001B5EE9 /* 页面跳转时NavigationBar渐变效果 */,
 				1A1511C71F7B84DE00A12D5E /* NavigationBar外观属性设置 */,
 				1A1511AB1F7B3F1600A12D5E /* AppDelegate.h */,
 				1A1511AC1F7B3F1600A12D5E /* AppDelegate.m */,
