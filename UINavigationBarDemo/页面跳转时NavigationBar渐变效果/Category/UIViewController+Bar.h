@@ -13,4 +13,7 @@
 /// 导航栏透明度
 @property (nonatomic, assign) CGFloat barAlpha;
 
+/// 导航栏背景色
+@property (nonatomic, strong) UIColor *barTintColor;
+
 @end

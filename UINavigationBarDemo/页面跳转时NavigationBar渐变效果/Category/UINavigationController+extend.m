@@ -133,7 +133,7 @@
             CGFloat alpha     = fromAlpha + (toAlpha - fromAlpha)*percentComplete;
             [self setNavigationBarAlpha:alpha];
             // tint color
-            self.navigationBar.barTintColor = [self getColorWithFromColor:fromVC.navigationController.navigationBar.barTintColor toColor:toVC.navigationController.navigationBar.barTintColor fromAlpha:fromAlpha toAlpha:toAlpha percentComplete:percentComplete];
+            //self.navigationBar.barTintColor = [self getColorWithFromColor:fromVC.navigationController.navigationBar.barTintColor toColor:toVC.navigationController.navigationBar.barTintColor fromAlpha:fromAlpha toAlpha:toAlpha percentComplete:percentComplete];
         }
     }
     
@@ -156,7 +156,7 @@
 {
     [self setNavigationBarAlpha:viewController.barAlpha];
     
-    self.navigationBar.barTintColor = viewController.navigationController.navigationBar.barTintColor;
+    //self.navigationBar.barTintColor = viewController.navigationController.navigationBar.barTintColor;
     
     return [self z_popToViewController:viewController animated:animated];
 }
@@ -167,7 +167,7 @@
     
     [self setNavigationBarAlpha:popToVC.barAlpha];
     
-    self.navigationBar.barTintColor = popToVC.navigationController.navigationBar.barTintColor;
+    //self.navigationBar.barTintColor = popToVC.navigationController.navigationBar.barTintColor;
     
     return [self z_popToRootViewControllerAnimated:animated];
 }
@@ -240,7 +240,7 @@
     
     [self setNavigationBarAlpha:self.topViewController.barAlpha];
     
-    self.navigationBar.barTintColor = self.topViewController.navigationController.navigationBar.barTintColor;
+    //self.navigationBar.barTintColor = self.topViewController.navigationController.navigationBar.barTintColor;
     
     return YES;
 }
@@ -264,7 +264,7 @@
             
             [self setNavigationBarAlpha:alpha];
             
-            self.navigationBar.barTintColor = formVC.navigationController.navigationBar.barTintColor;
+            //self.navigationBar.barTintColor = formVC.navigationController.navigationBar.barTintColor;
         }];
     }else
     {
@@ -278,7 +278,7 @@
             
             [self setNavigationBarAlpha:alpha];
             
-            self.navigationBar.barTintColor = toVC.navigationController.navigationBar.barTintColor;
+            //self.navigationBar.barTintColor = toVC.navigationController.navigationBar.barTintColor;
         }];
     }
 }

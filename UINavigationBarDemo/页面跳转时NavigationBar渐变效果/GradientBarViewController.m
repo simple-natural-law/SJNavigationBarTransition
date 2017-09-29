@@ -8,6 +8,8 @@
 
 #import "GradientBarViewController.h"
 #import "UINavigationController+extend.h"
+#import "FirstViewController.h"
+#import "UIViewController+Bar.h"
 
 @interface GradientBarViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -24,7 +26,12 @@
 {
     [super viewWillAppear:animated];
     
-    [self.navigationController setNavigationBarAlpha:0.0];
+    self.barTintColor = [UIColor clearColor];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -45,7 +52,9 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
+    FirstViewController *vc = [[FirstViewController alloc] init];
     
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 

@@ -10,6 +10,7 @@
 #import <objc/runtime.h>
 
 static const char *barAlphaKey = "barAlphaKey";
+static const char *barTintColorKey = "barTintColorKey";
 
 @implementation UIViewController (Bar)
 
@@ -21,7 +22,7 @@ static const char *barAlphaKey = "barAlphaKey";
 - (CGFloat)barAlpha
 {
     id alpha = objc_getAssociatedObject(self, barAlphaKey);
-    
+
     if (alpha == NULL)
     {
         return 1.0;
@@ -29,6 +30,58 @@ static const char *barAlphaKey = "barAlphaKey";
     {
         return [alpha floatValue];
     }
+}
+
+- (void)setBarTintColor:(UIColor *)barTintColor
+{
+    objc_setAssociatedObject(self, barTintColorKey, barTintColor, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    
+    [self.navigationController.navigationBar setBackgroundImage:[self backgroundImageWithColor:barTintColor] forBarMetrics:UIBarMetricsDefault];
+    
+    if(barTintColor == [UIColor clearColor])
+    {
+        [self.navigationController.navigationBar setShadowImage:[self shadowImageWithColor:barTintColor]];
+    }else
+    {
+        [self.navigationController.navigationBar setShadowImage:nil];
+    }
+}
+
+- (UIColor *)barTintColor
+{
+    UIColor *color = objc_getAssociatedObject(self, barTintColorKey);
+    
+    if (color == NULL)
+    {
+        return self.navigationController.navigationBar.barStyle == UIBarStyleDefault ? [UIColor whiteColor] : [UIColor blackColor];
+    }else
+    {
+        return color;
+    }
+}
+
+- (UIImage *)backgroundImageWithColor:(UIColor *)color
+{
+    return [self imageWithColor:color rect:CGRectMake(0.0, 0.0, self.view.frame.size.width, 64.0)];
+}
+
+- (UIImage *)shadowImageWithColor:(UIColor *)color
+{
+    return [self imageWithColor:color rect:CGRectMake(0.0f, 0.0f, 1.0f, 0.5f)];
+}
+
+- (UIImage *)imageWithColor:(UIColor *)color rect:(CGRect)rect
+{
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return image;
 }
 
 @end
