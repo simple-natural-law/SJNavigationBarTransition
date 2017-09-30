@@ -42,7 +42,7 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         
-        if ([self isMemberOfClass:[UINavigationController class]])
+        if (self == [UINavigationController class])
         {
             SEL originalSelector1  = NSSelectorFromString(@"_updateInteractiveTransition:");
             SEL swizzledSelector1  = NSSelectorFromString(@"z_updateInteractiveTransition:");
@@ -66,55 +66,35 @@
 /// 设置导航栏透明度
 - (void)setNavigationBarAlpha:(CGFloat)alpha
 {
-    // _UIBarBackground
-    UIView *background = [[self.navigationBar subviews] objectAtIndex:0];
+    UIView *barBgView = self.navigationBar.subviews[0];
     
-    if (self.navigationBar.isTranslucent)
-    {
-        if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 10.0)
-        {
-            UIImageView *backgroundImageView = [background valueForKey:@"_backgroundImageView"];
-            
-            if (backgroundImageView.image != nil)
-            {
-                background.alpha = alpha;
-            }else
-            {
-                UIView *backgroundEffectView = [background valueForKey:@"_backgroundEffectView"];
-                
-                if (backgroundEffectView != nil)
-                {
-                    backgroundEffectView.alpha = alpha;
-                }else
-                {
-                    background.alpha = alpha;
-                }
-            }
-        }else
-        {
-            UIView *adaptiveBackdrop = [background valueForKey:@"_adaptiveBackdrop"];
-            UIView *backdropEffectView = [background valueForKey:@"_backdropEffectView"];
-            
-            if (adaptiveBackdrop != nil && backdropEffectView != nil)
-            {
-                backdropEffectView.alpha = alpha;
-            }else
-            {
-                background.alpha = alpha;
-            }
-        }
-    }else
-    {
-        background.alpha = alpha;
-    }
+    UIView *shadowView = [barBgView valueForKey:@"_shadowView"];
     
-    UIView *shadowView = [background valueForKey:@"_shadowView"];
-    
-    if (shadowView != nil)
+    if (shadowView)
     {
         shadowView.alpha  = alpha;
-        shadowView.hidden = alpha == 0;
+        shadowView.hidden = alpha == 0.0;
     }
+    if (self.navigationBar.isTranslucent)
+    {
+#ifdef __IPHONE_10_0
+        UIView *bgEffectView = [barBgView valueForKey:@"_backgroundEffectView"];
+        if (bgEffectView && [self.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault] == nil)
+        {
+            bgEffectView.alpha = alpha;
+            return;
+        }
+#else
+        UIView *adaptiveBackDrop = [barBgView valueForKey:@"_adaptiveBackdrop"];
+        UIView *backDropEffectView = [adaptiveBackDrop valueForKey:@"_backdropEffectView"];
+        if (adaptiveBackDrop && backDropEffectView)
+        {
+            backDropEffectView.alpha = alpha;
+            return;
+        }
+#endif
+    }
+    barBgView.alpha = alpha;
 }
 
 - (void)z_updateInteractiveTransition:(CGFloat)percentComplete
@@ -133,7 +113,28 @@
             CGFloat alpha     = fromAlpha + (toAlpha - fromAlpha)*percentComplete;
             [self setNavigationBarAlpha:alpha];
             // tint color
-            //self.navigationBar.barTintColor = [self getColorWithFromColor:fromVC.navigationController.navigationBar.barTintColor toColor:toVC.navigationController.navigationBar.barTintColor fromAlpha:fromAlpha toAlpha:toAlpha percentComplete:percentComplete];
+            UIColor *newColor = [self getColorWithFromColor:fromVC.navBarTintColor toColor:toVC.navBarTintColor fromAlpha:fromAlpha toAlpha:toAlpha percentComplete:percentComplete];
+            self.navigationBar.barTintColor = newColor;
+            
+            if (toVC.barAlpha == 0.0)
+            {
+                if ([self colorBrigntness:toVC.view.backgroundColor] > 0.5)
+                {
+                    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+                } else
+                {
+                    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+                }
+            } else
+            {
+                if ([self colorBrigntness:newColor] > 0.5)
+                {
+                    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+                } else
+                {
+                    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+                }
+            }
         }
     }
     
@@ -148,6 +149,28 @@
     
     [self setNavigationBarAlpha:popToVC.barAlpha];
     
+    self.navigationBar.barTintColor = popToVC.navBarTintColor;
+    
+    if (popToVC.barAlpha == 0.0)
+    {
+        if ([self colorBrigntness:popToVC.view.backgroundColor] > 0.5)
+        {
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+        } else
+        {
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+        }
+    } else
+    {
+        if ([self colorBrigntness:popToVC.navBarTintColor] > 0.5)
+        {
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+        } else
+        {
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+        }
+    }
+    
     return [self z_popViewControllerAnimated:animated];;
 }
 
@@ -156,7 +179,27 @@
 {
     [self setNavigationBarAlpha:viewController.barAlpha];
     
-    //self.navigationBar.barTintColor = viewController.navigationController.navigationBar.barTintColor;
+    self.navigationBar.barTintColor = viewController.navBarTintColor;
+    
+    if (viewController.barAlpha == 0.0)
+    {
+        if ([self colorBrigntness:viewController.view.backgroundColor] > 0.5)
+        {
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+        } else
+        {
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+        }
+    } else
+    {
+        if ([self colorBrigntness:viewController.navBarTintColor] > 0.5)
+        {
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+        } else
+        {
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+        }
+    }
     
     return [self z_popToViewController:viewController animated:animated];
 }
@@ -167,9 +210,36 @@
     
     [self setNavigationBarAlpha:popToVC.barAlpha];
     
-    //self.navigationBar.barTintColor = popToVC.navigationController.navigationBar.barTintColor;
+    self.navigationBar.barTintColor = popToVC.navBarTintColor;
+    
+    if (popToVC.barAlpha == 0.0)
+    {
+        if ([self colorBrigntness:popToVC.view.backgroundColor] > 0.5)
+        {
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+        } else
+        {
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+        }
+    } else
+    {
+        if ([self colorBrigntness:popToVC.navBarTintColor] > 0.5)
+        {
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+        } else
+        {
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+        }
+    }
     
     return [self z_popToRootViewControllerAnimated:animated];
+}
+
+- (CGFloat)colorBrigntness:(UIColor*)aColor
+{
+    CGFloat hue, saturation, brigntness, alpha;
+    [aColor getHue:&hue saturation:&saturation brightness:&brigntness alpha:&alpha];
+    return brigntness;
 }
 
 
@@ -200,8 +270,6 @@
 // 点击返回
 - (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item
 {
-    NSLog(@"will pop");
-
     if (self.topViewController != nil && self.topViewController.transitionCoordinator != nil)
     {
         if (@available(iOS 10.0, *)) {
@@ -229,26 +297,44 @@
     return YES;
 }
 
-- (void)navigationBar:(UINavigationBar *)navigationBar didPopItem:(UINavigationItem *)item
-{
-    NSLog(@"did pop");
-}
 
 - (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPushItem:(UINavigationItem *)item
 {
-    NSLog(@"will push");
+    id<UIViewControllerTransitionCoordinator> coordinator = self.topViewController.transitionCoordinator;
+    CGFloat duration = coordinator.transitionDuration;
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationCurve: coordinator.completionCurve];
+    [UIView setAnimationDelegate:self];
+    [UIView setAnimationDuration:duration];
+    
+    self.navigationBar.barTintColor = self.topViewController.navBarTintColor;
+    
+    if (self.topViewController.barAlpha == 0)
+    {
+        if ([self colorBrigntness:self.topViewController.view.backgroundColor] > 0.5)
+        {
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+        } else
+        {
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+        }
+    } else
+    {
+        if ([self colorBrigntness:self.topViewController.navBarTintColor] > 0.5)
+        {
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+        } else {
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+        }
+    }
     
     [self setNavigationBarAlpha:self.topViewController.barAlpha];
     
-    //self.navigationBar.barTintColor = self.topViewController.navigationController.navigationBar.barTintColor;
+    [UIView commitAnimations];
     
     return YES;
 }
 
-- (void)navigationBar:(UINavigationBar *)navigationBar didPushItem:(UINavigationItem *)item
-{
-    NSLog(@"did push");
-}
 
 - (void)dealInteractionChanges:(id<UIViewControllerTransitionCoordinatorContext>)context
 {
@@ -264,7 +350,27 @@
             
             [self setNavigationBarAlpha:alpha];
             
-            //self.navigationBar.barTintColor = formVC.navigationController.navigationBar.barTintColor;
+            self.navigationBar.barTintColor = formVC.navBarTintColor;
+            
+            if (formVC.barAlpha == 0)
+            {
+                if ([self colorBrigntness:formVC.view.backgroundColor] > 0.5)
+                {
+                    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+                } else
+                {
+                    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+                }
+            } else
+            {
+                if ([self colorBrigntness:formVC.navBarTintColor] > 0.5)
+                {
+                    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+                } else
+                {
+                    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+                }
+            }
         }];
     }else
     {
@@ -278,7 +384,27 @@
             
             [self setNavigationBarAlpha:alpha];
             
-            //self.navigationBar.barTintColor = toVC.navigationController.navigationBar.barTintColor;
+            self.navigationBar.barTintColor = toVC.navBarTintColor;
+            
+            if (toVC.barAlpha == 0)
+            {
+                if ([self colorBrigntness:toVC.view.backgroundColor] > 0.5)
+                {
+                    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+                } else
+                {
+                    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+                }
+            } else
+            {
+                if ([self colorBrigntness:toVC.navBarTintColor] > 0.5)
+                {
+                    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+                } else
+                {
+                    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+                }
+            }
         }];
     }
 }

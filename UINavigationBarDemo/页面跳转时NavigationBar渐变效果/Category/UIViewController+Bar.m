@@ -10,7 +10,7 @@
 #import <objc/runtime.h>
 
 static const char *barAlphaKey = "barAlphaKey";
-static const char *barTintColorKey = "barTintColorKey";
+static const char *navBarTintColorKey = "navBarTintColorKey";
 
 @implementation UIViewController (Bar)
 
@@ -32,24 +32,26 @@ static const char *barTintColorKey = "barTintColorKey";
     }
 }
 
-- (void)setBarTintColor:(UIColor *)barTintColor
+- (void)setNavBarTintColor:(UIColor *)navBarTintColor
 {
-    objc_setAssociatedObject(self, barTintColorKey, barTintColor, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, navBarTintColorKey, navBarTintColor, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     
-    [self.navigationController.navigationBar setBackgroundImage:[self backgroundImageWithColor:barTintColor] forBarMetrics:UIBarMetricsDefault];
+//    [self.navigationController.navigationBar setBackgroundImage:[self backgroundImageWithColor:barTintColor] forBarMetrics:UIBarMetricsDefault];
+//
+//    if(barTintColor == [UIColor clearColor])
+//    {
+//        [self.navigationController.navigationBar setShadowImage:[self shadowImageWithColor:barTintColor]];
+//    }else
+//    {
+//        [self.navigationController.navigationBar setShadowImage:nil];
+//    }
     
-    if(barTintColor == [UIColor clearColor])
-    {
-        [self.navigationController.navigationBar setShadowImage:[self shadowImageWithColor:barTintColor]];
-    }else
-    {
-        [self.navigationController.navigationBar setShadowImage:nil];
-    }
+    self.navigationController.navigationBar.barTintColor = navBarTintColor;
 }
 
-- (UIColor *)barTintColor
+- (UIColor *)navBarTintColor
 {
-    UIColor *color = objc_getAssociatedObject(self, barTintColorKey);
+    UIColor *color = objc_getAssociatedObject(self, navBarTintColorKey);
     
     if (color == NULL)
     {
@@ -67,7 +69,7 @@ static const char *barTintColorKey = "barTintColorKey";
 
 - (UIImage *)shadowImageWithColor:(UIColor *)color
 {
-    return [self imageWithColor:color rect:CGRectMake(0.0f, 0.0f, 1.0f, 0.5f)];
+    return [self imageWithColor:color rect:CGRectMake(0.0f, 0.0f, 1.0f, 1.0f)];
 }
 
 - (UIImage *)imageWithColor:(UIColor *)color rect:(CGRect)rect

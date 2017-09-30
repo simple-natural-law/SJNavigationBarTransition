@@ -27,8 +27,9 @@
 {
     [super viewWillAppear:animated];
     
-    self.barTintColor = [UIColor purpleColor];
+    self.navBarTintColor = [UIColor purpleColor];
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

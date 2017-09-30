@@ -26,7 +26,9 @@
 {
     [super viewWillAppear:animated];
     
-    self.barTintColor = [UIColor clearColor];
+    self.barAlpha = 0.0;
+    
+    self.navBarTintColor = [UIColor lightGrayColor];
 }
 
 - (void)viewDidAppear:(BOOL)animated

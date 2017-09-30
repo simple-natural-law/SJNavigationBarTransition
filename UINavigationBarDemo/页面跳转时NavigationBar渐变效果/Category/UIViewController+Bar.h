@@ -14,6 +14,6 @@
 @property (nonatomic, assign) CGFloat barAlpha;
 
 /// 导航栏背景色
-@property (nonatomic, strong) UIColor *barTintColor;
+@property (nonatomic, strong) UIColor *navBarTintColor;
 
 @end
