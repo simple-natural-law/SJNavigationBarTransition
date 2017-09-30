@@ -13,6 +13,8 @@
 
 @interface GradientBarViewController ()<UITableViewDelegate, UITableViewDataSource>
 
+@property (weak, nonatomic) IBOutlet UITableView *tableview;
+
 @end
 
 @implementation GradientBarViewController
@@ -20,6 +22,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    if (@available(iOS 11.0, *))
+    {
+        self.tableview.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    }else
+    {
+        self.automaticallyAdjustsScrollViewInsets = NO;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -28,7 +38,7 @@
     
     self.barAlpha = 0.0;
     
-    self.navBarTintColor = [UIColor lightGrayColor];
+    self.navBarTintColor = [UIColor whiteColor];
 }
 
 - (void)viewDidAppear:(BOOL)animated

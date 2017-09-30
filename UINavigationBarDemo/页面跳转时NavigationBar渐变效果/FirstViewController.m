@@ -21,6 +21,12 @@
     // Do any additional setup after loading the view.
     
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    UIBarButtonItem * backButtonItem = [[UIBarButtonItem alloc] init];
+    backButtonItem.title = @"Back";
+    self.navigationItem.backBarButtonItem = backButtonItem;
+    
+    self.title = @"测试";
 }
 
 - (void)viewWillAppear:(BOOL)animated
