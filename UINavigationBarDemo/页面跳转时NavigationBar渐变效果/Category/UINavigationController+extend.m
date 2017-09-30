@@ -85,6 +85,7 @@
             UIView *bgEffectView = [barBgView valueForKey:@"_backgroundEffectView"];
             if (bgEffectView && [self.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault] == nil)
             {
+                barBgView.alpha = alpha;// 解决手势返回时，透明Bar页面与不透明bar页面切换会闪烁的问题.
                 bgEffectView.alpha = alpha;
                 return;
             }
@@ -94,6 +95,7 @@
             UIView *backDropEffectView = [adaptiveBackDrop valueForKey:@"_backdropEffectView"];
             if (adaptiveBackDrop && backDropEffectView)
             {
+                barBgView.alpha = alpha;// 解决手势返回时，透明Bar页面与不透明bar页面切换会闪烁的问题.
                 backDropEffectView.alpha = alpha;
                 return;
             }
