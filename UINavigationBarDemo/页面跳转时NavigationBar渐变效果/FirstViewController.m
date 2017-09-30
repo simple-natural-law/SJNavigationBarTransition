@@ -36,13 +36,13 @@
     CGFloat blue = c/255.0;
     
     self.barColor = [UIColor colorWithRed:r green:g blue:blue alpha:1.0];
+    
+    self.navBarTintColor = self.barColor;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    self.navBarTintColor = self.barColor;
 }
 
 - (IBAction)popToRoot:(id)sender

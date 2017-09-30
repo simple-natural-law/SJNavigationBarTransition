@@ -66,7 +66,7 @@
 /// 设置导航栏透明度
 - (void)setNavigationBarAlpha:(CGFloat)alpha
 {
-    self.navigationBar.translucent = !(alpha == 1.0);// iOS 11.0 translucent为YES时Bar才能透明
+    self.navigationBar.translucent = !(alpha == 1.0);// iOS 11.0 ,由于导航栏新添加了large Title，会将_UIBarBackground的alpha置为1，会导致我们设置了透明但却没有效果.这里通过将translucent为YES，改变_backgroundEffectView的alpha值，使Bar才能透明
     
     UIView *barBgView = self.navigationBar.subviews[0];
     
@@ -110,37 +110,38 @@
     {
         id<UIViewControllerTransitionCoordinator> coor = self.topViewController.transitionCoordinator;
         
-        if (coor != nil)
+        UIViewController *fromVC = [coor viewControllerForKey:UITransitionContextFromViewControllerKey];
+        UIViewController *toVC   = [coor viewControllerForKey:UITransitionContextToViewControllerKey];
+        // alpha
+        CGFloat fromAlpha = fromVC.barAlpha;
+        CGFloat toAlpha   = toVC.barAlpha;
+        CGFloat alpha     = fromAlpha + (toAlpha - fromAlpha)*percentComplete;
+        
+        [self setNavigationBarAlpha:alpha];
+        
+        // tint color
+        //UIColor *newColor = [self getColorWithFromColor:fromVC.navBarTintColor toColor:toVC.navBarTintColor fromAlpha:fromAlpha toAlpha:toAlpha percentComplete:percentComplete];
+        UIColor *newColor = [self getColorWithFromColor:fromVC.navBarTintColor toColor:toVC.navBarTintColor percentComplete:percentComplete];
+        
+        self.navigationBar.barTintColor = newColor;
+        
+        if (toVC.barAlpha == 0.0)
         {
-            UIViewController *fromVC = [coor viewControllerForKey:UITransitionContextFromViewControllerKey];
-            UIViewController *toVC   = [coor viewControllerForKey:UITransitionContextToViewControllerKey];
-            // alpha
-            CGFloat fromAlpha = fromVC.barAlpha;
-            CGFloat toAlpha   = toVC.barAlpha;
-            CGFloat alpha     = fromAlpha + (toAlpha - fromAlpha)*percentComplete;
-            [self setNavigationBarAlpha:alpha];
-            // tint color
-            UIColor *newColor = [self getColorWithFromColor:fromVC.navBarTintColor toColor:toVC.navBarTintColor fromAlpha:fromAlpha toAlpha:toAlpha percentComplete:percentComplete];
-            self.navigationBar.barTintColor = newColor;
-            
-            if (toVC.barAlpha == 0.0)
+            if ([self colorBrigntness:toVC.view.backgroundColor] > 0.5)
             {
-                if ([self colorBrigntness:toVC.view.backgroundColor] > 0.5)
-                {
-                    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
-                } else
-                {
-                    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
-                }
+                [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
             } else
             {
-                if ([self colorBrigntness:newColor] > 0.5)
-                {
-                    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
-                } else
-                {
-                    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
-                }
+                [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+            }
+        } else
+        {
+            if ([self colorBrigntness:newColor] > 0.5)
+            {
+                [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+            } else
+            {
+                [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
             }
         }
     }
@@ -154,27 +155,30 @@
     NSUInteger n = self.viewControllers.count >= itemCount ? 2 : 1;
     UIViewController *popToVC = self.viewControllers[self.viewControllers.count - n];
     
-    [self setNavigationBarAlpha:popToVC.barAlpha];
-    
-    self.navigationBar.barTintColor = popToVC.navBarTintColor;
-    
-    if (popToVC.barAlpha == 0.0)
+    if (self.interactivePopGestureRecognizer.state == UIGestureRecognizerStatePossible)
     {
-        if ([self colorBrigntness:popToVC.view.backgroundColor] > 0.5)
+        [self setNavigationBarAlpha:popToVC.barAlpha];
+        
+        self.navigationBar.barTintColor = popToVC.navBarTintColor;
+        
+        if (popToVC.barAlpha == 0.0)
         {
-            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+            if ([self colorBrigntness:popToVC.view.backgroundColor] > 0.5)
+            {
+                [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+            } else
+            {
+                [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+            }
         } else
         {
-            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
-        }
-    } else
-    {
-        if ([self colorBrigntness:popToVC.navBarTintColor] > 0.5)
-        {
-            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
-        } else
-        {
-            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+            if ([self colorBrigntness:popToVC.navBarTintColor] > 0.5)
+            {
+                [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+            } else
+            {
+                [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+            }
         }
     }
     
@@ -249,8 +253,30 @@
     return brigntness;
 }
 
+//- (UIColor *)getColorWithFromColor:(UIColor *)fromColor toColor:(UIColor *)toColor fromAlpha:(CGFloat)fromAlpha toAlpha:(CGFloat)toAlpha percentComplete:(CGFloat)percentComplete
+//{
+//    CGFloat fromRed        = 0.0;
+//    CGFloat fromGreen      = 0.0;
+//    CGFloat fromBlue       = 0.0;
+//    CGFloat fromColorAlpha = 0.0;
+//    CGFloat toRed        = 0.0;
+//    CGFloat toGreen      = 0.0;
+//    CGFloat toBlue       = 0.0;
+//    CGFloat toColorAlpha = 0.0;
+//
+//    [fromColor getRed:&fromRed green:&fromGreen blue:&fromBlue alpha:&fromColorAlpha];
+//    [toColor getRed:&toRed green:&toGreen blue:&toBlue alpha:&toColorAlpha];
+//
+//    CGFloat newRed        = fromRed + (toRed - fromRed) * percentComplete;
+//    CGFloat newGreen      = fromGreen + (toGreen - fromGreen) * percentComplete;
+//    CGFloat newBlue       = fromBlue + (toBlue - fromBlue) * percentComplete;
+//    CGFloat newColorAlpha = fromAlpha + (toAlpha - fromAlpha) * percentComplete;
+//
+//    return [UIColor colorWithRed:newRed green:newGreen blue:newBlue alpha:newColorAlpha];
+//}
 
-- (UIColor *)getColorWithFromColor:(UIColor *)fromColor toColor:(UIColor *)toColor fromAlpha:(CGFloat)fromAlpha toAlpha:(CGFloat)toAlpha percentComplete:(CGFloat)percentComplete
+
+- (UIColor *)getColorWithFromColor:(UIColor *)fromColor toColor:(UIColor *)toColor percentComplete:(CGFloat)percentComplete
 {
     CGFloat fromRed        = 0.0;
     CGFloat fromGreen      = 0.0;
@@ -260,15 +286,15 @@
     CGFloat toGreen      = 0.0;
     CGFloat toBlue       = 0.0;
     CGFloat toColorAlpha = 0.0;
-    
+
     [fromColor getRed:&fromRed green:&fromGreen blue:&fromBlue alpha:&fromColorAlpha];
     [toColor getRed:&toRed green:&toGreen blue:&toBlue alpha:&toColorAlpha];
-    
+
     CGFloat newRed        = fromRed + (toRed - fromRed) * percentComplete;
     CGFloat newGreen      = fromGreen + (toGreen - fromGreen) * percentComplete;
     CGFloat newBlue       = fromBlue + (toBlue - fromBlue) * percentComplete;
-    CGFloat newColorAlpha = fromAlpha + (toAlpha - fromAlpha) * percentComplete;
-    
+    CGFloat newColorAlpha = fromColorAlpha + (toColorAlpha - fromColorAlpha) * percentComplete;
+
     return [UIColor colorWithRed:newRed green:newGreen blue:newBlue alpha:newColorAlpha];
 }
 
@@ -351,19 +377,19 @@
     {
         NSTimeInterval cancelDuration = [context transitionDuration] * (double)[context percentComplete];
         
-        UIViewController *formVC = [context viewControllerForKey:UITransitionContextFromViewControllerKey];
+        UIViewController *fromVC = [context viewControllerForKey:UITransitionContextFromViewControllerKey];
         
         [UIView animateWithDuration:cancelDuration animations:^{
             
-            CGFloat alpha = formVC.barAlpha;
+            CGFloat alpha = fromVC.barAlpha;
             
             [self setNavigationBarAlpha:alpha];
             
-            self.navigationBar.barTintColor = formVC.navBarTintColor;
+            self.navigationBar.barTintColor = fromVC.navBarTintColor;
             
-            if (formVC.barAlpha == 0)
+            if (fromVC.barAlpha == 0)
             {
-                if ([self colorBrigntness:formVC.view.backgroundColor] > 0.5)
+                if ([self colorBrigntness:fromVC.view.backgroundColor] > 0.5)
                 {
                     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
                 } else
@@ -372,7 +398,7 @@
                 }
             } else
             {
-                if ([self colorBrigntness:formVC.navBarTintColor] > 0.5)
+                if ([self colorBrigntness:fromVC.navBarTintColor] > 0.5)
                 {
                     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
                 } else
@@ -417,5 +443,7 @@
         }];
     }
 }
+
+
 
 @end
