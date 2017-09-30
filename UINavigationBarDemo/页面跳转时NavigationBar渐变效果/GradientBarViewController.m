@@ -7,7 +7,6 @@
 //
 
 #import "GradientBarViewController.h"
-//#import "UINavigationController+extend.h"
 #import "FirstViewController.h"
 #import "UIViewController+Bar.h"
 
@@ -36,13 +35,14 @@
     }
 }
 
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    self.barAlpha = 1.0;
+    self.barAlpha = 0.0;
     
     self.navBarTintColor = [UIColor whiteColor];
 }

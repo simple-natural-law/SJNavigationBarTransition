@@ -66,6 +66,8 @@
 /// 设置导航栏透明度
 - (void)setNavigationBarAlpha:(CGFloat)alpha
 {
+    self.navigationBar.translucent = !(alpha == 1.0);// iOS 11.0 translucent为YES时Bar才能透明
+    
     UIView *barBgView = self.navigationBar.subviews[0];
     
     UIView *shadowView = [barBgView valueForKey:@"_shadowView"];
@@ -75,6 +77,7 @@
         shadowView.alpha  = alpha;
         shadowView.hidden = alpha == 0.0;
     }
+    
     if (self.navigationBar.isTranslucent)
     {
         if (@available(iOS 10.0, *))
