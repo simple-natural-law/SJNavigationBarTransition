@@ -9,12 +9,16 @@
 #import "GradientBarViewController.h"
 #import "FirstViewController.h"
 #import "UIViewController+Bar.h"
+#import "UINavigationController+extend.h"
+
 
 @interface GradientBarViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 
 @property (weak, nonatomic) UIColor *defaultTintColor;
+
+@property (assign, nonatomic) CGFloat currentBarAlpha;
 
 @end
 
@@ -23,6 +27,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    self.currentBarAlpha = 0.0;
     
     self.defaultTintColor = self.navigationController.navigationBar.tintColor;
     
@@ -42,7 +48,7 @@
     
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    self.barAlpha = 0.0;
+    self.barAlpha = self.currentBarAlpha;
     
     self.navBarTintColor = [UIColor whiteColor];
 }
@@ -81,6 +87,29 @@
     FirstViewController *vc = [[FirstViewController alloc] init];
     
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+
+#pragma mark- UITableViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGFloat offsetY = scrollView.contentOffset.y;
+    
+    CGFloat alpha = offsetY/186.0;
+    
+    if (alpha >= 1.0)
+    {
+        alpha = 1.0;
+        self.navigationController.navigationBar.tintColor = self.defaultTintColor;
+    }
+    
+    if (alpha <= 0.0)
+    {
+        alpha = 0.0;
+        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    }
+    self.currentBarAlpha = alpha;
+    [self.navigationController setNavigationBarAlpha:alpha];
 }
 
 
