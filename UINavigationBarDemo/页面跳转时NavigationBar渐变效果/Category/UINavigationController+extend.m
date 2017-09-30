@@ -106,6 +106,7 @@
 
 - (void)z_updateInteractiveTransition:(CGFloat)percentComplete
 {
+    NSLog(@"aaaaaaaaa");
     if (self.topViewController != nil)
     {
         id<UIViewControllerTransitionCoordinator> coor = self.topViewController.transitionCoordinator;
@@ -116,11 +117,9 @@
         CGFloat fromAlpha = fromVC.barAlpha;
         CGFloat toAlpha   = toVC.barAlpha;
         CGFloat alpha     = fromAlpha + (toAlpha - fromAlpha)*percentComplete;
-        
         [self setNavigationBarAlpha:alpha];
         
         // tint color
-        //UIColor *newColor = [self getColorWithFromColor:fromVC.navBarTintColor toColor:toVC.navBarTintColor fromAlpha:fromAlpha toAlpha:toAlpha percentComplete:percentComplete];
         UIColor *newColor = [self getColorWithFromColor:fromVC.navBarTintColor toColor:toVC.navBarTintColor percentComplete:percentComplete];
         
         self.navigationBar.barTintColor = newColor;
@@ -151,43 +150,48 @@
 
 - (UIViewController *)z_popViewControllerAnimated:(BOOL)animated
 {
+    NSLog(@"z_popViewControllerAnimated");
+    
     NSUInteger itemCount = self.navigationBar.items.count;
     NSUInteger n = self.viewControllers.count >= itemCount ? 2 : 1;
-    UIViewController *popToVC = self.viewControllers[self.viewControllers.count - n];
+    UIViewController *VC = self.viewControllers[self.viewControllers.count - n];
     
-    if (self.interactivePopGestureRecognizer.state == UIGestureRecognizerStatePossible)
+    self.navigationBar.barTintColor = VC.navBarTintColor;
+    
+    UIViewController *popToVC = [self z_popViewControllerAnimated:animated];
+    
+    [self setNavigationBarAlpha:popToVC.barAlpha];
+    
+    if (popToVC.barAlpha == 0.0)
     {
-        [self setNavigationBarAlpha:popToVC.barAlpha];
-        
-        self.navigationBar.barTintColor = popToVC.navBarTintColor;
-        
-        if (popToVC.barAlpha == 0.0)
+        if ([self colorBrigntness:popToVC.view.backgroundColor] > 0.5)
         {
-            if ([self colorBrigntness:popToVC.view.backgroundColor] > 0.5)
-            {
-                [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
-            } else
-            {
-                [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
-            }
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
         } else
         {
-            if ([self colorBrigntness:popToVC.navBarTintColor] > 0.5)
-            {
-                [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
-            } else
-            {
-                [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
-            }
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+        }
+    } else
+    {
+        if ([self colorBrigntness:popToVC.navBarTintColor] > 0.5)
+        {
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
+        } else
+        {
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
         }
     }
-    
-    return [self z_popViewControllerAnimated:animated];;
+        
+    return popToVC;
 }
 
 
 - (NSArray<UIViewController *> *)z_popToViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
+    NSLog(@"z_popToViewController");
+    
+    NSArray<UIViewController *> *viewControllers = [self z_popToViewController:viewController animated:animated];
+    
     [self setNavigationBarAlpha:viewController.barAlpha];
     
     self.navigationBar.barTintColor = viewController.navBarTintColor;
@@ -212,7 +216,7 @@
         }
     }
     
-    return [self z_popToViewController:viewController animated:animated];
+    return viewControllers;
 }
 
 - (NSArray<UIViewController *> *)z_popToRootViewControllerAnimated:(BOOL)animated
@@ -253,28 +257,6 @@
     return brigntness;
 }
 
-//- (UIColor *)getColorWithFromColor:(UIColor *)fromColor toColor:(UIColor *)toColor fromAlpha:(CGFloat)fromAlpha toAlpha:(CGFloat)toAlpha percentComplete:(CGFloat)percentComplete
-//{
-//    CGFloat fromRed        = 0.0;
-//    CGFloat fromGreen      = 0.0;
-//    CGFloat fromBlue       = 0.0;
-//    CGFloat fromColorAlpha = 0.0;
-//    CGFloat toRed        = 0.0;
-//    CGFloat toGreen      = 0.0;
-//    CGFloat toBlue       = 0.0;
-//    CGFloat toColorAlpha = 0.0;
-//
-//    [fromColor getRed:&fromRed green:&fromGreen blue:&fromBlue alpha:&fromColorAlpha];
-//    [toColor getRed:&toRed green:&toGreen blue:&toBlue alpha:&toColorAlpha];
-//
-//    CGFloat newRed        = fromRed + (toRed - fromRed) * percentComplete;
-//    CGFloat newGreen      = fromGreen + (toGreen - fromGreen) * percentComplete;
-//    CGFloat newBlue       = fromBlue + (toBlue - fromBlue) * percentComplete;
-//    CGFloat newColorAlpha = fromAlpha + (toAlpha - fromAlpha) * percentComplete;
-//
-//    return [UIColor colorWithRed:newRed green:newGreen blue:newBlue alpha:newColorAlpha];
-//}
-
 
 - (UIColor *)getColorWithFromColor:(UIColor *)fromColor toColor:(UIColor *)toColor percentComplete:(CGFloat)percentComplete
 {
@@ -303,6 +285,8 @@
 // 点击返回
 - (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item
 {
+    NSLog(@"======");
+    
     if (self.topViewController != nil && self.topViewController.transitionCoordinator != nil)
     {
         if (@available(iOS 10.0, *))
@@ -342,8 +326,6 @@
     [UIView setAnimationDelegate:self];
     [UIView setAnimationDuration:duration];
     
-    self.navigationBar.barTintColor = self.topViewController.navBarTintColor;
-    
     if (self.topViewController.barAlpha == 0)
     {
         if ([self colorBrigntness:self.topViewController.view.backgroundColor] > 0.5)
@@ -364,6 +346,8 @@
     }
     
     [self setNavigationBarAlpha:self.topViewController.barAlpha];
+    
+    self.navigationBar.barTintColor = self.topViewController.navBarTintColor;
     
     [UIView commitAnimations];
     
