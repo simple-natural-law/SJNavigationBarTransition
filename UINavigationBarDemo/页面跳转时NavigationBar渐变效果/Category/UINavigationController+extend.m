@@ -279,13 +279,15 @@
 {
     if (self.topViewController != nil && self.topViewController.transitionCoordinator != nil)
     {
-        if (@available(iOS 10.0, *)) {
+        if (@available(iOS 10.0, *))
+        {
             [self.topViewController.transitionCoordinator notifyWhenInteractionChangesUsingBlock:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
                 
                 [self dealInteractionChanges:context];
             }];
-        } else {
-            // Fallback on earlier versions
+        } else
+        {
+            
             [self.topViewController.transitionCoordinator notifyWhenInteractionEndsUsingBlock:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
                 
                 [self dealInteractionChanges:context];
