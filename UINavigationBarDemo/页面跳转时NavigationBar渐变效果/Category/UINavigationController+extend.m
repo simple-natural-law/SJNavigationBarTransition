@@ -77,22 +77,24 @@
     }
     if (self.navigationBar.isTranslucent)
     {
-#ifdef __IPHONE_10_0
-        UIView *bgEffectView = [barBgView valueForKey:@"_backgroundEffectView"];
-        if (bgEffectView && [self.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault] == nil)
+        if (@available(iOS 10.0, *))
         {
-            bgEffectView.alpha = alpha;
-            return;
-        }
-#else
-        UIView *adaptiveBackDrop = [barBgView valueForKey:@"_adaptiveBackdrop"];
-        UIView *backDropEffectView = [adaptiveBackDrop valueForKey:@"_backdropEffectView"];
-        if (adaptiveBackDrop && backDropEffectView)
+            UIView *bgEffectView = [barBgView valueForKey:@"_backgroundEffectView"];
+            if (bgEffectView && [self.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault] == nil)
+            {
+                bgEffectView.alpha = alpha;
+                return;
+            }
+        }else
         {
-            backDropEffectView.alpha = alpha;
-            return;
+            UIView *adaptiveBackDrop = [barBgView valueForKey:@"_adaptiveBackdrop"];
+            UIView *backDropEffectView = [adaptiveBackDrop valueForKey:@"_backdropEffectView"];
+            if (adaptiveBackDrop && backDropEffectView)
+            {
+                backDropEffectView.alpha = alpha;
+                return;
+            }
         }
-#endif
     }
     barBgView.alpha = alpha;
 }

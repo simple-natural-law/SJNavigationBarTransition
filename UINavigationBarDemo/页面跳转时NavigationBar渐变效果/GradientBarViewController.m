@@ -7,13 +7,15 @@
 //
 
 #import "GradientBarViewController.h"
-#import "UINavigationController+extend.h"
+//#import "UINavigationController+extend.h"
 #import "FirstViewController.h"
 #import "UIViewController+Bar.h"
 
 @interface GradientBarViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
+
+@property (weak, nonatomic) UIColor *defaultTintColor;
 
 @end
 
@@ -22,6 +24,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    self.defaultTintColor = self.navigationController.navigationBar.tintColor;
     
     if (@available(iOS 11.0, *))
     {
@@ -36,10 +40,20 @@
 {
     [super viewWillAppear:animated];
     
-    self.barAlpha = 0.0;
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    
+    self.barAlpha = 1.0;
     
     self.navBarTintColor = [UIColor whiteColor];
 }
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    self.navigationController.navigationBar.tintColor = self.defaultTintColor;
+}
+
 
 - (void)viewDidAppear:(BOOL)animated
 {

@@ -45,8 +45,6 @@ static const char *navBarTintColorKey = "navBarTintColorKey";
 //    {
 //        [self.navigationController.navigationBar setShadowImage:nil];
 //    }
-    
-    self.navigationController.navigationBar.barTintColor = navBarTintColor;
 }
 
 - (UIColor *)navBarTintColor
