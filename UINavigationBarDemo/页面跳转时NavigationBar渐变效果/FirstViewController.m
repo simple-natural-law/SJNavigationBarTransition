@@ -11,6 +11,8 @@
 
 @interface FirstViewController ()
 
+@property (strong, nonatomic) UIColor *barColor;
+
 @end
 
 
@@ -26,16 +28,34 @@
     backButtonItem.title = @"Back";
     self.navigationItem.backBarButtonItem = backButtonItem;
     
-    self.title = @"测试";
+    int a = arc4random()%256;
+    int b = arc4random()%256;
+    int c = arc4random()%256;
+    CGFloat r = a/255.0;
+    CGFloat g = b/255.0;
+    CGFloat blue = c/255.0;
+    
+    self.barColor = [UIColor colorWithRed:r green:g blue:blue alpha:1.0];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    self.navBarTintColor = [UIColor purpleColor];
+    self.navBarTintColor = self.barColor;
 }
 
+- (IBAction)popToRoot:(id)sender
+{
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+- (IBAction)pushNext:(id)sender
+{
+    UIViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"FirstViewController"];
+    
+    [self.navigationController pushViewController:vc animated:YES];
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

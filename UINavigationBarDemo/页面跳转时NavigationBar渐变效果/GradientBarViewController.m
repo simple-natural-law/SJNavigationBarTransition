@@ -84,7 +84,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    FirstViewController *vc = [[FirstViewController alloc] init];
+    UIViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"FirstViewController"];
     
     [self.navigationController pushViewController:vc animated:YES];
 }
