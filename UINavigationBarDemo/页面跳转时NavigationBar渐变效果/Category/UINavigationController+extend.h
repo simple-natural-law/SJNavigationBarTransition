@@ -11,12 +11,7 @@
 
 @interface UINavigationController (extend)<UINavigationBarDelegate>
 
-
-/**
- 设置导航栏透明度
-
- @param alpha 透明度
- */
+/// 设置导航栏透明度
 - (void)setNavigationBarAlpha:(CGFloat)alpha;
 
 @end
