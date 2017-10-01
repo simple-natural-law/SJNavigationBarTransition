@@ -47,7 +47,9 @@
 
 - (IBAction)popToRoot:(id)sender
 {
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    //[self.navigationController popToRootViewControllerAnimated:YES];
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)pushNext:(id)sender

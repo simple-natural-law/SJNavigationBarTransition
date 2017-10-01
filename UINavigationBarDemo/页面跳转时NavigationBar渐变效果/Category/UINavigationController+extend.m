@@ -106,13 +106,14 @@
 
 - (void)z_updateInteractiveTransition:(CGFloat)percentComplete
 {
-    //NSLog(@"aaaaaaaaa");
+    //NSLog(@"z_updateInteractiveTransition");
     if (self.topViewController != nil)
     {
         id<UIViewControllerTransitionCoordinator> coor = self.topViewController.transitionCoordinator;
         
         UIViewController *fromVC = [coor viewControllerForKey:UITransitionContextFromViewControllerKey];
         UIViewController *toVC   = [coor viewControllerForKey:UITransitionContextToViewControllerKey];
+        
         // alpha
         CGFloat fromAlpha = fromVC.barAlpha;
         CGFloat toAlpha   = toVC.barAlpha;
@@ -134,19 +135,29 @@
 {
     //NSLog(@"z_popViewControllerAnimated");
     
-    NSUInteger itemCount = self.navigationBar.items.count;
-//    NSUInteger n = self.viewControllers.count >= itemCount ? 2 : 1;
-    UIViewController *vc = self.viewControllers[itemCount - 2];
-    
-    self.navigationBar.barTintColor = vc.navBarTintColor;
-    
-    UIViewController *popToVC = [self z_popViewControllerAnimated:animated];
-    
-    [self setNavigationBarAlpha:popToVC.barAlpha];
-    
-    [self updateStatusBarStyleWithViewController:popToVC];
+    if (self.interactivePopGestureRecognizer.state == UIGestureRecognizerStateBegan)
+    {
+        UIViewController *popedVC = [self z_popViewControllerAnimated:animated];
         
-    return popToVC;
+        self.navigationBar.barTintColor = self.topViewController.navBarTintColor;
+        
+        return popedVC;
+    }else
+    {
+        UIViewController *popedVC = [self z_popViewControllerAnimated:animated];
+        
+        id<UIViewControllerTransitionCoordinator> coordinator = self.topViewController.transitionCoordinator;
+        
+        CGFloat duration = coordinator.transitionDuration;
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationCurve: coordinator.completionCurve];
+        [UIView setAnimationDelegate:self];
+        [UIView setAnimationDuration:duration];
+        [self updateBarAppearenceWithViewController:self.topViewController];
+        [UIView commitAnimations];
+        
+        return popedVC;
+    }
 }
 
 
@@ -154,7 +165,7 @@
 {
     //NSLog(@"z_popToViewController");
     
-    NSArray<UIViewController *> *viewControllers = [self z_popToViewController:viewController animated:animated];
+    NSArray<UIViewController *> *poppedViewControllers = [self z_popToViewController:viewController animated:animated];
 
     id<UIViewControllerTransitionCoordinator> coordinator = viewController.transitionCoordinator;
     
@@ -166,11 +177,13 @@
     [self updateBarAppearenceWithViewController:viewController];
     [UIView commitAnimations];
     
-    return viewControllers;
+    return poppedViewControllers;
 }
 
 - (NSArray<UIViewController *> *)z_popToRootViewControllerAnimated:(BOOL)animated
 {
+    NSArray<UIViewController *> *poppedViewControllers = [self z_popToRootViewControllerAnimated:animated];
+    
     UIViewController *popToVC = self.viewControllers.firstObject;
     
     id<UIViewControllerTransitionCoordinator> coordinator = self.topViewController.transitionCoordinator;
@@ -182,7 +195,7 @@
     [self updateBarAppearenceWithViewController:popToVC];
     [UIView commitAnimations];
     
-    return [self z_popToRootViewControllerAnimated:animated];
+    return poppedViewControllers;
 }
 
 #pragma mark- UINavigationBarDelegate
