@@ -11,10 +11,6 @@
 #import <objc/runtime.h>
 
 
-static int popStep  = 0;
-static int pushStep = 0;
-
-
 @implementation UINavigationController (extend)
 
 
