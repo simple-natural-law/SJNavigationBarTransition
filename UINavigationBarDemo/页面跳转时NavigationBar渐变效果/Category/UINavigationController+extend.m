@@ -11,6 +11,10 @@
 #import <objc/runtime.h>
 
 
+static int popStep  = 0;
+static int pushStep = 0;
+
+
 @implementation UINavigationController (extend)
 
 
@@ -168,7 +172,6 @@
     NSArray<UIViewController *> *poppedViewControllers = [self z_popToViewController:viewController animated:animated];
 
     id<UIViewControllerTransitionCoordinator> coordinator = viewController.transitionCoordinator;
-    
     CGFloat duration = coordinator.transitionDuration;
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationCurve: coordinator.completionCurve];
@@ -244,9 +247,7 @@
     [UIView setAnimationCurve: coordinator.completionCurve];
     [UIView setAnimationDelegate:self];
     [UIView setAnimationDuration:duration];
-    
     [self updateBarAppearenceWithViewController:self.topViewController];
-    
     [UIView commitAnimations];
     
     return YES;
@@ -341,7 +342,5 @@
         }];
     }
 }
-
-
 
 @end
