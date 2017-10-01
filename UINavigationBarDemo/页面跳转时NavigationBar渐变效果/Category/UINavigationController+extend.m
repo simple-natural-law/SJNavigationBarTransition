@@ -204,7 +204,9 @@
 {
     //NSLog(@"======");
     
-    if (self.topViewController != nil && self.topViewController.transitionCoordinator != nil)
+    BOOL interactive = [self.topViewController.transitionCoordinator initiallyInteractive];
+    
+    if (self.topViewController && self.topViewController.transitionCoordinator && interactive)
     {
         if (@available(iOS 10.0, *))
         {
