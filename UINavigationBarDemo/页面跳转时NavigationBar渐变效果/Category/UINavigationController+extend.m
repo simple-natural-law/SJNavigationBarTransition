@@ -234,12 +234,12 @@
 {
     UIView *background = self.navigationBar.subviews[0];
     [background.layer removeAnimationForKey:@"ColorFade"];
-    
+
     CATransition *transition = [[CATransition alloc] init];
     transition.duration = 0.35;
     transition.type = kCATransitionFade;
     transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
-    
+
     [background.layer addAnimation:transition forKey:@"ColorFade"];
 }
 

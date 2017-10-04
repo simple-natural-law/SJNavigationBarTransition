@@ -16,7 +16,7 @@ static const char *navBarTintColorKey = "navBarTintColorKey";
 
 - (void)setBarAlpha:(CGFloat)barAlpha
 {
-    objc_setAssociatedObject(self, barAlphaKey, @(barAlpha), OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(self, barAlphaKey, @(barAlpha), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (CGFloat)barAlpha

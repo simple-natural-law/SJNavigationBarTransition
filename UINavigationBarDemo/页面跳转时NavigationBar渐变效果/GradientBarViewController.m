@@ -18,8 +18,6 @@
 
 @property (weak, nonatomic) UIColor *defaultTintColor;
 
-@property (assign, nonatomic) CGFloat currentBarAlpha;
-
 @end
 
 @implementation GradientBarViewController
@@ -27,8 +25,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    self.currentBarAlpha = 0.0;
     
     self.defaultTintColor = self.navigationController.navigationBar.tintColor;
     
@@ -39,6 +35,8 @@
     {
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
+    
+    self.barAlpha = 0.0;
 }
 
 
@@ -48,10 +46,9 @@
     
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    self.barAlpha = self.currentBarAlpha;
-    
     self.navBarTintColor = [UIColor whiteColor];
 }
+
 
 - (void)viewWillDisappear:(BOOL)animated
 {
@@ -60,11 +57,6 @@
     self.navigationController.navigationBar.tintColor = self.defaultTintColor;
 }
 
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -108,8 +100,8 @@
         alpha = 0.0;
         self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     }
-    self.currentBarAlpha = alpha;
-    [self.navigationController setNavigationBarAlpha:alpha];
+    self.barAlpha = alpha;
+    [self.navigationController setNavigationBarAlpha:self.barAlpha];
 }
 
 
