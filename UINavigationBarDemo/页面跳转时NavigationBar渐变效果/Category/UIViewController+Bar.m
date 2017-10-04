@@ -35,16 +35,6 @@ static const char *navBarTintColorKey = "navBarTintColorKey";
 - (void)setNavBarTintColor:(UIColor *)navBarTintColor
 {
     objc_setAssociatedObject(self, navBarTintColorKey, navBarTintColor, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    
-//    [self.navigationController.navigationBar setBackgroundImage:[self backgroundImageWithColor:barTintColor] forBarMetrics:UIBarMetricsDefault];
-//
-//    if(barTintColor == [UIColor clearColor])
-//    {
-//        [self.navigationController.navigationBar setShadowImage:[self shadowImageWithColor:barTintColor]];
-//    }else
-//    {
-//        [self.navigationController.navigationBar setShadowImage:nil];
-//    }
 }
 
 - (UIColor *)navBarTintColor
@@ -58,30 +48,6 @@ static const char *navBarTintColorKey = "navBarTintColorKey";
     {
         return color;
     }
-}
-
-- (UIImage *)backgroundImageWithColor:(UIColor *)color
-{
-    return [self imageWithColor:color rect:CGRectMake(0.0, 0.0, self.view.frame.size.width, 64.0)];
-}
-
-- (UIImage *)shadowImageWithColor:(UIColor *)color
-{
-    return [self imageWithColor:color rect:CGRectMake(0.0f, 0.0f, 1.0f, 1.0f)];
-}
-
-- (UIImage *)imageWithColor:(UIColor *)color rect:(CGRect)rect
-{
-    UIGraphicsBeginImageContext(rect.size);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    
-    CGContextSetFillColorWithColor(context, [color CGColor]);
-    CGContextFillRect(context, rect);
-    
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return image;
 }
 
 @end

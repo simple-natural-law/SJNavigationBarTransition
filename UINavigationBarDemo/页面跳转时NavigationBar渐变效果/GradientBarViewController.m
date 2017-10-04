@@ -37,6 +37,8 @@
     }
     
     self.barAlpha = 0.0;
+    
+    self.navBarTintColor = [UIColor whiteColor];
 }
 
 
@@ -45,8 +47,6 @@
     [super viewWillAppear:animated];
     
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
-    
-    self.navBarTintColor = [UIColor whiteColor];
 }
 
 

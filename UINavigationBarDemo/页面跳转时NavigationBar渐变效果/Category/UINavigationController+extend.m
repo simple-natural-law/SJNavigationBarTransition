@@ -238,7 +238,7 @@
     CATransition *transition = [[CATransition alloc] init];
     transition.duration = 0.35;
     transition.type = kCATransitionFade;
-    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
 
     [background.layer addAnimation:transition forKey:@"ColorFade"];
 }
