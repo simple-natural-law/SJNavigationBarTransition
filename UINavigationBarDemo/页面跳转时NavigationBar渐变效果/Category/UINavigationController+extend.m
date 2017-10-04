@@ -11,9 +11,6 @@
 #import <objc/runtime.h>
 
 
-static CGFloat intervals = 0.0;
-
-
 @implementation UINavigationController (extend)
 
 
