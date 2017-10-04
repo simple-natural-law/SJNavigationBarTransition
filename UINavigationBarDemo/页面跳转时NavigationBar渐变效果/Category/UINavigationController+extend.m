@@ -11,6 +11,9 @@
 #import <objc/runtime.h>
 
 
+static CGFloat intervals = 0.0;
+
+
 @implementation UINavigationController (extend)
 
 
@@ -66,7 +69,7 @@
 /// 设置导航栏透明度
 - (void)setNavigationBarAlpha:(CGFloat)alpha
 {
-    self.navigationBar.translucent = !(alpha == 1.0);// iOS 11.0 ,由于导航栏新添加了large Title，会将_UIBarBackground的alpha置为1，会导致我们设置了透明但却没有效果.这里通过将translucent为YES，改变_backgroundEffectView的alpha值，使Bar才能透明
+    self.navigationBar.translucent = !(alpha == 1.0);// iOS 11.0，translucent为NO时,由于导航栏新添加了large Title，会在viewWillAppear方法中将_UIBarBackground的alpha重置为1，会导致我们设置了透明但却没有效果.而translucent为YES，改变_backgroundEffectView的alpha值，不会被重置。
     
     UIView *barBgView = self.navigationBar.subviews[0];
     
@@ -146,15 +149,9 @@
     {
         UIViewController *popedVC = [self z_popViewControllerAnimated:animated];
         
-        id<UIViewControllerTransitionCoordinator> coordinator = self.topViewController.transitionCoordinator;
+        [self addBarBackgroundLayerTransition];
         
-        CGFloat duration = coordinator.transitionDuration;
-        [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationCurve: coordinator.completionCurve];
-        [UIView setAnimationDelegate:self];
-        [UIView setAnimationDuration:duration];
         [self updateBarAppearenceWithViewController:self.topViewController];
-        [UIView commitAnimations];
         
         return popedVC;
     }
@@ -166,15 +163,10 @@
     //NSLog(@"z_popToViewController");
     
     NSArray<UIViewController *> *poppedViewControllers = [self z_popToViewController:viewController animated:animated];
-
-    id<UIViewControllerTransitionCoordinator> coordinator = viewController.transitionCoordinator;
-    CGFloat duration = coordinator.transitionDuration;
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationCurve: coordinator.completionCurve];
-    [UIView setAnimationDelegate:self];
-    [UIView setAnimationDuration:duration];
+    
+    [self addBarBackgroundLayerTransition];
+    
     [self updateBarAppearenceWithViewController:viewController];
-    [UIView commitAnimations];
     
     return poppedViewControllers;
 }
@@ -183,16 +175,11 @@
 {
     NSArray<UIViewController *> *poppedViewControllers = [self z_popToRootViewControllerAnimated:animated];
     
+    [self addBarBackgroundLayerTransition];
+    
     UIViewController *popToVC = self.viewControllers.firstObject;
     
-    id<UIViewControllerTransitionCoordinator> coordinator = self.topViewController.transitionCoordinator;
-    CGFloat duration = coordinator.transitionDuration;
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationCurve: coordinator.completionCurve];
-    [UIView setAnimationDelegate:self];
-    [UIView setAnimationDuration:duration];
     [self updateBarAppearenceWithViewController:popToVC];
-    [UIView commitAnimations];
     
     return poppedViewControllers;
 }
@@ -215,7 +202,6 @@
             }];
         } else
         {
-            
             [self.topViewController.transitionCoordinator notifyWhenInteractionEndsUsingBlock:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
                 
                 [self dealInteractionChanges:context];
@@ -237,20 +223,30 @@
 
 - (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPushItem:(UINavigationItem *)item
 {
-    id<UIViewControllerTransitionCoordinator> coordinator = self.topViewController.transitionCoordinator;
-    CGFloat duration = coordinator.transitionDuration;
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationCurve: coordinator.completionCurve];
-    [UIView setAnimationDelegate:self];
-    [UIView setAnimationDuration:duration];
-    [self updateBarAppearenceWithViewController:self.topViewController];
-    [UIView commitAnimations];
+    [self addBarBackgroundLayerTransition];
     
+    [self updateBarAppearenceWithViewController:self.topViewController];
+
     return YES;
 }
 
 
 #pragma mark- Methods
+
+- (void)addBarBackgroundLayerTransition
+{
+    UIView *background = self.navigationBar.subviews[0];
+    [background.layer removeAnimationForKey:@"ColorFade"];
+    
+    CATransition *transition = [[CATransition alloc] init];
+    transition.duration = 0.35;
+    transition.type = kCATransitionFade;
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    
+    [background.layer addAnimation:transition forKey:@"ColorFade"];
+}
+
+
 - (void)updateBarAppearenceWithViewController:(UIViewController *)viewController
 {
     self.navigationBar.barTintColor = viewController.navBarTintColor;
