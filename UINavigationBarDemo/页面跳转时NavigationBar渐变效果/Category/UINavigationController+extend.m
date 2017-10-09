@@ -185,8 +185,6 @@
 // 点击返回
 - (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item
 {
-    //NSLog(@"======");
-    
     BOOL interactive = [self.topViewController.transitionCoordinator initiallyInteractive];
     
     if (self.topViewController && self.topViewController.transitionCoordinator && interactive)
