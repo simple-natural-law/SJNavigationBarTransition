@@ -223,10 +223,9 @@
     [self addBarBackgroundLayerTransition];
     
     [self updateBarAppearenceWithViewController:self.topViewController];
-
+    
     return YES;
 }
-
 
 #pragma mark- Methods
 
