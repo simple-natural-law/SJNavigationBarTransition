@@ -132,7 +132,6 @@ static const char *backgroundViewKey = "backgroundViewKey";
 
 - (void)z_updateInteractiveTransition:(CGFloat)percentComplete
 {
-    //NSLog(@"z_updateInteractiveTransition");
     if (self.topViewController != nil)
     {
         id<UIViewControllerTransitionCoordinator> coor = self.topViewController.transitionCoordinator;
@@ -160,13 +159,13 @@ static const char *backgroundViewKey = "backgroundViewKey";
 
 - (NSArray<UIViewController *> *)z_popToRootViewControllerAnimated:(BOOL)animated
 {
-    NSArray<UIViewController *> *poppedViewControllers = [self z_popToRootViewControllerAnimated:animated];
-
-    [self addBarBackgroundLayerTransition];
-
     UIViewController *popToVC = self.viewControllers.firstObject;
-
+    
+    [self addBarBackgroundLayerTransition];
+    
     [self updateBarAppearenceWithViewController:popToVC];
+    
+    NSArray<UIViewController *> *poppedViewControllers = [self z_popToRootViewControllerAnimated:animated];
     
     return poppedViewControllers;
 }
@@ -193,7 +192,6 @@ static const char *backgroundViewKey = "backgroundViewKey";
                 [self dealInteractionChanges:context];
             }];
         }
-       
         return YES;
     }
 
@@ -201,12 +199,12 @@ static const char *backgroundViewKey = "backgroundViewKey";
     NSUInteger itemCount = self.navigationBar.items.count;
 
     UIViewController *popToVC = self.viewControllers[itemCount - 2];
-
-    [self popToViewController:popToVC animated:YES];
     
     [self addBarBackgroundLayerTransition];
     
-    [self updateBarAppearenceWithViewController:self.topViewController];
+    [self updateBarAppearenceWithViewController:popToVC];
+    
+    [self popToViewController:popToVC animated:YES];
     
     return YES;
 }
@@ -221,19 +219,15 @@ static const char *backgroundViewKey = "backgroundViewKey";
     return YES;
 }
 
-
 #pragma mark- Methods
 - (void)addBarBackgroundLayerTransition
 {
-    UIView *background = self.navigationBar.subviews[0];
-    [background.layer removeAnimationForKey:@"ColorFade"];
-
     CATransition *transition = [[CATransition alloc] init];
     transition.duration = 0.35;
     transition.type = kCATransitionFade;
     transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
 
-    [background.layer addAnimation:transition forKey:@"ColorFade"];
+    [self.navigationBar.backgroundView.layer addAnimation:transition forKey:@"ColorFade"];
 }
 
 
