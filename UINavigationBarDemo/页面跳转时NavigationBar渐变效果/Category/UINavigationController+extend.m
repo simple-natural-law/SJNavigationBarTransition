@@ -71,17 +71,9 @@ static const char *backgroundViewKey = "backgroundViewKey";
             SEL swizzledSelector1  = NSSelectorFromString(@"z_updateInteractiveTransition:");
             [self swizzleOriginalSelector:originalSelector1 withCurrentSelector:swizzledSelector1];
             
-            SEL originalSelector2  = @selector(popToViewController:animated:);
-            SEL swizzledSelector2  = NSSelectorFromString(@"z_popToViewController:animated:");
+            SEL originalSelector2  = @selector(popToRootViewControllerAnimated:);
+            SEL swizzledSelector2  = NSSelectorFromString(@"z_popToRootViewControllerAnimated:");
             [self swizzleOriginalSelector:originalSelector2 withCurrentSelector:swizzledSelector2];
-            
-            SEL originalSelector3  = @selector(popToRootViewControllerAnimated:);
-            SEL swizzledSelector3  = NSSelectorFromString(@"z_popToRootViewControllerAnimated:");
-            [self swizzleOriginalSelector:originalSelector3 withCurrentSelector:swizzledSelector3];
-            
-            SEL originalSelector4  = @selector(popViewControllerAnimated:);
-            SEL swizzledSelector4  = NSSelectorFromString(@"z_popViewControllerAnimated:");
-            [self swizzleOriginalSelector:originalSelector4 withCurrentSelector:swizzledSelector4];
         }
     });
 }
@@ -103,7 +95,7 @@ static const char *backgroundViewKey = "backgroundViewKey";
 /// 设置导航栏透明度
 - (void)setNavigationBarAlpha:(CGFloat)alpha
 {
-    self.navigationBar.translucent = !(alpha == 1.0);// iOS 11.0，translucent为NO时,由于导航栏新添加了large Title，会在viewWillAppear方法中将_UIBarBackground的alpha重置为1，会导致我们设置了透明但却没有效果.而translucent为YES，改变_backgroundEffectView的alpha值，不会被重置。
+    self.navigationBar.translucent = !(alpha == 1.0);
     
     UIView *barBgView = self.navigationBar.subviews[0];
     
@@ -122,10 +114,7 @@ static const char *backgroundViewKey = "backgroundViewKey";
             UIView *bgEffectView = [barBgView valueForKey:@"_backgroundEffectView"];
             if (bgEffectView && [self.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault] == nil)
             {
-                self.navigationBar.backgroundView.alpha = alpha;
-                barBgView.alpha = alpha;// 解决手势返回时，透明Bar页面与不透明bar页面切换会闪烁的问题.
                 bgEffectView.alpha = alpha;
-                return;
             }
         }else
         {
@@ -133,15 +122,12 @@ static const char *backgroundViewKey = "backgroundViewKey";
             UIView *backDropEffectView = [adaptiveBackDrop valueForKey:@"_backdropEffectView"];
             if (adaptiveBackDrop && backDropEffectView)
             {
-                self.navigationBar.backgroundView.alpha = alpha;
-                barBgView.alpha = alpha;// 解决手势返回时，透明Bar页面与不透明bar页面切换会闪烁的问题.
                 backDropEffectView.alpha = alpha;
-                return;
             }
         }
     }
     self.navigationBar.backgroundView.alpha = alpha;
-    barBgView.alpha = alpha;
+    barBgView.alpha = alpha; // 解决手势返回时，透明Bar页面与不透明bar页面切换会闪烁的问题.
 }
 
 - (void)z_updateInteractiveTransition:(CGFloat)percentComplete
@@ -171,53 +157,20 @@ static const char *backgroundViewKey = "backgroundViewKey";
     [self z_updateInteractiveTransition:percentComplete];
 }
 
-- (UIViewController *)z_popViewControllerAnimated:(BOOL)animated
-{
-    //NSLog(@"z_popViewControllerAnimated");
-    
-    if (self.interactivePopGestureRecognizer.state == UIGestureRecognizerStateBegan)
-    {
-        UIViewController *popedVC = [self z_popViewControllerAnimated:animated];
-        
-        return popedVC;
-    }else
-    {
-        UIViewController *popedVC = [self z_popViewControllerAnimated:animated];
-        
-        [self addBarBackgroundLayerTransition];
-        
-        [self updateBarAppearenceWithViewController:self.topViewController];
-        
-        return popedVC;
-    }
-}
-
-
-- (NSArray<UIViewController *> *)z_popToViewController:(UIViewController *)viewController animated:(BOOL)animated
-{
-    //NSLog(@"z_popToViewController");
-    
-    NSArray<UIViewController *> *poppedViewControllers = [self z_popToViewController:viewController animated:animated];
-    
-    [self addBarBackgroundLayerTransition];
-    
-    [self updateBarAppearenceWithViewController:viewController];
-    
-    return poppedViewControllers;
-}
 
 - (NSArray<UIViewController *> *)z_popToRootViewControllerAnimated:(BOOL)animated
 {
     NSArray<UIViewController *> *poppedViewControllers = [self z_popToRootViewControllerAnimated:animated];
-    
+
     [self addBarBackgroundLayerTransition];
-    
+
     UIViewController *popToVC = self.viewControllers.firstObject;
-    
+
     [self updateBarAppearenceWithViewController:popToVC];
     
     return poppedViewControllers;
 }
+
 
 #pragma mark- UINavigationBarDelegate
 // 点击返回
@@ -225,7 +178,7 @@ static const char *backgroundViewKey = "backgroundViewKey";
 {
     BOOL interactive = [self.topViewController.transitionCoordinator initiallyInteractive];
     
-    if (self.topViewController && self.topViewController.transitionCoordinator && interactive)
+    if (interactive)         // 交互式pop
     {
         if (@available(iOS 10.0, *))
         {
@@ -243,12 +196,17 @@ static const char *backgroundViewKey = "backgroundViewKey";
        
         return YES;
     }
-    
+
+    // 非交互式pop
     NSUInteger itemCount = self.navigationBar.items.count;
-    
+
     UIViewController *popToVC = self.viewControllers[itemCount - 2];
-    
+
     [self popToViewController:popToVC animated:YES];
+    
+    [self addBarBackgroundLayerTransition];
+    
+    [self updateBarAppearenceWithViewController:self.topViewController];
     
     return YES;
 }
@@ -263,8 +221,8 @@ static const char *backgroundViewKey = "backgroundViewKey";
     return YES;
 }
 
-#pragma mark- Methods
 
+#pragma mark- Methods
 - (void)addBarBackgroundLayerTransition
 {
     UIView *background = self.navigationBar.subviews[0];
