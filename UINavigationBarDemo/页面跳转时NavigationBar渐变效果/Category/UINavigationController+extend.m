@@ -10,6 +10,29 @@
 #import "UIViewController+Bar.h"
 #import <objc/runtime.h>
 
+static const char *backgroundViewKey = "backgroundViewKey";
+
+@interface UINavigationBar (extend)
+
+@property (nonatomic, strong) UIView *backgroundView;
+
+@end
+
+
+@implementation UINavigationBar (extend)
+
+- (UIView *)backgroundView
+{
+    return objc_getAssociatedObject(self, backgroundViewKey);
+}
+
+- (void)setBackgroundView:(UIView *)backgroundView
+{
+    objc_setAssociatedObject(self, backgroundViewKey, backgroundView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+@end
+
 
 @implementation UINavigationController (extend)
 
@@ -63,6 +86,20 @@
     });
 }
 
+- (void)setNavigationBarBackgroundColor:(UIColor *)color
+{
+    if (self.navigationBar.backgroundView == nil)
+    {
+        self.navigationBar.backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.navigationBar.bounds), 64.0)];
+        
+        self.navigationBar.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        
+        [self.navigationBar.subviews.firstObject insertSubview:self.navigationBar.backgroundView atIndex:0];
+    }
+    
+    self.navigationBar.backgroundView.backgroundColor = color;
+}
+
 /// 设置导航栏透明度
 - (void)setNavigationBarAlpha:(CGFloat)alpha
 {
@@ -85,6 +122,7 @@
             UIView *bgEffectView = [barBgView valueForKey:@"_backgroundEffectView"];
             if (bgEffectView && [self.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault] == nil)
             {
+                self.navigationBar.backgroundView.alpha = alpha;
                 barBgView.alpha = alpha;// 解决手势返回时，透明Bar页面与不透明bar页面切换会闪烁的问题.
                 bgEffectView.alpha = alpha;
                 return;
@@ -95,12 +133,14 @@
             UIView *backDropEffectView = [adaptiveBackDrop valueForKey:@"_backdropEffectView"];
             if (adaptiveBackDrop && backDropEffectView)
             {
+                self.navigationBar.backgroundView.alpha = alpha;
                 barBgView.alpha = alpha;// 解决手势返回时，透明Bar页面与不透明bar页面切换会闪烁的问题.
                 backDropEffectView.alpha = alpha;
                 return;
             }
         }
     }
+    self.navigationBar.backgroundView.alpha = alpha;
     barBgView.alpha = alpha;
 }
 
@@ -121,7 +161,7 @@
         // tint color
         UIColor *newColor = [self getColorWithFromColor:fromVC.navBarTintColor toColor:toVC.navBarTintColor percentComplete:percentComplete];
         
-        self.navigationBar.barTintColor = newColor;
+        [self setNavigationBarBackgroundColor:newColor];
         
         [self setNavigationBarAlpha:alpha];
         
@@ -138,8 +178,6 @@
     if (self.interactivePopGestureRecognizer.state == UIGestureRecognizerStateBegan)
     {
         UIViewController *popedVC = [self z_popViewControllerAnimated:animated];
-        
-        self.navigationBar.barTintColor = self.topViewController.navBarTintColor;
         
         return popedVC;
     }else
@@ -243,7 +281,7 @@
 
 - (void)updateBarAppearenceWithViewController:(UIViewController *)viewController
 {
-    self.navigationBar.barTintColor = viewController.navBarTintColor;
+    [self setNavigationBarBackgroundColor:viewController.navBarTintColor];
     
     [self setNavigationBarAlpha:viewController.barAlpha];
     
