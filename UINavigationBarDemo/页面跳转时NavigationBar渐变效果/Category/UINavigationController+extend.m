@@ -159,13 +159,11 @@ static const char *backgroundViewKey = "backgroundViewKey";
 
 - (NSArray<UIViewController *> *)z_popToRootViewControllerAnimated:(BOOL)animated
 {
-    UIViewController *popToVC = self.viewControllers.firstObject;
+    NSArray<UIViewController *> *poppedViewControllers = [self z_popToRootViewControllerAnimated:animated];
     
     [self addBarBackgroundLayerTransition];
     
-    [self updateBarAppearenceWithViewController:popToVC];
-    
-    NSArray<UIViewController *> *poppedViewControllers = [self z_popToRootViewControllerAnimated:animated];
+    [self updateBarAppearenceWithViewController:self.topViewController];
     
     return poppedViewControllers;
 }
@@ -200,11 +198,11 @@ static const char *backgroundViewKey = "backgroundViewKey";
 
     UIViewController *popToVC = self.viewControllers[itemCount - 2];
     
+    [self popToViewController:popToVC animated:YES];
+    
     [self addBarBackgroundLayerTransition];
     
     [self updateBarAppearenceWithViewController:popToVC];
-    
-    [self popToViewController:popToVC animated:YES];
     
     return YES;
 }
