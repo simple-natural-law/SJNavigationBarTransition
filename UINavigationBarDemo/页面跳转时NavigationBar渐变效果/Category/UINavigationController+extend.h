@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface UINavigationController (extend)<UINavigationBarDelegate>
+@interface UINavigationController (extend)<UINavigationBarDelegate,UINavigationControllerDelegate>
 
 /// 设置导航栏透明度
 - (void)setNavigationBarAlpha:(CGFloat)alpha;

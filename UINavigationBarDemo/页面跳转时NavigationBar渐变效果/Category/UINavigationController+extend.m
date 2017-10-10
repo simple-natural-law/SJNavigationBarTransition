@@ -36,48 +36,6 @@ static const char *backgroundViewKey = "backgroundViewKey";
 
 @implementation UINavigationController (extend)
 
-
-+ (void)swizzleOriginalSelector:(SEL)originalSelector withCurrentSelector:(SEL)currentSelector
-{
-    Class class = [self class];
-    
-    Method originalMethod = class_getInstanceMethod(class, originalSelector);
-    Method swizzledMethod = class_getInstanceMethod(class, currentSelector);
-    
-    BOOL didAddMethod =
-    class_addMethod(class,
-                    originalSelector,
-                    method_getImplementation(swizzledMethod),
-                    method_getTypeEncoding(swizzledMethod));
-    
-    if (didAddMethod) {
-        class_replaceMethod(class,
-                            currentSelector,
-                            method_getImplementation(originalMethod),
-                            method_getTypeEncoding(originalMethod));
-    } else {
-        method_exchangeImplementations(originalMethod, swizzledMethod);
-    }
-}
-
-+ (void)load
-{
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        
-        if (self == [UINavigationController class])
-        {
-            SEL originalSelector1  = NSSelectorFromString(@"_updateInteractiveTransition:");
-            SEL swizzledSelector1  = NSSelectorFromString(@"z_updateInteractiveTransition:");
-            [self swizzleOriginalSelector:originalSelector1 withCurrentSelector:swizzledSelector1];
-            
-            SEL originalSelector2  = @selector(popToRootViewControllerAnimated:);
-            SEL swizzledSelector2  = NSSelectorFromString(@"z_popToRootViewControllerAnimated:");
-            [self swizzleOriginalSelector:originalSelector2 withCurrentSelector:swizzledSelector2];
-        }
-    });
-}
-
 - (void)setNavigationBarBackgroundColor:(UIColor *)color
 {
     if (self.navigationBar.backgroundView == nil)
@@ -128,6 +86,75 @@ static const char *backgroundViewKey = "backgroundViewKey";
     }
     self.navigationBar.backgroundView.alpha = alpha;
     barBgView.alpha = alpha; // 解决手势返回时，透明Bar页面与不透明bar页面切换会闪烁的问题.
+}
+
+
++ (void)swizzleOriginalSelector:(SEL)originalSelector withCurrentSelector:(SEL)currentSelector
+{
+    Class class = [self class];
+    
+    Method originalMethod = class_getInstanceMethod(class, originalSelector);
+    Method swizzledMethod = class_getInstanceMethod(class, currentSelector);
+    
+    BOOL didAddMethod =
+    class_addMethod(class,
+                    originalSelector,
+                    method_getImplementation(swizzledMethod),
+                    method_getTypeEncoding(swizzledMethod));
+    
+    if (didAddMethod) {
+        class_replaceMethod(class,
+                            currentSelector,
+                            method_getImplementation(originalMethod),
+                            method_getTypeEncoding(originalMethod));
+    } else {
+        method_exchangeImplementations(originalMethod, swizzledMethod);
+    }
+}
+
++ (void)load
+{
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        
+        if (self == [UINavigationController class])
+        {
+            SEL originalSelector1  = NSSelectorFromString(@"_updateInteractiveTransition:");
+            SEL swizzledSelector1  = NSSelectorFromString(@"z_updateInteractiveTransition:");
+            [self swizzleOriginalSelector:originalSelector1 withCurrentSelector:swizzledSelector1];
+            
+            SEL originalSelector2  = @selector(popToRootViewControllerAnimated:);
+            SEL swizzledSelector2  = NSSelectorFromString(@"z_popToRootViewControllerAnimated:");
+            [self swizzleOriginalSelector:originalSelector2 withCurrentSelector:swizzledSelector2];
+            
+            SEL originalSelector3  = @selector(initWithCoder:);
+            SEL swizzledSelector3  = NSSelectorFromString(@"z_initWithCoder:");
+            [self swizzleOriginalSelector:originalSelector3 withCurrentSelector:swizzledSelector3];
+            
+            SEL originalSelector4  = @selector(initWithRootViewController:);
+            SEL swizzledSelector4  = NSSelectorFromString(@"z_initWithRootViewController:");
+            [self swizzleOriginalSelector:originalSelector4 withCurrentSelector:swizzledSelector4];
+        }
+    });
+}
+
+
+- (instancetype)z_initWithCoder:(NSCoder *)aDecoder
+{
+    UINavigationController *nav = [self z_initWithCoder:aDecoder];
+    
+    nav.delegate = nav;
+    
+    return nav;
+}
+
+- (instancetype)z_initWithRootViewController:(UIViewController *)rootViewController
+{
+    UINavigationController *nav = [self z_initWithRootViewController:rootViewController];
+    
+    nav.delegate = nav;
+    
+    return nav;
 }
 
 - (void)z_updateInteractiveTransition:(CGFloat)percentComplete
@@ -216,6 +243,16 @@ static const char *backgroundViewKey = "backgroundViewKey";
     
     return YES;
 }
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if (viewController == self.viewControllers.firstObject)
+    {
+        self.delegate = nil;
+        [self updateBarAppearenceWithViewController:viewController];
+    }
+}
+
 
 #pragma mark- Methods
 - (void)addBarBackgroundLayerTransition

@@ -8,7 +8,6 @@
 
 #import "HomeViewController.h"
 #import "UIViewController+Bar.h"
-#import "UINavigationController+extend.h"
 
 @interface HomeViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -26,8 +25,6 @@
     
     self.dataArray = @[@{@"title":@"NavigationBar外观属性设置", @"target":@"BarAppearanceViewController"},
                        @{@"title":@"页面跳转时NavigationBar渐变效果", @"target":@"GradientBarViewController"}];
-    
-    self.navigationController.navigationBar.translucent = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated
