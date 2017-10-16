@@ -188,7 +188,10 @@ static const char *backgroundViewKey = "backgroundViewKey";
 {
     NSArray<UIViewController *> *poppedViewControllers = [self z_popToRootViewControllerAnimated:animated];
     
-    [self addBarBackgroundLayerTransition];
+    if (self.topViewController.barAlpha > 0.0)
+    {
+        [self addBarBackgroundLayerTransition];
+    }
     
     [self updateBarAppearenceWithViewController:self.topViewController];
     
@@ -227,7 +230,10 @@ static const char *backgroundViewKey = "backgroundViewKey";
     
     [self popToViewController:popToVC animated:YES];
     
-    [self addBarBackgroundLayerTransition];
+    if (self.topViewController.barAlpha > 0.0)
+    {
+        [self addBarBackgroundLayerTransition];
+    }
     
     [self updateBarAppearenceWithViewController:popToVC];
     
@@ -237,7 +243,10 @@ static const char *backgroundViewKey = "backgroundViewKey";
 
 - (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPushItem:(UINavigationItem *)item
 {
-    [self addBarBackgroundLayerTransition];
+    if (self.topViewController.barAlpha > 0.0)
+    {
+        [self addBarBackgroundLayerTransition];
+    }
     
     [self updateBarAppearenceWithViewController:self.topViewController];
     
