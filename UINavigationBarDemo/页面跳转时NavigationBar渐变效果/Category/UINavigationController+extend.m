@@ -268,7 +268,7 @@ static const char *backgroundViewKey = "backgroundViewKey";
 {
     CATransition *transition = [[CATransition alloc] init];
     transition.duration = 0.35;
-    transition.type = kCATransitionFade;
+    transition.type     = kCATransitionFade;
     transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
 
     [self.navigationBar.backgroundView.layer addAnimation:transition forKey:@"ColorFade"];
