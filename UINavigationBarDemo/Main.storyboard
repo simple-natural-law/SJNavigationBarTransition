@@ -123,6 +123,24 @@
             </objects>
             <point key="canvasLocation" x="636" y="282.90854572713647"/>
         </scene>
+        <!--控制器对应的NavigationItem设置-->
+        <scene sceneID="wGN-un-maO">
+            <objects>
+                <viewController storyboardIdentifier="BarItemSettingViewController" title="控制器对应的NavigationItem设置" id="uQJ-G2-GOf" customClass="BarItemSettingViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="VWD-ay-Nbd"/>
+                        <viewControllerLayoutGuide type="bottom" id="op3-gz-jXP"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ePU-RI-eRe">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Mfk-LD-a36" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1734" y="283"/>
+        </scene>
         <!--测试页面-->
         <scene sceneID="bwY-vN-3Et">
             <objects>
@@ -173,10 +191,10 @@
             </objects>
             <point key="canvasLocation" x="630" y="965"/>
         </scene>
-        <!--NavigationBar外观属性调整-->
+        <!--NavigationBar全局外观属性调整-->
         <scene sceneID="wvH-eH-yXC">
             <objects>
-                <viewController storyboardIdentifier="BarAppearanceViewController" title="NavigationBar外观属性调整" id="4H3-Lh-Q35" customClass="BarAppearanceViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="BarAppearanceViewController" title="NavigationBar全局外观属性调整" id="4H3-Lh-Q35" customClass="BarAppearanceViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9KK-8F-XWG"/>
                         <viewControllerLayoutGuide type="bottom" id="oO4-Hk-GEw"/>

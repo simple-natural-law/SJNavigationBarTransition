@@ -20,6 +20,7 @@
 		1A1511C31F7B401D00A12D5E /* RootNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1511C21F7B401D00A12D5E /* RootNavigationViewController.m */; };
 		1A1511CA1F7B85B400A12D5E /* BarAppearanceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1511C91F7B85B400A12D5E /* BarAppearanceViewController.m */; };
 		1A1511D01F7B9D8400A12D5E /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1511CF1F7B9D8000A12D5E /* BaseViewController.m */; };
+		1A9E80551F944A5D007534DF /* BarItemSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A9E80541F944A5D007534DF /* BarItemSettingViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,8 @@
 		1A1511C91F7B85B400A12D5E /* BarAppearanceViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BarAppearanceViewController.m; sourceTree = "<group>"; };
 		1A1511CE1F7B9D7E00A12D5E /* BaseViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		1A1511CF1F7B9D8000A12D5E /* BaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
+		1A9E80531F944A5D007534DF /* BarItemSettingViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BarItemSettingViewController.h; sourceTree = "<group>"; };
+		1A9E80541F944A5D007534DF /* BarItemSettingViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BarItemSettingViewController.m; sourceTree = "<group>"; };
 		1AEA33DA1F7CEE1A00A2D3B4 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1AEA33DB1F7CEE1A00A2D3B4 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -103,7 +106,8 @@
 			isa = PBXGroup;
 			children = (
 				1A0F58911F7DE8D0001B5EE9 /* 页面跳转时NavigationBar渐变效果 */,
-				1A1511C71F7B84DE00A12D5E /* NavigationBar外观属性设置 */,
+				1A9E80521F944A17007534DF /* 控制器对应的NavigationItem设置 */,
+				1A1511C71F7B84DE00A12D5E /* NavigationBar全局外观属性设置 */,
 				1A1511AB1F7B3F1600A12D5E /* AppDelegate.h */,
 				1A1511AC1F7B3F1600A12D5E /* AppDelegate.m */,
 				1A1511CE1F7B9D7E00A12D5E /* BaseViewController.h */,
@@ -121,13 +125,22 @@
 			path = UINavigationBarDemo;
 			sourceTree = "<group>";
 		};
-		1A1511C71F7B84DE00A12D5E /* NavigationBar外观属性设置 */ = {
+		1A1511C71F7B84DE00A12D5E /* NavigationBar全局外观属性设置 */ = {
 			isa = PBXGroup;
 			children = (
 				1A1511C81F7B85B400A12D5E /* BarAppearanceViewController.h */,
 				1A1511C91F7B85B400A12D5E /* BarAppearanceViewController.m */,
 			);
-			path = "NavigationBar外观属性设置";
+			path = "NavigationBar全局外观属性设置";
+			sourceTree = "<group>";
+		};
+		1A9E80521F944A17007534DF /* 控制器对应的NavigationItem设置 */ = {
+			isa = PBXGroup;
+			children = (
+				1A9E80531F944A5D007534DF /* BarItemSettingViewController.h */,
+				1A9E80541F944A5D007534DF /* BarItemSettingViewController.m */,
+			);
+			path = "控制器对应的NavigationItem设置";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -211,6 +224,7 @@
 				1A0F589E1F7E28EB001B5EE9 /* FirstViewController.m in Sources */,
 				1A0F58981F7DF298001B5EE9 /* UIViewController+Bar.m in Sources */,
 				1A0F58941F7DEBBC001B5EE9 /* GradientBarViewController.m in Sources */,
+				1A9E80551F944A5D007534DF /* BarItemSettingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
