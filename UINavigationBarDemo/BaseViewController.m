@@ -25,6 +25,11 @@
     
     self.edgesForExtendedLayout = UIRectEdgeAll;
     self.extendedLayoutIncludesOpaqueBars = YES;
+    
+    // 设置默认的返回按钮的文本
+    UIBarButtonItem * backButtonItem = [[UIBarButtonItem alloc] init];
+    backButtonItem.title = @"返回";
+    self.navigationItem.backBarButtonItem = backButtonItem;
 }
 
 - (void)didReceiveMemoryWarning {

@@ -123,10 +123,10 @@
             </objects>
             <point key="canvasLocation" x="636" y="282.90854572713647"/>
         </scene>
-        <!--控制器对应的NavigationItem设置-->
+        <!--NavigationItem设置-->
         <scene sceneID="wGN-un-maO">
             <objects>
-                <viewController storyboardIdentifier="BarItemSettingViewController" title="控制器对应的NavigationItem设置" id="uQJ-G2-GOf" customClass="BarItemSettingViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="BarItemSettingViewController" title="NavigationItem设置" id="uQJ-G2-GOf" customClass="BarItemSettingViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="VWD-ay-Nbd"/>
                         <viewControllerLayoutGuide type="bottom" id="op3-gz-jXP"/>
