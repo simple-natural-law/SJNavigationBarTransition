@@ -40,9 +40,9 @@ static const char *backgroundViewKey = "backgroundViewKey";
 {
     if (self.navigationBar.backgroundView == nil)
     {
-        self.navigationBar.backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.navigationBar.bounds), 64.0)];
+        self.navigationBar.backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.navigationBar.subviews.firstObject.bounds), CGRectGetHeight(self.navigationBar.subviews.firstObject.bounds))];
         
-        self.navigationBar.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        self.navigationBar.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
         
         [self.navigationBar.subviews.firstObject insertSubview:self.navigationBar.backgroundView atIndex:0];
     }
