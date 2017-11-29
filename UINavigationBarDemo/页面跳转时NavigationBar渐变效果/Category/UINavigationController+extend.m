@@ -188,9 +188,9 @@ static const char *backgroundViewKey = "backgroundViewKey";
 {
     NSArray<UIViewController *> *poppedViewControllers = [self z_popToRootViewControllerAnimated:animated];
     
-    if (self.topViewController.barAlpha > 0.0)
+    if (self.topViewController.barAlpha == 1.0)
     {
-        [self addBarBackgroundLayerTransition];
+        [self addBarBackgroundLayerTransitionWithType:1];
     }
     
     [self updateBarAppearenceWithViewController:self.topViewController];
@@ -230,11 +230,11 @@ static const char *backgroundViewKey = "backgroundViewKey";
     
     [self popToViewController:popToVC animated:YES];
     
-    if (self.topViewController.barAlpha > 0.0)
+    if (self.topViewController.barAlpha == 1.0)
     {
-        [self addBarBackgroundLayerTransition];
+        [self addBarBackgroundLayerTransitionWithType:1];
     }
-    
+
     [self updateBarAppearenceWithViewController:popToVC];
     
     return YES;
@@ -243,11 +243,11 @@ static const char *backgroundViewKey = "backgroundViewKey";
 
 - (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPushItem:(UINavigationItem *)item
 {
-    if (self.topViewController.barAlpha > 0.0)
+    if (self.topViewController.barAlpha == 1.0)
     {
-        [self addBarBackgroundLayerTransition];
+        [self addBarBackgroundLayerTransitionWithType:0];
     }
-    
+
     [self updateBarAppearenceWithViewController:self.topViewController];
     
     return YES;
@@ -264,12 +264,21 @@ static const char *backgroundViewKey = "backgroundViewKey";
 
 
 #pragma mark- Methods
-- (void)addBarBackgroundLayerTransition
+/// type:0-->push 1-->pop
+- (void)addBarBackgroundLayerTransitionWithType:(NSInteger)type
 {
     CATransition *transition = [[CATransition alloc] init];
     transition.duration = 0.35;
-    transition.type     = kCATransitionFade;
-    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
+    if (type == 0)
+    {
+        transition.type     = kCATransitionReveal;
+        transition.subtype  = kCATransitionFromRight;
+    }else
+    {
+        transition.type     = kCATransitionReveal;
+        transition.subtype  = kCATransitionFromLeft;
+    }
+    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault];
 
     [self.navigationBar.backgroundView.layer addAnimation:transition forKey:@"ColorFade"];
 }
