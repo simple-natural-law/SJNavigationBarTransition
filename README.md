@@ -40,7 +40,18 @@
 
 在绝大多数场景中，导航栏都是作为导航控制器的一部分使用的。但是有些情况下可能需要单独使用导航栏来实现内容导航方法。单独使用导航栏时，需要为其提供内容。与其他类型的视图不同，不能直接将子视图添加到导航栏，而需要使用`navigationItem`来指定要显示的按钮或者自定义视图。`navigationItem`是`UINavigationItem`类的实例对象，其持有用于在导航栏的左侧、右侧和中心指定视图以及用于指定自定义提示字符串的属性，如图2-1所示。
 
-导航栏管理着一个包含`UINavigationItem`对象的堆栈。堆栈主要用于支持导航控制器，可以使用它来实现我们自己的自定义导航界面。堆栈中最顶端的`navigationItem`是导航栏当前显示内容所属的`navigationItem`，使用`pushNavigationItem:animated:`方法将新的`navigationItem`推入到堆栈中，使用`popNavigationItemAnimated:`方法从堆栈中弹出`navigationItem`
+导航栏管理着一个包含`UINavigationItem`对象的堆栈。堆栈主要用于支持导航控制器，可以使用它来实现我们自己的自定义导航界面。堆栈中最顶端的`navigationItem`是导航栏当前显示内容所属的`navigationItem`，使用其`pushNavigationItem:animated:`方法将新的`navigationItem`推入到堆栈中，使用`popNavigationItemAnimated:`方法从堆栈中弹出`navigationItem`。
+
+除了推入和弹出`navigationItem`之外，还可以直接使用导航栏的`items`属性或者`setItems:animated:`方法设置堆栈的内容。可以在应用程序启动时使用此方法将界面恢复到上次关闭应用程序前的状态。下图显示了导航栏是如何管理`navigationItem`堆栈的：
+
+![图2-2](https://docs-assets.developer.apple.com/published/dde7452123/536711f8-0b4b-4ecd-a086-3b8c6feb1a6c.png)
+
+单独使用导航栏时，需要手动为导航栏配置委托对象，委托对象要遵循`UINavigationBarDelegate`协议。通过实现委托对象的委托方法，委托对象就能接收到导航栏发送的消息。这样就能跟踪何时推入`navigationItem`到堆栈中或者从堆栈中弹出`navigationItem`，并根据这些消息来更新应用程序的界面。
+
+有关创建`navigationItem`的信息，可以参看[UINavigationItem](https://developer.apple.com/documentation/uikit/uinavigationitem)。有关委托对象的信息，可以参看[UINavigationBarDelegate](https://developer.apple.com/documentation/uikit/uinavigationbardelegate)。
+
+### 自定义导航栏外观
+
 
 ## Demo
 
