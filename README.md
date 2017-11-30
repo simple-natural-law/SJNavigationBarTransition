@@ -52,6 +52,14 @@
 
 ### 自定义导航栏外观
 
+导航栏有两种标准的外观样式：黑色文字配白色背景或者白色文字配黑色背景。使用其`barStyle`属性来配置外观样式。对导航栏外观样式`barStyle`属性的更改，会覆盖导航栏从其他与外观有关的属性推断出的显示内容。
+
+导航栏默认是半透明的，可以通过将其`translucent`属性值设为`NO`来使导航栏不透明。
+
+可以使用`barTintColor`属性来设置导航栏背景色，设置此属性会覆盖从`barStyle`属性推断出的默认颜色。与所有`UIView`子类一样，可以使用`tintColor`属性来控制导航栏上控件内容的颜色，包括按钮图片和按钮文字。
+
+`titleTextAttributes`属性用来指定标题文本外观的，可以分别使用`NSFontAttributeName`、`NSForegroundColorAttributeName`和`NSShadowAttributeName`键为标题文本指定字体、文本颜色、文本阴影颜色和文本阴影偏移量。
+
 
 ## Demo
 
