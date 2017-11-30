@@ -19,9 +19,23 @@
 
 也可以单独使用导航栏，将导航栏添加到界面中时需要执行以下步骤：
 - 设置自动布局规则来管理界面中导航栏的位置。
-- 创建一个root navigation item来提供初始标题。
+- 创建一个root navigationItem来提供初始标题。
 - 配置委托对象来处理与导航栏的交互。
 - 自定义导航栏的外观。
-- 配置应用程序界面，以便用户在浏览分层屏幕时push和pop相关导航项目。
+- 配置应用程序界面，以便用户在浏览分层屏幕时推入和弹出相关导航项目。
 
 ### 导航栏和导航控制器配合使用
+
+使用导航控制器来管理不同内容屏幕之间的导航时，导航控制器会自动创建导航栏，并在适当的时间推入和弹出导航项目。
+
+在视图控制器出栈和入栈时，导航控制器使用此视图控制器对象的`navigationItem`属性为其导航栏提供模型对象。默认的`navigationItem`使用视图控制器的标题，但可以通过覆盖`UIViewController`子类的`navigationItem`属性来完全控制导航栏内容。
+
+导航控制器会自动将其自身指定为其导航栏对象的委托对象，所以在使用导航控制器时，不要将导航栏的委托对象设置为自定义对象。
+
+要访问与导航控制器关联的导航栏，请使用`UINavigationController`对象的`navigationBar`属性。
+
+有关导航控制器的信息，可以参看[UINavigationController](https://developer.apple.com/documentation/uikit/uinavigationcontroller)。
+
+## Demo
+
+示例代码下载地址：https://github.com/zhangshijian/UINavigationBarDemo
