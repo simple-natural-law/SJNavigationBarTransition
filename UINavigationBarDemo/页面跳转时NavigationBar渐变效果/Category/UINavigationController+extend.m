@@ -10,23 +10,68 @@
 #import "UIViewController+Bar.h"
 #import <objc/runtime.h>
 
+
+@interface BarBackgroundView : UIView
+
+@property (nonatomic, strong) UIView *background;
+
+@end
+
+
+
+@implementation BarBackgroundView
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    
+    if (self)
+    {
+        self.background = [[UIView alloc] initWithFrame:frame];
+        
+        self.background.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+        
+        [self addSubview:self.background];
+    }
+    
+    return self;
+}
+
+- (void)setBackgroundColor:(UIColor *)backgroundColor
+{
+    [super setBackgroundColor:backgroundColor];
+    
+    self.background.backgroundColor = backgroundColor;
+}
+
+- (void)setAlpha:(CGFloat)alpha
+{
+    [super setAlpha:alpha];
+    
+    self.background.alpha = alpha;
+}
+
+@end
+
+
+
 static const char *backgroundViewKey = "backgroundViewKey";
 
 @interface UINavigationBar (extend)
 
-@property (nonatomic, strong) UIView *backgroundView;
+@property (nonatomic, strong) BarBackgroundView *backgroundView;
 
 @end
 
 
 @implementation UINavigationBar (extend)
 
-- (UIView *)backgroundView
+- (BarBackgroundView *)backgroundView
 {
     return objc_getAssociatedObject(self, backgroundViewKey);
 }
 
-- (void)setBackgroundView:(UIView *)backgroundView
+- (void)setBackgroundView:(BarBackgroundView *)backgroundView
 {
     objc_setAssociatedObject(self, backgroundViewKey, backgroundView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
@@ -40,7 +85,7 @@ static const char *backgroundViewKey = "backgroundViewKey";
 {
     if (self.navigationBar.backgroundView == nil)
     {
-        self.navigationBar.backgroundView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.navigationBar.subviews.firstObject.bounds), CGRectGetHeight(self.navigationBar.subviews.firstObject.bounds))];
+        self.navigationBar.backgroundView = [[BarBackgroundView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.navigationBar.subviews.firstObject.bounds), CGRectGetHeight(self.navigationBar.subviews.firstObject.bounds))];
         
         self.navigationBar.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
         
@@ -279,8 +324,8 @@ static const char *backgroundViewKey = "backgroundViewKey";
         transition.subtype  = kCATransitionFromLeft;
     }
     transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault];
-
-    [self.navigationBar.backgroundView.layer addAnimation:transition forKey:@"ColorFade"];
+    
+    [self.navigationBar.backgroundView.background.layer addAnimation:transition forKey:@"ColorFade"];
 }
 
 
