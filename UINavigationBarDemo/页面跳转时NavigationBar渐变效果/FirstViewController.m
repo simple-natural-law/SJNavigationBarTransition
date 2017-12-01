@@ -39,7 +39,7 @@
     
     self.navBarTintColor = self.barColor;
     
-    self.view.backgroundColor = self.barColor;
+    //self.view.backgroundColor = self.barColor;
 }
 
 - (void)viewWillAppear:(BOOL)animated
