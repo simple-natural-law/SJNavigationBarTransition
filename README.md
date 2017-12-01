@@ -60,6 +60,9 @@
 
 `titleTextAttributes`属性用来指定标题文本外观的，可以分别使用`NSFontAttributeName`、`NSForegroundColorAttributeName`和`NSShadowAttributeName`键为标题文本指定字体、文本颜色、文本阴影颜色和文本阴影偏移量。
 
+使用`setTitleVerticalPositionAdjustment:forBarMetrics:`方法来调整标题在垂直方向上的位置，此方法会根据指定的`UIBarMetrics`枚举值来调整导航栏的高度。下图显示了具有自定义的背景颜色、标题文本属性和控件内容颜色的导航栏。
+
+![图2-3](https://docs-assets.developer.apple.com/published/dde7452123/e8608c12-1a29-47c9-95c5-984a0ca17bce.png)
 
 
 
