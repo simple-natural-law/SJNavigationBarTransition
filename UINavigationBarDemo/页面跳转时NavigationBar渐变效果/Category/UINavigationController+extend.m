@@ -17,8 +17,6 @@
 
 @end
 
-
-
 @implementation BarBackgroundView
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -37,13 +35,6 @@
     return self;
 }
 
-- (void)setBackgroundColor:(UIColor *)backgroundColor
-{
-    [super setBackgroundColor:backgroundColor];
-    
-    self.background.backgroundColor = backgroundColor;
-}
-
 - (void)setAlpha:(CGFloat)alpha
 {
     [super setAlpha:alpha];
@@ -52,7 +43,6 @@
 }
 
 @end
-
 
 
 static const char *backgroundViewKey = "backgroundViewKey";
@@ -179,6 +169,10 @@ static const char *backgroundViewKey = "backgroundViewKey";
             SEL originalSelector4  = @selector(initWithRootViewController:);
             SEL swizzledSelector4  = NSSelectorFromString(@"z_initWithRootViewController:");
             [self swizzleOriginalSelector:originalSelector4 withCurrentSelector:swizzledSelector4];
+            
+            SEL originalSelector5  = @selector(pushViewController:animated:);
+            SEL swizzledSelector5  = NSSelectorFromString(@"z_pushViewController:animated:");
+            [self swizzleOriginalSelector:originalSelector5 withCurrentSelector:swizzledSelector5];
         }
     });
 }
@@ -218,6 +212,8 @@ static const char *backgroundViewKey = "backgroundViewKey";
         // tint color
         UIColor *newColor = [self getColorWithFromColor:fromVC.navBarTintColor toColor:toVC.navBarTintColor percentComplete:percentComplete];
         
+        self.navigationBar.backgroundView.background.backgroundColor = newColor;
+        
         [self setNavigationBarBackgroundColor:newColor];
         
         [self setNavigationBarAlpha:alpha];
@@ -233,16 +229,28 @@ static const char *backgroundViewKey = "backgroundViewKey";
 {
     NSArray<UIViewController *> *poppedViewControllers = [self z_popToRootViewControllerAnimated:animated];
     
-    if (self.topViewController.barAlpha == 1.0)
-    {
-        [self addBarBackgroundLayerTransitionWithType:1];
-    }
-    
     [self updateBarAppearenceWithViewController:self.topViewController];
+    
+    if ([self.topViewController.transitionCoordinator viewControllerForKey:UITransitionContextToViewControllerKey].barAlpha == 1.0 && [self.topViewController.transitionCoordinator viewControllerForKey:UITransitionContextFromViewControllerKey].barAlpha == 1.0)
+    {
+        [self addBarBackgroundTransitionWithType:1];
+    }else
+    {
+        self.navigationBar.backgroundView.background.backgroundColor = self.navigationBar.backgroundView.backgroundColor;
+    }
     
     return poppedViewControllers;
 }
 
+- (void)z_pushViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    [self z_pushViewController:viewController animated:YES];
+    
+    if ([self.topViewController.transitionCoordinator viewControllerForKey:UITransitionContextToViewControllerKey].barAlpha == 1.0 && [self.topViewController.transitionCoordinator viewControllerForKey:UITransitionContextFromViewControllerKey].barAlpha == 1.0)
+    {
+        [self addBarBackgroundTransitionWithType:0];
+    }
+}
 
 #pragma mark- UINavigationBarDelegate
 // 点击返回
@@ -275,12 +283,15 @@ static const char *backgroundViewKey = "backgroundViewKey";
     
     [self popToViewController:popToVC animated:YES];
     
-    if (self.topViewController.barAlpha == 1.0)
-    {
-        [self addBarBackgroundLayerTransitionWithType:1];
-    }
-
     [self updateBarAppearenceWithViewController:popToVC];
+    
+    if ([self.topViewController.transitionCoordinator viewControllerForKey:UITransitionContextToViewControllerKey].barAlpha == 1.0 && [self.topViewController.transitionCoordinator viewControllerForKey:UITransitionContextFromViewControllerKey].barAlpha == 1.0)
+    {
+        [self addBarBackgroundTransitionWithType:1];
+    }else
+    {
+        self.navigationBar.backgroundView.background.backgroundColor = self.navigationBar.backgroundView.backgroundColor;
+    }
     
     return YES;
 }
@@ -288,12 +299,12 @@ static const char *backgroundViewKey = "backgroundViewKey";
 
 - (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPushItem:(UINavigationItem *)item
 {
-    if (self.topViewController.barAlpha == 1.0)
-    {
-        [self addBarBackgroundLayerTransitionWithType:0];
-    }
-
     [self updateBarAppearenceWithViewController:self.topViewController];
+    
+    if ([self.topViewController.transitionCoordinator viewControllerForKey:UITransitionContextToViewControllerKey].barAlpha != 1.0 || [self.topViewController.transitionCoordinator viewControllerForKey:UITransitionContextFromViewControllerKey].barAlpha != 1.0)
+    {
+        self.navigationBar.backgroundView.background.backgroundColor = self.navigationBar.backgroundView.backgroundColor;
+    }
     
     return YES;
 }
@@ -303,29 +314,29 @@ static const char *backgroundViewKey = "backgroundViewKey";
     if (viewController == self.viewControllers.firstObject)
     {
         self.delegate = nil;
+        
         [self updateBarAppearenceWithViewController:viewController];
+        
+        self.navigationBar.backgroundView.background.backgroundColor = self.navigationBar.backgroundView.backgroundColor;
     }
 }
 
 
 #pragma mark- Methods
 /// type:0-->push 1-->pop
-- (void)addBarBackgroundLayerTransitionWithType:(NSInteger)type
+- (void)addBarBackgroundTransitionWithType:(NSInteger)type
 {
-    CATransition *transition = [[CATransition alloc] init];
-    transition.duration = 0.35;
-    if (type == 0)
-    {
-        transition.type     = kCATransitionReveal;
-        transition.subtype  = kCATransitionFromRight;
-    }else
-    {
-        transition.type     = kCATransitionReveal;
-        transition.subtype  = kCATransitionFromLeft;
-    }
-    transition.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionDefault];
-    
-    [self.navigationBar.backgroundView.background.layer addAnimation:transition forKey:@"ColorFade"];
+    [self.topViewController.transitionCoordinator animateAlongsideTransitionInView:self.navigationBar.backgroundView animation:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        
+        self.navigationBar.backgroundView.background.transform = type ? CGAffineTransformMakeTranslation(self.navigationBar.backgroundView.frame.size.width, 0) : CGAffineTransformMakeTranslation(-self.navigationBar.backgroundView.frame.size.width, 0);
+        
+        
+    } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        
+        self.navigationBar.backgroundView.background.backgroundColor = self.navigationBar.backgroundView.backgroundColor;
+        
+        self.navigationBar.backgroundView.background.transform = CGAffineTransformIdentity;
+    }];
 }
 
 
@@ -392,28 +403,24 @@ static const char *backgroundViewKey = "backgroundViewKey";
     return [UIColor colorWithRed:newRed green:newGreen blue:newBlue alpha:newColorAlpha];
 }
 
+
 - (void)dealInteractionChanges:(id<UIViewControllerTransitionCoordinatorContext>)context
 {
     if ([context isCancelled]) // 自动取消了返回手势
     {
-        NSTimeInterval cancelDuration = [context transitionDuration] * (double)[context percentComplete];
-        
         UIViewController *fromVC = [context viewControllerForKey:UITransitionContextFromViewControllerKey];
         
-        [UIView animateWithDuration:cancelDuration animations:^{
+        [self updateBarAppearenceWithViewController:fromVC];
             
-            [self updateBarAppearenceWithViewController:fromVC];
-        }];
+        self.navigationBar.backgroundView.background.backgroundColor = fromVC.navBarTintColor;
+        
     }else
     {
-        NSTimeInterval finishDuration = [context transitionDuration] * (double)(1.0 - [context percentComplete]);
-        
         UIViewController *toVC = [context viewControllerForKey:UITransitionContextToViewControllerKey];
         
-        [UIView animateWithDuration:finishDuration animations:^{
+        [self updateBarAppearenceWithViewController:toVC];
             
-            [self updateBarAppearenceWithViewController:toVC];
-        }];
+        self.navigationBar.backgroundView.background.backgroundColor = toVC.navBarTintColor;
     }
 }
 

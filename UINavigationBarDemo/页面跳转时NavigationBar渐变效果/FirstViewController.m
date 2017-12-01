@@ -38,6 +38,8 @@
     self.barColor = [UIColor colorWithRed:r green:g blue:blue alpha:1.0];
     
     self.navBarTintColor = self.barColor;
+    
+    self.view.backgroundColor = self.barColor;
 }
 
 - (void)viewWillAppear:(BOOL)animated
