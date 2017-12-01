@@ -70,7 +70,7 @@
 
 ![图2-4](https://docs-assets.developer.apple.com/published/dde7452123/01969d1a-db6b-4ef5-b86b-45ffa1730b85.png)
 
-## 导航栏颜色、透明度渐变解决方案
+## 导航栏颜色、透明度渐变
 
 
 

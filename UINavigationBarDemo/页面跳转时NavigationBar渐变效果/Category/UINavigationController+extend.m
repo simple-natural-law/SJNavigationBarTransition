@@ -366,7 +366,9 @@ static const char *backgroundViewKey = "backgroundViewKey";
         if ([self colorBrigntness:viewController.navBarTintColor] > 0.5)
         {
             [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
-        } else {
+            
+        } else
+        {
             [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
         }
     }
