@@ -61,6 +61,8 @@
 `titleTextAttributes`属性用来指定标题文本外观的，可以分别使用`NSFontAttributeName`、`NSForegroundColorAttributeName`和`NSShadowAttributeName`键为标题文本指定字体、文本颜色、文本阴影颜色和文本阴影偏移量。
 
 
+
+
 ## Demo
 
 示例代码下载地址：https://github.com/zhangshijian/UINavigationBarDemo
