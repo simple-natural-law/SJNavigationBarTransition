@@ -66,6 +66,11 @@
 
 还可以提供自定义背景图片和阴影图片来完全定制导航栏的外观，调用`setBackgroundImage:forBarPosition:barMetrics:`方法根据指定的`UIBarPosition`枚举值和`UIBarMetrics`枚举值来设置对应导航栏的背景图片。`UIBarPosition`枚举值定义了导航栏是在窗口底部还是在窗口顶部显示的。
 
+通过配置`shadowImage`属性值来为导航栏提供自定义阴影图片，但是自定义阴影图片的前提条件是必须要自定义导航栏背景图片。否则，将会使用默认的阴影图片。下图显示了自定义背景图片并自定义阴影图片的导航栏，导航栏的位置值为`UIBarPositionTopAttached`，高度值为`UIBarMetricsDefault`。
+
+![图2-4](https://docs-assets.developer.apple.com/published/dde7452123/01969d1a-db6b-4ef5-b86b-45ffa1730b85.png)
+
+## 导航栏颜色、透明度渐变解决方案
 
 
 ## Demo
