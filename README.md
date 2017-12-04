@@ -36,7 +36,7 @@
 
 有关导航控制器的信息，可以参看[UINavigationController](https://developer.apple.com/documentation/uikit/uinavigationcontroller)。
 
-### 添加内容到到单独使用的导航栏
+### 添加视图到单独使用的导航栏
 
 在绝大多数场景中，导航栏都是作为导航控制器的一部分使用的。但是有些情况下可能需要单独使用导航栏来实现内容导航方法。单独使用导航栏时，需要为其提供内容。与其他类型的视图不同，不能直接将子视图添加到导航栏，而需要使用`navigationItem`来指定要显示的按钮或者自定义视图。`navigationItem`是`UINavigationItem`类的实例对象，其持有用于在导航栏的左侧、右侧和中心指定视图以及用于指定自定义提示字符串的属性，如图2-1所示。
 
