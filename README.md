@@ -72,11 +72,11 @@
 
 ## 导航栏颜色、透明度渐变
 
-应用程序在iOS 10以上系统运行时，使用Xcode调试应用程序时，查看半透明导航栏的视图层，子视图信息如下图所示：
+应用程序在iOS 10以上系统运行时，使用Xcode调试应用程序时，查看半透明导航栏的视图层，其子视图信息如下图所示：
 
 ![图3-1](http://upload-images.jianshu.io/upload_images/4906302-1fd037493eaf0883.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-如果导航栏不透明，视图层就不会包含UIVisualEffectView子视图分支。如果导航栏使用了自定义背景，则会插入一个`UIImageView`视图到`_UIBarBackground`视图并位于最底层。另外，在iOS 10以下的系统中运行时，UIVisualEffectView子视图层中的视图会有所改变。
+如果导航栏不透明，视图层就不会包含UIVisualEffectView视图分支。如果导航栏使用了自定义背景，则会插入一个`UIImageView`视图到`_UIBarBackground`视图并位于最底层。另外，在iOS 10以下的系统中运行时，UIVisualEffectView子视图层中的视图会有所改变。
 
 导航栏的外观是由其`_UIBarBackground`子视图决定的。调用官方提供的方法设置导航栏背景色时，实际调整的是`_UIBarBackground`子视图的背景颜色，调用官方提供的方法设置导航栏自定义背景图片时，实际上是在`_UIBarBackground`子视图的最底层添加一个`UIImageView`视图。
 
@@ -88,6 +88,11 @@
 
 官方没有提供方法来直接修改导航栏的透明度，但我们已经知道导航栏的外观由其`_UIBarBackground`子视图决定。所以，调整`_UIBarBackground`视图及其子视图的透明度就能改变导航栏的透明度。
 
+### 视图控制器push或pop过程中导航栏背景颜色和透明度渐变
+
+对视图控制器执行push或者pop操作时，为了提高用户体验，通常会使用官方提供的转场动画。官方提供的转场动画有交互式和非交互式两种类型。在执行push或者pop操作时，两个视图控制器的对应导航栏背景色不同，直接修改背景色在视觉上会显得很突兀。这时候，就需要给导航栏背景色的切换加上动画效果，让其随着push或者pop转场动画一起执行。
+
+侧滑返回时，执行的是非交互时转场动画。要对导航栏背景色和透明度执行动画切换，就需要在转场动画执行过程中实时得知转场动画执行进度。
 
 ## Demo
 
