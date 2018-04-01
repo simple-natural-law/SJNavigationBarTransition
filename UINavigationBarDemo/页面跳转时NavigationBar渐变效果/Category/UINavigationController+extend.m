@@ -11,59 +11,39 @@
 #import <objc/runtime.h>
 
 
-@interface BarBackgroundView : UIView
+static char * const backgroundKey = "backgroundKey";
 
-@property (nonatomic, strong) UIView *background;
-
-@end
-
-@implementation BarBackgroundView
-
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    
-    if (self)
-    {
-        self.background = [[UIView alloc] initWithFrame:frame];
-        
-        self.background.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-        
-        [self addSubview:self.background];
-    }
-    
-    return self;
-}
-
-- (void)setAlpha:(CGFloat)alpha
-{
-    [super setAlpha:alpha];
-    
-    self.background.alpha = alpha;
-}
-
-@end
-
-
-static const char *backgroundViewKey = "backgroundViewKey";
+static char * const tempBackgroundKey = "tempBackgroundViewKey";
 
 @interface UINavigationBar (extend)
 
-@property (nonatomic, strong) BarBackgroundView *backgroundView;
+@property (nonatomic, strong) UIImageView *background;
+
+@property (nonatomic, strong) UIImageView *tempBackground;
 
 @end
 
 
 @implementation UINavigationBar (extend)
 
-- (BarBackgroundView *)backgroundView
+- (UIImageView *)background
 {
-    return objc_getAssociatedObject(self, backgroundViewKey);
+    return objc_getAssociatedObject(self, backgroundKey);
 }
 
-- (void)setBackgroundView:(BarBackgroundView *)backgroundView
+- (void)setBackground:(UIImageView *)background
 {
-    objc_setAssociatedObject(self, backgroundViewKey, backgroundView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, backgroundKey, background, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (UIImageView *)tempBackground
+{
+    return objc_getAssociatedObject(self, tempBackgroundKey);
+}
+
+- (void)setTempBackground:(UIImageView *)tempBackground
+{
+    objc_setAssociatedObject(self, tempBackgroundKey, tempBackground, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 @end
@@ -71,18 +51,40 @@ static const char *backgroundViewKey = "backgroundViewKey";
 
 @implementation UINavigationController (extend)
 
-- (void)setNavigationBarBackgroundColor:(UIColor *)color
+- (void)setNavigationBarBackgroundImage:(UIImage *)image
 {
-    if (self.navigationBar.backgroundView == nil)
+    if (self.navigationBar.background == nil)
     {
-        self.navigationBar.backgroundView = [[BarBackgroundView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.navigationBar.subviews.firstObject.bounds), CGRectGetHeight(self.navigationBar.subviews.firstObject.bounds))];
+        self.navigationBar.background = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.navigationBar.subviews.firstObject.bounds), CGRectGetHeight(self.navigationBar.subviews.firstObject.bounds))];
         
-        self.navigationBar.backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+        self.navigationBar.background.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
         
-        [self.navigationBar.subviews.firstObject insertSubview:self.navigationBar.backgroundView atIndex:0];
+        [self.navigationBar.subviews.firstObject insertSubview:self.navigationBar.background atIndex:0];
+        
+        self.navigationBar.tempBackground = [[UIImageView alloc] initWithFrame:self.navigationBar.background.frame];
+        
+        self.navigationBar.tempBackground.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
     }
     
-    self.navigationBar.backgroundView.backgroundColor = color;
+    self.navigationBar.background.image = image;
+}
+
+- (void)setNavigationBarBackgroundColor:(UIColor *)color
+{
+    if (self.navigationBar.background == nil)
+    {
+        self.navigationBar.background = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.navigationBar.subviews.firstObject.bounds), CGRectGetHeight(self.navigationBar.subviews.firstObject.bounds))];
+        
+        self.navigationBar.background.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+        
+        [self.navigationBar.subviews.firstObject insertSubview:self.navigationBar.background atIndex:0];
+        
+        self.navigationBar.tempBackground = [[UIImageView alloc] initWithFrame:self.navigationBar.background.frame];
+        
+        self.navigationBar.tempBackground.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
+    }
+    
+    self.navigationBar.background.backgroundColor = color;
 }
 
 /// 设置导航栏透明度
@@ -119,7 +121,7 @@ static const char *backgroundViewKey = "backgroundViewKey";
             }
         }
     }
-    self.navigationBar.backgroundView.alpha = alpha;
+    self.navigationBar.background.alpha = alpha;
     barBgView.alpha = alpha; // 解决手势返回时，透明Bar页面与不透明bar页面切换会闪烁的问题.
 }
 
@@ -152,28 +154,21 @@ static const char *backgroundViewKey = "backgroundViewKey";
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         
-        if (self == [UINavigationController class])
-        {
-            SEL originalSelector1  = NSSelectorFromString(@"_updateInteractiveTransition:");
-            SEL swizzledSelector1  = NSSelectorFromString(@"z_updateInteractiveTransition:");
+            SEL originalSelector1  = @selector(popToRootViewControllerAnimated:);
+            SEL swizzledSelector1  = NSSelectorFromString(@"z_popToRootViewControllerAnimated:");
             [self swizzleOriginalSelector:originalSelector1 withCurrentSelector:swizzledSelector1];
             
-            SEL originalSelector2  = @selector(popToRootViewControllerAnimated:);
-            SEL swizzledSelector2  = NSSelectorFromString(@"z_popToRootViewControllerAnimated:");
+            SEL originalSelector2  = @selector(initWithCoder:);
+            SEL swizzledSelector2  = NSSelectorFromString(@"z_initWithCoder:");
             [self swizzleOriginalSelector:originalSelector2 withCurrentSelector:swizzledSelector2];
             
-            SEL originalSelector3  = @selector(initWithCoder:);
-            SEL swizzledSelector3  = NSSelectorFromString(@"z_initWithCoder:");
+            SEL originalSelector3  = @selector(initWithRootViewController:);
+            SEL swizzledSelector3  = NSSelectorFromString(@"z_initWithRootViewController:");
             [self swizzleOriginalSelector:originalSelector3 withCurrentSelector:swizzledSelector3];
             
-            SEL originalSelector4  = @selector(initWithRootViewController:);
-            SEL swizzledSelector4  = NSSelectorFromString(@"z_initWithRootViewController:");
+            SEL originalSelector4  = @selector(pushViewController:animated:);
+            SEL swizzledSelector4  = NSSelectorFromString(@"z_pushViewController:animated:");
             [self swizzleOriginalSelector:originalSelector4 withCurrentSelector:swizzledSelector4];
-            
-            SEL originalSelector5  = @selector(pushViewController:animated:);
-            SEL swizzledSelector5  = NSSelectorFromString(@"z_pushViewController:animated:");
-            [self swizzleOriginalSelector:originalSelector5 withCurrentSelector:swizzledSelector5];
-        }
     });
 }
 
@@ -194,34 +189,6 @@ static const char *backgroundViewKey = "backgroundViewKey";
     nav.delegate = nav;
     
     return nav;
-}
-
-- (void)z_updateInteractiveTransition:(CGFloat)percentComplete
-{
-    if (self.topViewController != nil)
-    {
-        id<UIViewControllerTransitionCoordinator> coor = self.topViewController.transitionCoordinator;
-        
-        UIViewController *fromVC = [coor viewControllerForKey:UITransitionContextFromViewControllerKey];
-        UIViewController *toVC   = [coor viewControllerForKey:UITransitionContextToViewControllerKey];
-        
-        // alpha
-        CGFloat fromAlpha = fromVC.barAlpha;
-        CGFloat toAlpha   = toVC.barAlpha;
-        CGFloat alpha     = fromAlpha + (toAlpha - fromAlpha)*percentComplete;
-        // tint color
-        UIColor *newColor = [self getColorWithFromColor:fromVC.navBarTintColor toColor:toVC.navBarTintColor percentComplete:percentComplete];
-        
-        self.navigationBar.backgroundView.background.backgroundColor = newColor;
-        
-        [self setNavigationBarBackgroundColor:newColor];
-        
-        [self setNavigationBarAlpha:alpha];
-        
-        [self updateStatusBarStyleWithViewController:toVC];
-    }
-    
-    [self z_updateInteractiveTransition:percentComplete];
 }
 
 
