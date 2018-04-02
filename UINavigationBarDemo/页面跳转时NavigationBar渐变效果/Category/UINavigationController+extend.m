@@ -13,6 +13,12 @@
 
 @implementation UINavigationController (extend)
 
+- (void)setShadowHidden:(BOOL)hidden
+{
+    UIView *shadow = [self.navigationBar.subviews.firstObject valueForKey:@"_shadowView"];
+    
+    shadow.hidden = hidden;
+}
 
 - (void)configOriginlNavBar
 {
@@ -112,9 +118,7 @@
         [self configOriginlNavBar];
     });
     
-    UIView *shadow = [self.navigationBar.subviews.firstObject valueForKey:@"_shadowView"];
-    
-    shadow.hidden = viewController.barAlpha == 0.0;
+    [self setShadowHidden:(viewController.barAlpha == 0.0)];
     
     [self updateStatusBarStyleWithViewController:viewController];
 }
@@ -126,6 +130,10 @@
     if (viewController.navBarBackgroundImage)
     {
         UIImageView *bar = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.navigationBar.subviews.firstObject.frame.size.width, self.navigationBar.subviews.firstObject.frame.size.height)];
+        
+        bar.contentMode = UIViewContentModeScaleAspectFill;
+        
+        bar.clipsToBounds = YES;
         
         bar.image = viewController.navBarBackgroundImage;
         
