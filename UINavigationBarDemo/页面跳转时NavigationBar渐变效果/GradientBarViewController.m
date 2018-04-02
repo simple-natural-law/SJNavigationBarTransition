@@ -101,7 +101,7 @@
         self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     }
     self.barAlpha = alpha;
-    [self.navigationController setNavigationBarAlpha:self.barAlpha];
+    //[self.navigationController setNavigationBarAlpha:self.barAlpha];
 }
 
 
