@@ -11,7 +11,6 @@
 
 @interface FirstViewController ()
 
-@property (strong, nonatomic) UIColor *barColor;
 
 @end
 
@@ -35,11 +34,13 @@
     CGFloat g = b/255.0;
     CGFloat blue = c/255.0;
     
-    self.barColor = [UIColor colorWithRed:r green:g blue:blue alpha:1.0];
-    
-    self.navBarTintColor = self.barColor;
-    
-    //self.view.backgroundColor = self.barColor;
+    if (a%2 == 0)
+    {
+        self.navBarBackgroundColor = [UIColor colorWithRed:r green:g blue:blue alpha:1.0];
+    }else
+    {
+        self.navBarBackgroundImage = [UIImage imageNamed:@"bar"];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -50,8 +51,6 @@
 - (IBAction)popToRoot:(id)sender
 {
     [self.navigationController popToRootViewControllerAnimated:YES];
-    
-    //[self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)pushNext:(id)sender

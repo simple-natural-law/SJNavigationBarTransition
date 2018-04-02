@@ -11,14 +11,14 @@
 #import <objc/runtime.h>
 
 
-
 @implementation UINavigationController (extend)
+
 
 - (void)configOriginlNavBar
 {
     self.navigationBar.translucent = YES;
     
-    UIView *barBgView = self.navigationBar.subviews[0];
+    UIView *barBgView = self.navigationBar.subviews.firstObject;
     
     barBgView.backgroundColor = [UIColor clearColor];
     
@@ -93,39 +93,11 @@
     return nav;
 }
 
-//- (void)z_updateInteractiveTransition:(CGFloat)percentComplete
-//{
-//    if (self.topViewController != nil)
-//    {
-//        id<UIViewControllerTransitionCoordinator> coor = self.topViewController.transitionCoordinator;
-//
-//        UIViewController *fromVC = [coor viewControllerForKey:UITransitionContextFromViewControllerKey];
-//        UIViewController *toVC   = [coor viewControllerForKey:UITransitionContextToViewControllerKey];
-//
-//        // alpha
-//        CGFloat fromAlpha = fromVC.barAlpha;
-//        CGFloat toAlpha   = toVC.barAlpha;
-//        CGFloat alpha     = fromAlpha + (toAlpha - fromAlpha)*percentComplete;
-//        // tint color
-//        UIColor *newColor = [self getColorWithFromColor:fromVC.navBarTintColor toColor:toVC.navBarTintColor percentComplete:percentComplete];
-//
-//        [self setNavigationBarBackgroundColor:newColor];
-//
-//        [self setNavigationBarAlpha:alpha];
-//
-//        [self updateStatusBarStyleWithViewController:toVC];
-//    }
-//
-//    [self z_updateInteractiveTransition:percentComplete];
-//}
-
 
 #pragma mark- UINavigationBarDelegate
 - (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPushItem:(UINavigationItem *)item
 {
     [self addBarForViewController:self.topViewController];
-
-    [self updateStatusBarStyleWithViewController:self.topViewController];
     
     return YES;
 }
@@ -134,31 +106,50 @@
 #pragma mark- UINavigationControllerDelegate
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    if (viewController == self.viewControllers.firstObject)
-    {
-        self.delegate = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
         
         [self configOriginlNavBar];
-        
-        [self addBarForViewController:viewController];
-        
-        [self updateStatusBarStyleWithViewController:viewController];
-    }
+    });
+    
+    UIView *shadow = [self.navigationBar.subviews.firstObject valueForKey:@"_shadowView"];
+    
+    shadow.hidden = viewController.barAlpha == 0.0;
+    
+    [self updateStatusBarStyleWithViewController:viewController];
 }
 
 
 #pragma mark- Methods
 - (void)addBarForViewController:(UIViewController *)viewController
 {
-    UIView *bar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.navigationBar.subviews.firstObject.frame.size.width, self.navigationBar.subviews.firstObject.frame.size.height)];
-    
-    bar.backgroundColor = viewController.navBarTintColor;
-    
-    bar.alpha = viewController.barAlpha;
-    
-    [viewController.view addSubview:bar];
-    
-    [viewController.view bringSubviewToFront:bar];;
+    if (viewController.navBarBackgroundImage)
+    {
+        UIImageView *bar = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.navigationBar.subviews.firstObject.frame.size.width, self.navigationBar.subviews.firstObject.frame.size.height)];
+        
+        bar.image = viewController.navBarBackgroundImage;
+        
+        bar.alpha = viewController.barAlpha;
+        
+        [viewController.view addSubview:bar];
+        
+        [viewController.view bringSubviewToFront:bar];;
+        
+        viewController.navBar = bar;
+    }else
+    {
+        UIView *bar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.navigationBar.subviews.firstObject.frame.size.width, self.navigationBar.subviews.firstObject.frame.size.height)];
+        
+        bar.backgroundColor = viewController.navBarBackgroundColor;
+        
+        bar.alpha = viewController.barAlpha;
+        
+        [viewController.view addSubview:bar];
+        
+        [viewController.view bringSubviewToFront:bar];;
+        
+        viewController.navBar = bar;
+    }
 }
 
 
@@ -175,7 +166,7 @@
         }
     } else
     {
-        if ([self colorBrigntness:viewController.navBarTintColor] > 0.5)
+        if ([self colorBrigntness:viewController.navBarBackgroundColor] > 0.5)
         {
             [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
             
@@ -195,26 +186,26 @@
 }
 
 
-- (UIColor *)getColorWithFromColor:(UIColor *)fromColor toColor:(UIColor *)toColor percentComplete:(CGFloat)percentComplete
-{
-    CGFloat fromRed        = 0.0;
-    CGFloat fromGreen      = 0.0;
-    CGFloat fromBlue       = 0.0;
-    CGFloat fromColorAlpha = 0.0;
-    CGFloat toRed        = 0.0;
-    CGFloat toGreen      = 0.0;
-    CGFloat toBlue       = 0.0;
-    CGFloat toColorAlpha = 0.0;
-    
-    [fromColor getRed:&fromRed green:&fromGreen blue:&fromBlue alpha:&fromColorAlpha];
-    [toColor getRed:&toRed green:&toGreen blue:&toBlue alpha:&toColorAlpha];
-    
-    CGFloat newRed        = fromRed + (toRed - fromRed) * percentComplete;
-    CGFloat newGreen      = fromGreen + (toGreen - fromGreen) * percentComplete;
-    CGFloat newBlue       = fromBlue + (toBlue - fromBlue) * percentComplete;
-    CGFloat newColorAlpha = fromColorAlpha + (toColorAlpha - fromColorAlpha) * percentComplete;
-    
-    return [UIColor colorWithRed:newRed green:newGreen blue:newBlue alpha:newColorAlpha];
-}
+//- (UIColor *)getColorWithFromColor:(UIColor *)fromColor toColor:(UIColor *)toColor percentComplete:(CGFloat)percentComplete
+//{
+//    CGFloat fromRed        = 0.0;
+//    CGFloat fromGreen      = 0.0;
+//    CGFloat fromBlue       = 0.0;
+//    CGFloat fromColorAlpha = 0.0;
+//    CGFloat toRed        = 0.0;
+//    CGFloat toGreen      = 0.0;
+//    CGFloat toBlue       = 0.0;
+//    CGFloat toColorAlpha = 0.0;
+//
+//    [fromColor getRed:&fromRed green:&fromGreen blue:&fromBlue alpha:&fromColorAlpha];
+//    [toColor getRed:&toRed green:&toGreen blue:&toBlue alpha:&toColorAlpha];
+//
+//    CGFloat newRed        = fromRed + (toRed - fromRed) * percentComplete;
+//    CGFloat newGreen      = fromGreen + (toGreen - fromGreen) * percentComplete;
+//    CGFloat newBlue       = fromBlue + (toBlue - fromBlue) * percentComplete;
+//    CGFloat newColorAlpha = fromColorAlpha + (toColorAlpha - fromColorAlpha) * percentComplete;
+//
+//    return [UIColor colorWithRed:newRed green:newGreen blue:newBlue alpha:newColorAlpha];
+//}
 
 @end

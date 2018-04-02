@@ -9,15 +9,28 @@
 #import "UIViewController+Bar.h"
 #import <objc/runtime.h>
 
+static char * const navBarKey = "navBarKey";
 static char * const barAlphaKey = "barAlphaKey";
-static char * const navBarTintColorKey = "navBarTintColorKey";
+static char * const navBarBackgroundColorKey = "navBarBackgroundColorKey";
 static char * const navBarBackgroundImageKey = "navBarBackgroundImageKey";
 
 @implementation UIViewController (Bar)
 
+- (void)setNavBar:(UIView *)navBar
+{
+    objc_setAssociatedObject(self, navBarKey, navBar, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (UIView *)navBar
+{
+    return objc_getAssociatedObject(self, navBarKey);
+}
+
 - (void)setBarAlpha:(CGFloat)barAlpha
 {
     objc_setAssociatedObject(self, barAlphaKey, @(barAlpha), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    
+    self.navBar.alpha = barAlpha;
 }
 
 - (CGFloat)barAlpha
@@ -33,18 +46,20 @@ static char * const navBarBackgroundImageKey = "navBarBackgroundImageKey";
     }
 }
 
-- (void)setNavBarTintColor:(UIColor *)navBarTintColor
+- (void)setNavBarBackgroundColor:(UIColor *)navBarBackgroundColor
 {
-    objc_setAssociatedObject(self, navBarTintColorKey, navBarTintColor, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, navBarBackgroundColorKey, navBarBackgroundColor, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    
+    self.navBar.backgroundColor = navBarBackgroundColor;
 }
 
-- (UIColor *)navBarTintColor
+- (UIColor *)navBarBackgroundColor
 {
-    UIColor *color = objc_getAssociatedObject(self, navBarTintColorKey);
+    UIColor *color = objc_getAssociatedObject(self, navBarBackgroundColorKey);
     
     if (color == NULL)
     {
-        return self.navigationController.navigationBar.barStyle == UIBarStyleDefault ? [UIColor whiteColor] : [UIColor blackColor];
+        return [UIColor whiteColor];
     }else
     {
         return color;
