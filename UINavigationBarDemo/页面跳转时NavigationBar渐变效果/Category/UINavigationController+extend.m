@@ -40,26 +40,6 @@
     }
 }
 
-- (void)setNavigationBarBackgroundColor:(UIColor *)color
-{
-    
-}
-
-/// 设置导航栏透明度
-- (void)setNavigationBarAlpha:(CGFloat)alpha
-{
-    UIView *barBgView = self.navigationBar.subviews[0];
-    
-    UIView *shadowView = [barBgView valueForKey:@"_shadowView"];
-    
-    if (shadowView)
-    {
-        shadowView.alpha  = alpha;
-        shadowView.hidden = alpha == 0.0;
-    }
-}
-
-
 + (void)swizzleOriginalSelector:(SEL)originalSelector withCurrentSelector:(SEL)currentSelector
 {
     Class class = [self class];
@@ -85,25 +65,13 @@
 
 + (void)load
 {
-//    SEL originalSelector1  = NSSelectorFromString(@"_updateInteractiveTransition:");
-//    SEL swizzledSelector1  = NSSelectorFromString(@"z_updateInteractiveTransition:");
-//    [self swizzleOriginalSelector:originalSelector1 withCurrentSelector:swizzledSelector1];
+    SEL originalSelector1  = @selector(initWithCoder:);
+    SEL swizzledSelector1  = NSSelectorFromString(@"z_initWithCoder:");
+    [self swizzleOriginalSelector:originalSelector1 withCurrentSelector:swizzledSelector1];
     
-//    SEL originalSelector2  = @selector(popToRootViewControllerAnimated:);
-//    SEL swizzledSelector2  = NSSelectorFromString(@"z_popToRootViewControllerAnimated:");
-//    [self swizzleOriginalSelector:originalSelector2 withCurrentSelector:swizzledSelector2];
-    
-    SEL originalSelector3  = @selector(initWithCoder:);
-    SEL swizzledSelector3  = NSSelectorFromString(@"z_initWithCoder:");
-    [self swizzleOriginalSelector:originalSelector3 withCurrentSelector:swizzledSelector3];
-    
-    SEL originalSelector4  = @selector(initWithRootViewController:);
-    SEL swizzledSelector4  = NSSelectorFromString(@"z_initWithRootViewController:");
-    [self swizzleOriginalSelector:originalSelector4 withCurrentSelector:swizzledSelector4];
-    
-//    SEL originalSelector5  = @selector(pushViewController:animated:);
-//    SEL swizzledSelector5  = NSSelectorFromString(@"z_pushViewController:animated:");
-//    [self swizzleOriginalSelector:originalSelector5 withCurrentSelector:swizzledSelector5];
+    SEL originalSelector2  = @selector(initWithRootViewController:);
+    SEL swizzledSelector2  = NSSelectorFromString(@"z_initWithRootViewController:");
+    [self swizzleOriginalSelector:originalSelector2 withCurrentSelector:swizzledSelector2];
 }
 
 
@@ -125,31 +93,31 @@
     return nav;
 }
 
-- (void)z_updateInteractiveTransition:(CGFloat)percentComplete
-{
-    if (self.topViewController != nil)
-    {
-        id<UIViewControllerTransitionCoordinator> coor = self.topViewController.transitionCoordinator;
-        
-        UIViewController *fromVC = [coor viewControllerForKey:UITransitionContextFromViewControllerKey];
-        UIViewController *toVC   = [coor viewControllerForKey:UITransitionContextToViewControllerKey];
-        
-        // alpha
-        CGFloat fromAlpha = fromVC.barAlpha;
-        CGFloat toAlpha   = toVC.barAlpha;
-        CGFloat alpha     = fromAlpha + (toAlpha - fromAlpha)*percentComplete;
-        // tint color
-        UIColor *newColor = [self getColorWithFromColor:fromVC.navBarTintColor toColor:toVC.navBarTintColor percentComplete:percentComplete];
-        
-        [self setNavigationBarBackgroundColor:newColor];
-        
-        [self setNavigationBarAlpha:alpha];
-        
-        [self updateStatusBarStyleWithViewController:toVC];
-    }
-    
-    [self z_updateInteractiveTransition:percentComplete];
-}
+//- (void)z_updateInteractiveTransition:(CGFloat)percentComplete
+//{
+//    if (self.topViewController != nil)
+//    {
+//        id<UIViewControllerTransitionCoordinator> coor = self.topViewController.transitionCoordinator;
+//
+//        UIViewController *fromVC = [coor viewControllerForKey:UITransitionContextFromViewControllerKey];
+//        UIViewController *toVC   = [coor viewControllerForKey:UITransitionContextToViewControllerKey];
+//
+//        // alpha
+//        CGFloat fromAlpha = fromVC.barAlpha;
+//        CGFloat toAlpha   = toVC.barAlpha;
+//        CGFloat alpha     = fromAlpha + (toAlpha - fromAlpha)*percentComplete;
+//        // tint color
+//        UIColor *newColor = [self getColorWithFromColor:fromVC.navBarTintColor toColor:toVC.navBarTintColor percentComplete:percentComplete];
+//
+//        [self setNavigationBarBackgroundColor:newColor];
+//
+//        [self setNavigationBarAlpha:alpha];
+//
+//        [self updateStatusBarStyleWithViewController:toVC];
+//    }
+//
+//    [self z_updateInteractiveTransition:percentComplete];
+//}
 
 
 #pragma mark- UINavigationBarDelegate
@@ -162,6 +130,8 @@
     return YES;
 }
 
+
+#pragma mark- UINavigationControllerDelegate
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
     if (viewController == self.viewControllers.firstObject)

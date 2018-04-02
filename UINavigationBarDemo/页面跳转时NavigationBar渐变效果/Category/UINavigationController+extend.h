@@ -11,10 +11,5 @@
 
 @interface UINavigationController (extend)<UINavigationBarDelegate,UINavigationControllerDelegate>
 
-/// 设置导航栏透明度
-- (void)setNavigationBarAlpha:(CGFloat)alpha;
-
-
-- (void)setNavigationBarBackgroundColor:(UIColor *)color;
 
 @end
