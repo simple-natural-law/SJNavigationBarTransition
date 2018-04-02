@@ -9,8 +9,9 @@
 #import "UIViewController+Bar.h"
 #import <objc/runtime.h>
 
-static const char *barAlphaKey = "barAlphaKey";
-static const char *navBarTintColorKey = "navBarTintColorKey";
+static char * const barAlphaKey = "barAlphaKey";
+static char * const navBarTintColorKey = "navBarTintColorKey";
+static char * const navBarBackgroundImageKey = "navBarBackgroundImageKey";
 
 @implementation UIViewController (Bar)
 
@@ -47,6 +48,24 @@ static const char *navBarTintColorKey = "navBarTintColorKey";
     }else
     {
         return color;
+    }
+}
+
+- (void)setNavBarBackgroundImage:(UIImage *)navBarBackgroundImage
+{
+    objc_setAssociatedObject(self, navBarBackgroundImageKey, navBarBackgroundImage, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (UIImage *)navBarBackgroundImage
+{
+    UIImage *image = objc_getAssociatedObject(self, navBarBackgroundImageKey);
+    
+    if (image == NULL)
+    {
+        return nil;
+    }else
+    {
+        return image;
     }
 }
 
