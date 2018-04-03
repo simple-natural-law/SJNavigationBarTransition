@@ -34,12 +34,12 @@
     CGFloat g = b/255.0;
     CGFloat blue = c/255.0;
     
-    if (a%10 == 0)
-    {
-        self.navBarBackgroundColor = [UIColor colorWithRed:r green:g blue:blue alpha:1.0];
-    }else
+    if (a%5 == 0)
     {
         self.navBarBackgroundImage = [UIImage imageNamed:@"bar"];
+    }else
+    {
+        self.navBarBackgroundColor = [UIColor colorWithRed:r green:g blue:blue alpha:1.0];
     }
     
     self.view.backgroundColor = [UIColor colorWithRed:r green:g blue:blue alpha:1.0];
@@ -61,7 +61,7 @@
     
     int a = arc4random()%256;
     
-    [self.navigationController pushViewController:vc animated:(a%10 == 0)];
+    [self.navigationController pushViewController:vc animated:!(a%5 == 0)];
 }
 
 - (void)didReceiveMemoryWarning {
