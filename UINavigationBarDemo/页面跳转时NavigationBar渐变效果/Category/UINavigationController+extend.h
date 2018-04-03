@@ -11,6 +11,6 @@
 
 @interface UINavigationController (extend)<UINavigationBarDelegate,UINavigationControllerDelegate>
 
-- (void)setShadowHidden:(BOOL)hidden;
+- (void)setNavBarShadowHidden:(BOOL)hidden;
 
 @end

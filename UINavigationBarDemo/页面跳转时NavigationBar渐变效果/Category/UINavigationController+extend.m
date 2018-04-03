@@ -13,7 +13,7 @@
 
 @implementation UINavigationController (extend)
 
-- (void)setShadowHidden:(BOOL)hidden
+- (void)setNavBarShadowHidden:(BOOL)hidden
 {
     UIView *shadow = [self.navigationBar.subviews.firstObject valueForKey:@"_shadowView"];
     
@@ -78,6 +78,10 @@
     SEL originalSelector2  = @selector(initWithRootViewController:);
     SEL swizzledSelector2  = NSSelectorFromString(@"z_initWithRootViewController:");
     [self swizzleOriginalSelector:originalSelector2 withCurrentSelector:swizzledSelector2];
+    
+    SEL originalSelector3  = @selector(navigationBar:shouldPopItem:);
+    SEL swizzledSelector3  = NSSelectorFromString(@"z_navigationBar:shouldPopItem:");
+    [self swizzleOriginalSelector:originalSelector3 withCurrentSelector:swizzledSelector3];
 }
 
 
@@ -101,6 +105,19 @@
 
 
 #pragma mark- UINavigationBarDelegate
+// 官方已经实现了这个委托方法，这里使用方法交换来添加所需的额外操作。
+- (BOOL)z_navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item
+{
+    BOOL shouldPop = [self z_navigationBar:navigationBar shouldPopItem:item];
+    
+    [self updateStatusBarStyleWithViewController:self.topViewController];
+    
+    [self setNavBarShadowHidden:self.topViewController.barAlpha == 0.0];
+    
+    return shouldPop;
+}
+
+
 - (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPushItem:(UINavigationItem *)item
 {
     [self addBarForViewController:self.topViewController];
@@ -116,12 +133,16 @@
     dispatch_once(&onceToken, ^{
         
         [self configOriginlNavBar];
+        
+        [self addBarForViewController:viewController];
     });
     
-    [self setShadowHidden:(viewController.barAlpha == 0.0)];
-    
     [self updateStatusBarStyleWithViewController:viewController];
+    
+    [self setNavBarShadowHidden:viewController.barAlpha == 0.0];
 }
+
+
 
 
 #pragma mark- Methods

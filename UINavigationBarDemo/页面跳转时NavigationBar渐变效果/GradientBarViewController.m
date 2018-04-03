@@ -103,7 +103,7 @@
     
     self.barAlpha = alpha;
     
-    [self.navigationController setShadowHidden:alpha == 0.0];
+    [self.navigationController setNavBarShadowHidden:alpha == 0.0];
 }
 
 
