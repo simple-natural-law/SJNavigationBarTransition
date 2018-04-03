@@ -131,7 +131,7 @@
 {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        
+
         [self configOriginlNavBar];
         
         [self addBarForViewController:viewController];
@@ -143,14 +143,14 @@
 }
 
 
-
-
 #pragma mark- Methods
 - (void)addBarForViewController:(UIViewController *)viewController
 {
+    CGFloat height = [UIScreen mainScreen].bounds.size.height == 812.0 ? 88.0 : 64.0;
+    
     if (viewController.navBarBackgroundImage)
     {
-        UIImageView *bar = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, self.navigationBar.subviews.firstObject.frame.size.width, self.navigationBar.subviews.firstObject.frame.size.height)];
+        UIImageView *bar = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, viewController.view.frame.size.width, height)];
         
         bar.contentMode = UIViewContentModeScaleAspectFill;
         
@@ -167,7 +167,7 @@
         viewController.navBar = bar;
     }else
     {
-        UIView *bar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.navigationBar.subviews.firstObject.frame.size.width, self.navigationBar.subviews.firstObject.frame.size.height)];
+        UIView *bar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, viewController.view.frame.size.width, height)];
         
         bar.backgroundColor = viewController.navBarBackgroundColor;
         
