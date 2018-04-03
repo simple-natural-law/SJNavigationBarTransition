@@ -30,7 +30,10 @@ static char * const navBarBackgroundImageKey = "navBarBackgroundImageKey";
 {
     objc_setAssociatedObject(self, barAlphaKey, @(barAlpha), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     
-    self.navBar.alpha = barAlpha;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        self.navBar.alpha = barAlpha;
+    });
 }
 
 - (CGFloat)barAlpha
@@ -50,7 +53,10 @@ static char * const navBarBackgroundImageKey = "navBarBackgroundImageKey";
 {
     objc_setAssociatedObject(self, navBarBackgroundColorKey, navBarBackgroundColor, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     
-    self.navBar.backgroundColor = navBarBackgroundColor;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        self.navBar.backgroundColor = navBarBackgroundColor;
+    });
 }
 
 - (UIColor *)navBarBackgroundColor
@@ -69,6 +75,11 @@ static char * const navBarBackgroundImageKey = "navBarBackgroundImageKey";
 - (void)setNavBarBackgroundImage:(UIImage *)navBarBackgroundImage
 {
     objc_setAssociatedObject(self, navBarBackgroundImageKey, navBarBackgroundImage, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        self.navBar.image = navBarBackgroundImage;
+    });
 }
 
 - (UIImage *)navBarBackgroundImage

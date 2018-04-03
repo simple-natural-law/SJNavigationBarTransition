@@ -26,14 +26,14 @@
     
     UIView *barBgView = self.navigationBar.subviews.firstObject;
     
-    barBgView.backgroundColor = [UIColor clearColor];
+    barBgView.hidden = YES;
     
     if (@available(iOS 10.0, *))
     {
         UIView *bgEffectView = [barBgView valueForKey:@"_backgroundEffectView"];
         if (bgEffectView && [self.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault] == nil)
         {
-            bgEffectView.alpha = 0.0;
+            bgEffectView.hidden = YES;
         }
     }else
     {
@@ -41,7 +41,7 @@
         UIView *backDropEffectView = [adaptiveBackDrop valueForKey:@"_backdropEffectView"];
         if (adaptiveBackDrop && backDropEffectView)
         {
-            backDropEffectView.alpha = 0.0;
+            backDropEffectView.hidden = YES;
         }
     }
 }
@@ -108,11 +108,27 @@
 // 官方已经实现了这个委托方法，这里使用方法交换来添加所需的额外操作。
 - (BOOL)z_navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item
 {
+    //NSLog(@"shouldPopItem");
+    
     BOOL shouldPop = [self z_navigationBar:navigationBar shouldPopItem:item];
     
-    [self updateStatusBarStyleWithViewController:self.topViewController];
-    
-    [self setNavBarShadowHidden:self.topViewController.barAlpha == 0.0];
+    if (self.topViewController.transitionCoordinator.interactive)
+    {
+        if (@available(iOS 10.0, *))
+        {
+            [self.topViewController.transitionCoordinator notifyWhenInteractionChangesUsingBlock:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+                
+                [self dealInteractionChanges:context];
+            }];
+            
+        }else
+        {
+            [self.topViewController.transitionCoordinator notifyWhenInteractionEndsUsingBlock:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+                
+                [self dealInteractionChanges:context];
+            }];
+        }
+    }
     
     return shouldPop;
 }
@@ -120,6 +136,8 @@
 
 - (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPushItem:(UINavigationItem *)item
 {
+    //NSLog(@"shouldPushItem");
+    
     [self addBarForViewController:self.topViewController];
     
     return YES;
@@ -129,6 +147,8 @@
 #pragma mark- UINavigationControllerDelegate
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
+    //NSLog(@"willShowViewController");
+    
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
 
@@ -148,37 +168,17 @@
 {
     CGFloat height = [UIScreen mainScreen].bounds.size.height == 812.0 ? 88.0 : 64.0;
     
-    if (viewController.navBarBackgroundImage)
-    {
-        UIImageView *bar = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, viewController.view.frame.size.width, height)];
-        
-        bar.contentMode = UIViewContentModeScaleAspectFill;
-        
-        bar.clipsToBounds = YES;
-        
-        bar.image = viewController.navBarBackgroundImage;
-        
-        bar.alpha = viewController.barAlpha;
-        
-        [viewController.view addSubview:bar];
-        
-        [viewController.view bringSubviewToFront:bar];;
-        
-        viewController.navBar = bar;
-    }else
-    {
-        UIView *bar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, viewController.view.frame.size.width, height)];
-        
-        bar.backgroundColor = viewController.navBarBackgroundColor;
-        
-        bar.alpha = viewController.barAlpha;
-        
-        [viewController.view addSubview:bar];
-        
-        [viewController.view bringSubviewToFront:bar];;
-        
-        viewController.navBar = bar;
-    }
+    UIImageView *bar = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, viewController.view.frame.size.width, height)];
+    
+    bar.contentMode = UIViewContentModeScaleAspectFill;
+    
+    bar.clipsToBounds = YES;
+    
+    [viewController.view addSubview:bar];
+    
+    [viewController.view bringSubviewToFront:bar];;
+    
+    viewController.navBar = bar;
 }
 
 
@@ -210,8 +210,22 @@
 - (CGFloat)colorBrigntness:(UIColor*)aColor
 {
     CGFloat hue, saturation, brigntness, alpha;
+    
     [aColor getHue:&hue saturation:&saturation brightness:&brigntness alpha:&alpha];
+    
     return brigntness;
+}
+
+- (void)dealInteractionChanges:(id<UIViewControllerTransitionCoordinatorContext>)context
+{
+    if ([context isCancelled])
+    {
+        UIViewController *vc = [context viewControllerForKey:UITransitionContextFromViewControllerKey];
+        
+        [self setNavBarShadowHidden:vc.barAlpha == 0.0];
+        
+        [self updateStatusBarStyleWithViewController:vc];
+    }
 }
 
 
