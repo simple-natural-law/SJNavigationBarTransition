@@ -9,8 +9,15 @@
 #import <UIKit/UIKit.h>
 
 
-@interface UINavigationController (extend)<UINavigationBarDelegate,UINavigationControllerDelegate>
+@interface UINavigationController (extend)
 
-- (void)setNavBarShadowHidden:(BOOL)hidden;
+- (void)setNavigationBarBackgroundColor:(UIColor *)color animated:(BOOL)animated;
+
+- (void)setNavigationBarBackgroundColor:(UIColor *)color backgroundAlpha:(CGFloat)alpha animated:(BOOL)animated;
+
+- (void)setNavigationBarBackgroundImage:(UIImage *)image animated:(BOOL)animated;
+
+- (void)setNavigationBarBackgroundAlpha:(CGFloat)alpha;
 
 @end
+

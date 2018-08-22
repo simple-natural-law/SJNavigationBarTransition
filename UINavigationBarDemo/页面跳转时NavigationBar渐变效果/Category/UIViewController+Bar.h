@@ -10,15 +10,13 @@
 
 @interface UIViewController (Bar)
 
-@property (nonatomic, strong) UIImageView *navBar;
-
 /// 视图控制器对应的导航栏透明度
-@property (nonatomic, assign) CGFloat barAlpha;
+@property (nonatomic, assign) CGFloat navigationBarAlpha;
 
 /// 视图控制器对应的导航栏背景色
-@property (nonatomic, strong) UIColor *navBarBackgroundColor;
+@property (nonatomic, strong) UIColor *navigationBarBackgroundColor;
 
-/// 视图控制器对应的导航栏背景色
-@property (nonatomic, strong) UIImage *navBarBackgroundImage;
+/// 视图控制器对应的导航栏背景图片
+@property (nonatomic, strong) UIImage *navigationBarBackgroundImage;
 
 @end

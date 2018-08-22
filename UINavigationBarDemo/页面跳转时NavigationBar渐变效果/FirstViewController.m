@@ -36,10 +36,10 @@
     
     if (a%5 == 0)
     {
-        self.navBarBackgroundImage = [UIImage imageNamed:@"bar"];
+        self.navigationBarBackgroundImage = [UIImage imageNamed:@"bar"];
     }else
     {
-        self.navBarBackgroundColor = [UIColor colorWithRed:r green:g blue:blue alpha:1.0];
+        self.navigationBarBackgroundColor = [UIColor colorWithRed:r green:g blue:blue alpha:1.0];
     }
     
     self.view.backgroundColor = [UIColor colorWithRed:r green:g blue:blue alpha:1.0];

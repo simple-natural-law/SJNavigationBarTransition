@@ -36,9 +36,9 @@
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
     
-    self.barAlpha = 0.0;
+    self.navigationBarAlpha = 0.0;
     
-    self.navBarBackgroundColor = [UIColor whiteColor];
+    self.navigationBarBackgroundColor = [UIColor whiteColor];
 }
 
 
@@ -92,18 +92,18 @@
     if (alpha >= 1.0)
     {
         alpha = 1.0;
+        
         self.navigationController.navigationBar.tintColor = self.defaultTintColor;
     }
     
     if (alpha <= 0.0)
     {
         alpha = 0.0;
+        
         self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     }
     
-    self.barAlpha = alpha;
-    
-    [self.navigationController setNavBarShadowHidden:alpha == 0.0];
+    [self.navigationController setNavigationBarAlpha:alpha];
 }
 
 

@@ -11,40 +11,221 @@
 #import <objc/runtime.h>
 
 
-@implementation UINavigationController (extend)
-
-- (void)setNavBarShadowHidden:(BOOL)hidden
-{
-    UIView *shadow = [self.navigationBar.subviews.firstObject valueForKey:@"_shadowView"];
+typedef NS_ENUM(NSInteger, UINavigationBarBackgroundAnimationType) {
     
-    shadow.hidden = hidden;
+    UINavigationBarBackgroundAnimationTypeNone = 0,
+    UINavigationBarBackgroundAnimationTypePush = 1,
+    UINavigationBarBackgroundAnimationTypePop  = 2
+};
+
+
+static char * const backgroundKey = "backgroundKey";
+//static char * const transitionBackgroundKey = "transitionBackgroundKey";
+
+
+@interface UINavigationBar (extend)
+
+@property (nonatomic, strong) UIImageView *background;
+
+//@property (nonatomic, strong) UIImageView *transitionBackground;
+
+@end
+
+
+@implementation UINavigationBar (extend)
+
+- (void)setBackground:(UIImageView *)background
+{
+    objc_setAssociatedObject(self, backgroundKey, background, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (void)configOriginlNavBar
+- (UIImageView *)background
 {
-    self.navigationBar.translucent = YES;
+    return objc_getAssociatedObject(self, backgroundKey);
+}
+
+//- (void)setTransitionBackground:(UIImageView *)transitionBackground
+//{
+//    objc_setAssociatedObject(self, transitionBackgroundKey, transitionBackground, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+//}
+//
+//- (UIImageView *)transitionBackground
+//{
+//    return objc_getAssociatedObject(self, transitionBackgroundKey);
+//}
+
+
+- (instancetype)init
+{
+    self = [super init];
     
-    UIView *barBgView = self.navigationBar.subviews.firstObject;
-    
-    barBgView.hidden = YES;
-    
-    if (@available(iOS 10.0, *))
+    if (self)
     {
-        UIView *bgEffectView = [barBgView valueForKey:@"_backgroundEffectView"];
-        if (bgEffectView && [self.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault] == nil)
-        {
-            bgEffectView.hidden = YES;
-        }
-    }else
+//        self.transitionBackground = [[UIImageView alloc] init];
+//
+//        self.transitionBackground.hidden = YES;
+//
+//        self.transitionBackground.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin |UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth |UIViewAutoresizingFlexibleHeight;
+//
+//        [self.subviews.firstObject insertSubview:self.transitionBackground atIndex:1];
+    }
+    
+    return self;
+}
+
+- (void)setBackgroundImage:(UIImage *)image andAlpha:(CGFloat)alpha withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)transitionCoordinator animation:(UINavigationBarBackgroundAnimationType)animation
+{
+    switch (animation)
     {
-        UIView *adaptiveBackDrop = [barBgView valueForKey:@"_adaptiveBackdrop"];
-        UIView *backDropEffectView = [adaptiveBackDrop valueForKey:@"_backdropEffectView"];
-        if (adaptiveBackDrop && backDropEffectView)
+        case UINavigationBarBackgroundAnimationTypeNone:
         {
-            backDropEffectView.hidden = YES;
+
         }
+            break;
+            
+        case UINavigationBarBackgroundAnimationTypePush:
+        {
+            
+            [transitionCoordinator animateAlongsideTransitionInView:self.subviews.firstObject animation:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+                
+                
+                
+            } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+                
+              
+            }];
+        }
+            break;
+            
+        case UINavigationBarBackgroundAnimationTypePop:
+        {
+            
+        }
+            break;
+            
+        default:
+            break;
     }
 }
+
+
+- (void)setBackgroundImage:(UIImage *)image alpha:(CGFloat)alpha withAnimation:(UINavigationBarBackgroundAnimationType)animation
+{
+    switch (animation)
+    {
+        case UINavigationBarBackgroundAnimationTypeNone:
+        {
+            
+        }
+            break;
+            
+        case UINavigationBarBackgroundAnimationTypePush:
+        {
+            
+        }
+            break;
+            
+        case UINavigationBarBackgroundAnimationTypePop:
+        {
+            
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
+@end
+
+
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+
+static char * const animatedKey = "animatedKey";
+static char * const isPushKey = "isPushKey";
+static char * const navigationBarAlphaKey = "navigationBarAlphaKey";
+static char * const navigationBarBackgroundColorKey = "navigationBarBackgroundColorKey";
+static char * const navigationBarBackgroundImageKey = "navigationBarBackgroundImageKey";
+
+@interface UINavigationController  ()<UINavigationBarDelegate,UINavigationControllerDelegate>
+
+/// 是否动画设置导航栏背景颜色或者背景图片
+@property (nonatomic, assign) BOOL animated;
+
+/// 当前呈现视图控制器的方式是否是`push`
+@property (nonatomic, assign) BOOL isPush;
+
+/// 导航栏透明度
+@property (nonatomic, assign) CGFloat navigationBarAlpha;
+
+/// 导航栏背景色
+@property (nonatomic, strong) UIColor *navigationBarBackgroundColor;
+
+/// 导航栏背景图片
+@property (nonatomic, strong) UIImage *navigationBarBackgroundImage;
+
+@end
+
+@implementation UINavigationController (extend)
+
+- (void)setNavigationBarBackgroundColor:(UIColor *)color animated:(BOOL)animated
+{
+    [self setNavigationBarBackgroundColor:color backgroundAlpha:1.0 animated:animated];
+}
+
+- (void)setNavigationBarBackgroundColor:(UIColor *)color backgroundAlpha:(CGFloat)alpha animated:(BOOL)animated
+{
+    self.navigationBarAlpha = alpha;
+    
+    self.navigationBarBackgroundColor = color;
+    
+    self.navigationBarBackgroundImage = nil;
+    
+    self.animated = animated;
+}
+
+- (void)setNavigationBarBackgroundImage:(UIImage *)image animated:(BOOL)animated
+{
+    self.navigationBarBackgroundImage = image;
+    
+    self.animated = animated;
+}
+
+
+- (void)setNavigationBarBackgroundAlpha:(CGFloat)alpha
+{
+    UIView *barBgView = self.navigationBar.subviews.firstObject;
+    
+    barBgView.alpha = alpha;
+    
+    if (self.navigationBar.translucent)
+    {
+        if (@available(iOS 10.0, *))
+        {
+            UIView *bgEffectView = [barBgView valueForKey:@"_backgroundEffectView"];
+            
+            if (bgEffectView && [self.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault] == nil)
+            {
+                bgEffectView.alpha = alpha;
+            }
+        }else
+        {
+            UIView *adaptiveBackDrop = [barBgView valueForKey:@"_adaptiveBackdrop"];
+            UIView *backDropEffectView = [adaptiveBackDrop valueForKey:@"_backdropEffectView"];
+            if (adaptiveBackDrop && backDropEffectView)
+            {
+                backDropEffectView.alpha = alpha;
+            }
+        }
+    }
+    
+    UIView *shadow = [self.navigationBar.subviews.firstObject valueForKey:@"_shadowView"];
+    
+    shadow.hidden = (alpha == 0.0);
+}
+
 
 + (void)swizzleOriginalSelector:(SEL)originalSelector withCurrentSelector:(SEL)currentSelector
 {
@@ -71,17 +252,17 @@
 
 + (void)load
 {
-    SEL originalSelector1  = @selector(initWithCoder:);
-    SEL swizzledSelector1  = NSSelectorFromString(@"z_initWithCoder:");
-    [self swizzleOriginalSelector:originalSelector1 withCurrentSelector:swizzledSelector1];
+    SEL initWithCoder    = @selector(initWithCoder:);
+    SEL z_initWithCoder  = NSSelectorFromString(@"z_initWithCoder:");
+    [self swizzleOriginalSelector:initWithCoder withCurrentSelector:z_initWithCoder];
     
-    SEL originalSelector2  = @selector(initWithRootViewController:);
-    SEL swizzledSelector2  = NSSelectorFromString(@"z_initWithRootViewController:");
-    [self swizzleOriginalSelector:originalSelector2 withCurrentSelector:swizzledSelector2];
+    SEL initWithRootViewController    = @selector(initWithRootViewController:);
+    SEL z_initWithRootViewController  = NSSelectorFromString(@"z_initWithRootViewController:");
+    [self swizzleOriginalSelector:initWithRootViewController withCurrentSelector:z_initWithRootViewController];
     
-    SEL originalSelector3  = @selector(navigationBar:shouldPopItem:);
-    SEL swizzledSelector3  = NSSelectorFromString(@"z_navigationBar:shouldPopItem:");
-    [self swizzleOriginalSelector:originalSelector3 withCurrentSelector:swizzledSelector3];
+    SEL shouldPopItem    = @selector(navigationBar:shouldPopItem:);
+    SEL z_shouldPopItem  = NSSelectorFromString(@"z_navigationBar:shouldPopItem:");
+    [self swizzleOriginalSelector:shouldPopItem withCurrentSelector:z_shouldPopItem];
 }
 
 
@@ -108,7 +289,9 @@
 // 官方已经实现了这个委托方法，这里使用方法交换来添加所需的额外操作。
 - (BOOL)z_navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item
 {
-    //NSLog(@"shouldPopItem");
+    NSLog(@"shouldPopItem");
+    
+    self.isPush = NO;
     
     BOOL shouldPop = [self z_navigationBar:navigationBar shouldPopItem:item];
     
@@ -136,9 +319,9 @@
 
 - (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPushItem:(UINavigationItem *)item
 {
-    //NSLog(@"shouldPushItem");
+    NSLog(@"shouldPushItem");
     
-    [self addBarForViewController:self.topViewController];
+    self.isPush = YES;
     
     return YES;
 }
@@ -147,44 +330,45 @@
 #pragma mark- UINavigationControllerDelegate
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    //NSLog(@"willShowViewController");
+    NSLog(@"willShowViewController");
     
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-
-        [self configOriginlNavBar];
+    if (!self.navigationBar.background)
+    {
+        self.navigationBar.background = [[UIImageView alloc] init];
         
-        [self addBarForViewController:viewController];
-    });
-    
-    [self updateStatusBarStyleWithViewController:viewController];
-    
-    [self setNavBarShadowHidden:viewController.barAlpha == 0.0];
+        self.navigationBar.background.image = self.navigationBarBackgroundImage;
+        
+        self.navigationBar.background.backgroundColor = self.navigationBarBackgroundColor;
+        
+        self.navigationBar.background.alpha = self.navigationBarAlpha;
+        
+        self.navigationBar.background.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        UIView *barBackgroundView = self.navigationBar.subviews.firstObject;
+        
+        [barBackgroundView insertSubview:self.navigationBar.background atIndex:0];
+        
+        NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:self.navigationBar.background attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:barBackgroundView attribute:NSLayoutAttributeTop multiplier:1.0 constant:0.0];
+        
+        NSLayoutConstraint *bottom = [NSLayoutConstraint constraintWithItem:self.navigationBar.background attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:barBackgroundView attribute:NSLayoutAttributeBottom multiplier:1.0 constant:0.0];
+        
+        NSLayoutConstraint *left = [NSLayoutConstraint constraintWithItem:self.navigationBar.background attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:barBackgroundView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:0.0];
+        
+        NSLayoutConstraint *right = [NSLayoutConstraint constraintWithItem:self.navigationBar.background attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:barBackgroundView attribute:NSLayoutAttributeRight multiplier:1.0 constant:0.0];
+        
+        [barBackgroundView addConstraints:@[top, bottom, left, right]];
+        
+    }else
+    {
+        
+    }
 }
 
 
 #pragma mark- Methods
-- (void)addBarForViewController:(UIViewController *)viewController
-{
-    CGFloat height = [UIScreen mainScreen].bounds.size.height == 812.0 ? 88.0 : 64.0;
-    
-    UIImageView *bar = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, viewController.view.frame.size.width, height)];
-    
-    bar.contentMode = UIViewContentModeScaleAspectFill;
-    
-    bar.clipsToBounds = YES;
-    
-    [viewController.view addSubview:bar];
-    
-    [viewController.view bringSubviewToFront:bar];;
-    
-    viewController.navBar = bar;
-}
-
-
 - (void)updateStatusBarStyleWithViewController:(UIViewController *)viewController
 {
-    if (viewController.barAlpha == 0)
+    if (viewController.navigationBarAlpha == 0)
     {
         if ([self colorBrigntness:viewController.view.backgroundColor] > 0.5)
         {
@@ -195,7 +379,7 @@
         }
     } else
     {
-        if ([self colorBrigntness:viewController.navBarBackgroundColor] > 0.5)
+        if ([self colorBrigntness:viewController.navigationBarBackgroundColor] > 0.5)
         {
             [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleDefault animated:YES];
             
@@ -222,33 +406,88 @@
     {
         UIViewController *vc = [context viewControllerForKey:UITransitionContextFromViewControllerKey];
         
-        [self setNavBarShadowHidden:vc.barAlpha == 0.0];
-        
-        [self updateStatusBarStyleWithViewController:vc];
     }
 }
 
 
-//- (UIColor *)getColorWithFromColor:(UIColor *)fromColor toColor:(UIColor *)toColor percentComplete:(CGFloat)percentComplete
-//{
-//    CGFloat fromRed        = 0.0;
-//    CGFloat fromGreen      = 0.0;
-//    CGFloat fromBlue       = 0.0;
-//    CGFloat fromColorAlpha = 0.0;
-//    CGFloat toRed        = 0.0;
-//    CGFloat toGreen      = 0.0;
-//    CGFloat toBlue       = 0.0;
-//    CGFloat toColorAlpha = 0.0;
-//
-//    [fromColor getRed:&fromRed green:&fromGreen blue:&fromBlue alpha:&fromColorAlpha];
-//    [toColor getRed:&toRed green:&toGreen blue:&toBlue alpha:&toColorAlpha];
-//
-//    CGFloat newRed        = fromRed + (toRed - fromRed) * percentComplete;
-//    CGFloat newGreen      = fromGreen + (toGreen - fromGreen) * percentComplete;
-//    CGFloat newBlue       = fromBlue + (toBlue - fromBlue) * percentComplete;
-//    CGFloat newColorAlpha = fromColorAlpha + (toColorAlpha - fromColorAlpha) * percentComplete;
-//
-//    return [UIColor colorWithRed:newRed green:newGreen blue:newBlue alpha:newColorAlpha];
-//}
+#pragma mark- setter and getter
+- (void)setAnimated:(BOOL)animated
+{
+    objc_setAssociatedObject(self, animatedKey, @(animated), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (BOOL)animated
+{
+    id animated = objc_getAssociatedObject(self, animatedKey);
+    
+    return [animated boolValue];
+}
+
+- (void)setIsPush:(BOOL)isPush
+{
+    objc_setAssociatedObject(self, isPushKey, @(isPush), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (BOOL)isPush
+{
+    id isPush = objc_getAssociatedObject(self, isPushKey);
+    
+    return [isPush boolValue];
+}
+
+- (void)setNavigationBarAlpha:(CGFloat)navigationBarAlpha
+{
+    objc_setAssociatedObject(self, navigationBarAlphaKey, @(navigationBarAlpha), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (CGFloat)navigationBarAlpha
+{
+    id alpha = objc_getAssociatedObject(self, navigationBarAlphaKey);
+    
+    if (alpha == NULL)
+    {
+        return 1.0;
+    }else
+    {
+        return [alpha floatValue];
+    }
+}
+
+- (void)setNavigationBarBackgroundColor:(UIColor *)navigationBarBackgroundColor
+{
+    objc_setAssociatedObject(self, navigationBarBackgroundColorKey, navigationBarBackgroundColor, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (UIColor *)navigationBarBackgroundColor
+{
+    UIColor *color = objc_getAssociatedObject(self, navigationBarBackgroundColorKey);
+    
+    if (color == NULL)
+    {
+        return [UIColor whiteColor];
+    }else
+    {
+        return color;
+    }
+}
+
+- (void)setNavigationBarBackgroundImage:(UIImage *)navigationBarBackgroundImage
+{
+    objc_setAssociatedObject(self, navigationBarBackgroundImageKey, navigationBarBackgroundImage, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
+
+- (UIImage *)navigationBarBackgroundImage
+{
+    UIImage *image = objc_getAssociatedObject(self, navigationBarBackgroundImageKey);
+    
+    if (image == NULL)
+    {
+        return nil;
+    }else
+    {
+        return image;
+    }
+}
+
 
 @end

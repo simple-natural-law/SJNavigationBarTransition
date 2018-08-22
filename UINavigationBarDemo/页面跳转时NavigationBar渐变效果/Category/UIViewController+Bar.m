@@ -9,36 +9,23 @@
 #import "UIViewController+Bar.h"
 #import <objc/runtime.h>
 
-static char * const navBarKey = "navBarKey";
-static char * const barAlphaKey = "barAlphaKey";
-static char * const navBarBackgroundColorKey = "navBarBackgroundColorKey";
-static char * const navBarBackgroundImageKey = "navBarBackgroundImageKey";
+
+static char * const navigationBarAlphaKey = "navigationBarAlphaKey";
+static char * const navigationBarBackgroundColorKey = "navigationBarBackgroundColorKey";
+static char * const navigationBarBackgroundImageKey = "navigationBarBackgroundImageKey";
+
 
 @implementation UIViewController (Bar)
 
-- (void)setNavBar:(UIView *)navBar
+
+- (void)setNavigationBarAlpha:(CGFloat)navigationBarAlpha
 {
-    objc_setAssociatedObject(self, navBarKey, navBar, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, navigationBarAlphaKey, @(navigationBarAlpha), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (UIView *)navBar
+- (CGFloat)navigationBarAlpha
 {
-    return objc_getAssociatedObject(self, navBarKey);
-}
-
-- (void)setBarAlpha:(CGFloat)barAlpha
-{
-    objc_setAssociatedObject(self, barAlphaKey, @(barAlpha), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        self.navBar.alpha = barAlpha;
-    });
-}
-
-- (CGFloat)barAlpha
-{
-    id alpha = objc_getAssociatedObject(self, barAlphaKey);
+    id alpha = objc_getAssociatedObject(self, navigationBarAlphaKey);
 
     if (alpha == NULL)
     {
@@ -49,19 +36,14 @@ static char * const navBarBackgroundImageKey = "navBarBackgroundImageKey";
     }
 }
 
-- (void)setNavBarBackgroundColor:(UIColor *)navBarBackgroundColor
+- (void)setNavigationBarBackgroundColor:(UIColor *)navigationBarBackgroundColor
 {
-    objc_setAssociatedObject(self, navBarBackgroundColorKey, navBarBackgroundColor, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        self.navBar.backgroundColor = navBarBackgroundColor;
-    });
+    objc_setAssociatedObject(self, navigationBarBackgroundColorKey, navigationBarBackgroundColor, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (UIColor *)navBarBackgroundColor
+- (UIColor *)navigationBarBackgroundColor
 {
-    UIColor *color = objc_getAssociatedObject(self, navBarBackgroundColorKey);
+    UIColor *color = objc_getAssociatedObject(self, navigationBarBackgroundColorKey);
     
     if (color == NULL)
     {
@@ -72,19 +54,14 @@ static char * const navBarBackgroundImageKey = "navBarBackgroundImageKey";
     }
 }
 
-- (void)setNavBarBackgroundImage:(UIImage *)navBarBackgroundImage
+- (void)setNavigationBarBackgroundImage:(UIImage *)navigationBarBackgroundImage
 {
-    objc_setAssociatedObject(self, navBarBackgroundImageKey, navBarBackgroundImage, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        
-        self.navBar.image = navBarBackgroundImage;
-    });
+    objc_setAssociatedObject(self, navigationBarBackgroundImageKey, navigationBarBackgroundImage, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (UIImage *)navBarBackgroundImage
+- (UIImage *)navigationBarBackgroundImage
 {
-    UIImage *image = objc_getAssociatedObject(self, navBarBackgroundImageKey);
+    UIImage *image = objc_getAssociatedObject(self, navigationBarBackgroundImageKey);
     
     if (image == NULL)
     {
