@@ -7,7 +7,7 @@
 //
 
 #import "HomeViewController.h"
-
+#import "UINavigationController+extend.h"
 
 @interface HomeViewController ()<UITableViewDelegate, UITableViewDataSource>
 
@@ -27,9 +27,12 @@
     self.dataArray = @[@{@"title":@"页面跳转时NavigationBar渐变效果", @"target":@"GradientBarViewController"}];
 }
 
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    [self.navigationController setNavigationBarBackgroundColor:[UIColor orangeColor]];
 }
 
 
