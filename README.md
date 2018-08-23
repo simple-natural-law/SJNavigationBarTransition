@@ -100,4 +100,4 @@
 
 ## Demo
 
-示例代码下载地址：https://github.com/zhangshijian/UINavigationBarDemo
+示例代码下载地址：https://github.com/zhangshijian/SJNavigationBarTransition
