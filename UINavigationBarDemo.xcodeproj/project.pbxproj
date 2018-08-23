@@ -10,7 +10,6 @@
 		1A0F588F1F7CF2C2001B5EE9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AEA33DA1F7CEE1A00A2D3B4 /* LaunchScreen.storyboard */; };
 		1A0F58901F7CF2C2001B5EE9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AEA33DB1F7CEE1A00A2D3B4 /* Main.storyboard */; };
 		1A0F58941F7DEBBC001B5EE9 /* GradientBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A0F58931F7DEBBC001B5EE9 /* GradientBarViewController.m */; };
-		1A0F589B1F7E1BA7001B5EE9 /* UINavigationController+extend.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A0F589A1F7E1BA6001B5EE9 /* UINavigationController+extend.m */; };
 		1A0F589E1F7E28EB001B5EE9 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A0F589D1F7E28EB001B5EE9 /* FirstViewController.m */; };
 		1A1511AD1F7B3F1600A12D5E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1511AC1F7B3F1600A12D5E /* AppDelegate.m */; };
 		1A1511B01F7B3F1600A12D5E /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1511AF1F7B3F1600A12D5E /* HomeViewController.m */; };
@@ -18,13 +17,12 @@
 		1A1511BB1F7B3F1600A12D5E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1511BA1F7B3F1600A12D5E /* main.m */; };
 		1A1511C31F7B401D00A12D5E /* RootNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1511C21F7B401D00A12D5E /* RootNavigationViewController.m */; };
 		1A1511D01F7B9D8400A12D5E /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1511CF1F7B9D8000A12D5E /* BaseViewController.m */; };
+		340A2896212EFE4600D4EB0A /* UINavigationController+extend.m in Sources */ = {isa = PBXBuildFile; fileRef = 340A2894212EFE4600D4EB0A /* UINavigationController+extend.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1A0F58921F7DEBBC001B5EE9 /* GradientBarViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GradientBarViewController.h; sourceTree = "<group>"; };
 		1A0F58931F7DEBBC001B5EE9 /* GradientBarViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GradientBarViewController.m; sourceTree = "<group>"; };
-		1A0F58991F7E1BA6001B5EE9 /* UINavigationController+extend.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+extend.h"; sourceTree = "<group>"; };
-		1A0F589A1F7E1BA6001B5EE9 /* UINavigationController+extend.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+extend.m"; sourceTree = "<group>"; };
 		1A0F589C1F7E28EB001B5EE9 /* FirstViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FirstViewController.h; sourceTree = "<group>"; };
 		1A0F589D1F7E28EB001B5EE9 /* FirstViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FirstViewController.m; sourceTree = "<group>"; };
 		1A1511A81F7B3F1600A12D5E /* UINavigationBarDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UINavigationBarDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -41,6 +39,8 @@
 		1A1511CF1F7B9D8000A12D5E /* BaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		1AEA33DA1F7CEE1A00A2D3B4 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1AEA33DB1F7CEE1A00A2D3B4 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		340A2894212EFE4600D4EB0A /* UINavigationController+extend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+extend.m"; sourceTree = "<group>"; };
+		340A2895212EFE4600D4EB0A /* UINavigationController+extend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+extend.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,18 +61,8 @@
 				1A0F58931F7DEBBC001B5EE9 /* GradientBarViewController.m */,
 				1A0F589C1F7E28EB001B5EE9 /* FirstViewController.h */,
 				1A0F589D1F7E28EB001B5EE9 /* FirstViewController.m */,
-				1A0F58951F7DEED0001B5EE9 /* Category */,
 			);
 			path = "页面跳转时NavigationBar渐变效果";
-			sourceTree = "<group>";
-		};
-		1A0F58951F7DEED0001B5EE9 /* Category */ = {
-			isa = PBXGroup;
-			children = (
-				1A0F58991F7E1BA6001B5EE9 /* UINavigationController+extend.h */,
-				1A0F589A1F7E1BA6001B5EE9 /* UINavigationController+extend.m */,
-			);
-			path = Category;
 			sourceTree = "<group>";
 		};
 		1A15119F1F7B3F1600A12D5E = {
@@ -94,6 +84,7 @@
 		1A1511AA1F7B3F1600A12D5E /* UINavigationBarDemo */ = {
 			isa = PBXGroup;
 			children = (
+				340A2893212EFE4600D4EB0A /* Category */,
 				1A0F58911F7DE8D0001B5EE9 /* 页面跳转时NavigationBar渐变效果 */,
 				1A1511AB1F7B3F1600A12D5E /* AppDelegate.h */,
 				1A1511AC1F7B3F1600A12D5E /* AppDelegate.m */,
@@ -110,6 +101,15 @@
 				1AEA33DB1F7CEE1A00A2D3B4 /* Main.storyboard */,
 			);
 			path = UINavigationBarDemo;
+			sourceTree = "<group>";
+		};
+		340A2893212EFE4600D4EB0A /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				340A2894212EFE4600D4EB0A /* UINavigationController+extend.m */,
+				340A2895212EFE4600D4EB0A /* UINavigationController+extend.h */,
+			);
+			path = Category;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -183,7 +183,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1A0F589B1F7E1BA7001B5EE9 /* UINavigationController+extend.m in Sources */,
 				1A1511C31F7B401D00A12D5E /* RootNavigationViewController.m in Sources */,
 				1A1511D01F7B9D8400A12D5E /* BaseViewController.m in Sources */,
 				1A1511B01F7B3F1600A12D5E /* HomeViewController.m in Sources */,
@@ -191,6 +190,7 @@
 				1A1511AD1F7B3F1600A12D5E /* AppDelegate.m in Sources */,
 				1A0F589E1F7E28EB001B5EE9 /* FirstViewController.m in Sources */,
 				1A0F58941F7DEBBC001B5EE9 /* GradientBarViewController.m in Sources */,
+				340A2896212EFE4600D4EB0A /* UINavigationController+extend.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

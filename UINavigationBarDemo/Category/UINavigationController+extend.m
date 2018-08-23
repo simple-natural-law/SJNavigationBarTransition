@@ -153,7 +153,7 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
 
 @end
 
-@implementation UINavigationController (extend)
+@implementation UINavigationController (z_extend)
 
 - (void)setNavigationBarBackgroundColor:(UIColor *)color
 {
@@ -181,33 +181,10 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
 
 - (void)setNavigationBarBackgroundAlpha:(CGFloat)alpha
 {
-    UIView *barBackgroundView = self.navigationBar.subviews.firstObject;
-
-//    if (self.navigationBar.translucent)
-//    {
-//        if (@available(iOS 10.0, *))
-//        {
-//            UIView *bgEffectView = [barBackgroundView valueForKey:@"_backgroundEffectView"];
-//
-//            if (bgEffectView && [self.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault] == nil)
-//            {
-//                bgEffectView.alpha = alpha;
-//            }
-//        }else
-//        {
-//            UIView *adaptiveBackDrop = [barBackgroundView valueForKey:@"_adaptiveBackdrop"];
-//            UIView *backDropEffectView = [adaptiveBackDrop valueForKey:@"_backdropEffectView"];
-//            if (adaptiveBackDrop && backDropEffectView)
-//            {
-//                backDropEffectView.alpha = alpha;
-//            }
-//        }
-//    }
-    
     self.navigationBar.background.alpha = alpha;
     
-    UIView *shadow = barBackgroundView.subviews.firstObject;
-
+    UIView *shadow = self.navigationBar.subviews.firstObject.subviews.firstObject;
+    
     shadow.hidden = (alpha == 0.0);
 }
 
@@ -271,8 +248,6 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
 
 - (UIViewController *)z_popViewControllerAnimated:(BOOL)animated
 {
-    NSLog(@"z_popViewControllerAnimated");
-    
     self.animated = animated;
     
     self.isPush = NO;
@@ -283,8 +258,6 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
 
 - (NSArray<UIViewController *> *)z_popToViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    NSLog(@"z_popToViewController");
-    
     self.animated = animated;
     
     self.isPush = NO;
@@ -295,8 +268,6 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
 
 - (NSArray<UIViewController *> *)z_popToRootViewControllerAnimated:(BOOL)animated
 {
-    NSLog(@"z_popToRootViewControllerAnimated");
-    
     self.animated = animated;
     
     self.isPush = NO;
@@ -307,8 +278,6 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
 
 - (void)z_pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    NSLog(@"z_pushViewController");
-    
     self.animated = animated;
     
     self.isPush = YES;
@@ -353,8 +322,6 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
 #pragma mark- UINavigationControllerDelegate
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    NSLog(@"willShowViewController");
-    
     if (!self.navigationBar.background)
     {
         [self.navigationBar installBackground];
@@ -369,6 +336,10 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
     {
         if (self.navigationBarBackgroundDidChanged)
         {
+            UIView *shadow = self.navigationBar.subviews.firstObject.subviews.firstObject;
+            
+            shadow.hidden = (self.navigationBarAlpha == 0.0);
+            
             if (self.animated)
             {
                 if (self.navigationBarImage)

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 
-@interface UINavigationController (extend)
+@interface UINavigationController (z_extend)
 
 - (void)setNavigationBarBackgroundColor:(UIColor *)color;
 
