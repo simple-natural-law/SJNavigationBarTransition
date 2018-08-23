@@ -2,8 +2,8 @@
 //  UINavigationController+extend.m
 //  SJNavigationBar
 //
-//  Created by 讯心科技 on 2017/7/10.
-//  Copyright © 2017年 讯心科技. All rights reserved.
+//  Created by 如约科技 on 2017/7/10.
+//  Copyright © 2017年 如约科技. All rights reserved.
 //
 
 #import "UINavigationController+extend.h"
