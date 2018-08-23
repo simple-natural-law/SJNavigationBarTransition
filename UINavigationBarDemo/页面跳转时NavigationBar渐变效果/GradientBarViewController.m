@@ -47,7 +47,7 @@
     
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     
-    [self.navigationController setNavigationBarBackgroundColor:[UIColor orangeColor] backgroundAlpha:self.barAlpha];
+    [self.navigationController setNavigationBarBackgroundColor:[UIColor whiteColor] backgroundAlpha:self.barAlpha];
 }
 
 

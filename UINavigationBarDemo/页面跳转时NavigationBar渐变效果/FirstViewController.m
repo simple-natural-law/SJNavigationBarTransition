@@ -42,7 +42,9 @@
     green = b/255.0;
     blue  = c/255.0;
     
-    self.view.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
+    //self.view.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
+    
+    self.view.backgroundColor = [UIColor whiteColor];
 }
 
 - (void)viewWillAppear:(BOOL)animated

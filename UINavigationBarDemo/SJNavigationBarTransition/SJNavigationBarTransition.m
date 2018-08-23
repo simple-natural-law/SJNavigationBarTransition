@@ -305,78 +305,40 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
             
             if (self.animated)
             {
-                if (self.navigationBarImage)
-                {
-                    UIImageView *tempBackground = [[UIImageView alloc] initWithFrame:self.navigationBar.background.frame];
+                UIImageView *tempBackground = [[UIImageView alloc] initWithFrame:self.navigationBar.background.frame];
+                
+                CGAffineTransform transformA = CGAffineTransformMakeTranslation(tempBackground.frame.size.width, 0.0);
+                
+                CGAffineTransform transformB = CGAffineTransformMakeTranslation(-tempBackground.frame.size.width, 0.0);
+                
+                tempBackground.transform = self.isPush ? transformA : transformB;
+                
+                tempBackground.image = self.navigationBarImage;
+                
+                tempBackground.backgroundColor = self.navigationBarColor;
+                
+                tempBackground.alpha = self.navigationBarAlpha;
+                
+                [self.navigationBar insertSubview:tempBackground atIndex:2];
+                
+                [self.topViewController.transitionCoordinator animateAlongsideTransitionInView:self.navigationBar animation:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
                     
-                    CGAffineTransform transformA = CGAffineTransformMakeTranslation(tempBackground.frame.size.width, 0.0);
+                    tempBackground.transform = CGAffineTransformIdentity;
                     
-                    CGAffineTransform transformB = CGAffineTransformMakeTranslation(-tempBackground.frame.size.width, 0.0);
+                    self.navigationBar.background.transform = self.isPush ? transformB : transformA;
                     
-                    tempBackground.transform = self.isPush ? transformA : transformB;
+                } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
                     
-                    tempBackground.image = self.navigationBarImage;
+                    self.navigationBar.background.image = self.navigationBarImage;
                     
-                    tempBackground.backgroundColor = self.navigationBarColor;
+                    self.navigationBar.background.backgroundColor = self.navigationBarColor;
                     
-                    tempBackground.alpha = self.navigationBarAlpha;
+                    [self setNavigationBarBackgroundAlpha:self.navigationBarAlpha];
                     
-                    [self.navigationBar insertSubview:tempBackground atIndex:2];
+                    self.navigationBar.background.transform = CGAffineTransformIdentity;
                     
-                    [self.topViewController.transitionCoordinator animateAlongsideTransitionInView:self.navigationBar animation:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-                        
-                        tempBackground.transform = CGAffineTransformIdentity;
-                        
-                        self.navigationBar.background.transform = self.isPush ? transformB : transformA;
-                        
-                    } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-                        
-                        self.navigationBar.background.image = self.navigationBarImage;
-                        
-                        self.navigationBar.background.backgroundColor = self.navigationBarColor;
-                        
-                        [self setNavigationBarBackgroundAlpha:self.navigationBarAlpha];
-                        
-                        self.navigationBar.background.transform = CGAffineTransformIdentity;
-                        
-                        [tempBackground removeFromSuperview];
-                    }];
-                    
-                }else
-                {
-                    UIView *tempBackground = [[UIView alloc] initWithFrame:self.navigationBar.background.frame];
-                    
-                    CGAffineTransform transformA = CGAffineTransformMakeTranslation(tempBackground.frame.size.width, 0.0);
-                    
-                    CGAffineTransform transformB = CGAffineTransformMakeTranslation(-tempBackground.frame.size.width, 0.0);
-                    
-                    tempBackground.transform = self.isPush ? transformA : transformB;
-                    
-                    tempBackground.backgroundColor = self.navigationBarColor;
-                    
-                    tempBackground.alpha = self.navigationBarAlpha;
-                    
-                    [self.navigationBar insertSubview:tempBackground atIndex:2];
-                    
-                    [self.topViewController.transitionCoordinator animateAlongsideTransitionInView:self.navigationBar animation:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-                        
-                        tempBackground.transform = CGAffineTransformIdentity;
-                        
-                        self.navigationBar.background.transform = self.isPush ? transformB : transformA;
-                        
-                    } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-                        
-                        self.navigationBar.background.image = self.navigationBarImage;
-                        
-                        self.navigationBar.background.backgroundColor = self.navigationBarColor;
-                        
-                        [self setNavigationBarBackgroundAlpha:self.navigationBarAlpha];
-                        
-                        self.navigationBar.background.transform = CGAffineTransformIdentity;
-                        
-                        [tempBackground removeFromSuperview];
-                    }];
-                }
+                    [tempBackground removeFromSuperview];
+                }];
             }else
             {
                 self.navigationBar.background.image = self.navigationBarImage;
@@ -386,26 +348,6 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
                 [self setNavigationBarBackgroundAlpha:self.navigationBarAlpha];
             }
         }
-    }
-}
-
-
-#pragma mark-
-- (CGFloat)colorBrigntness:(UIColor*)aColor
-{
-    CGFloat hue, saturation, brigntness, alpha;
-    
-    [aColor getHue:&hue saturation:&saturation brightness:&brigntness alpha:&alpha];
-    
-    return brigntness;
-}
-
-- (void)dealInteractionChanges:(id<UIViewControllerTransitionCoordinatorContext>)context
-{
-    if ([context isCancelled])
-    {
-        UIViewController *vc = [context viewControllerForKey:UITransitionContextFromViewControllerKey];
-        
     }
 }
 
