@@ -7,7 +7,7 @@
 //
 
 #import "HomeViewController.h"
-#import "UINavigationController+extend.h"
+#import "SJNavigationBarTransition.h"
 
 @interface HomeViewController ()<UITableViewDelegate, UITableViewDataSource>
 

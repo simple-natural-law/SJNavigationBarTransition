@@ -17,7 +17,7 @@
 		1A1511BB1F7B3F1600A12D5E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1511BA1F7B3F1600A12D5E /* main.m */; };
 		1A1511C31F7B401D00A12D5E /* RootNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1511C21F7B401D00A12D5E /* RootNavigationViewController.m */; };
 		1A1511D01F7B9D8400A12D5E /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1511CF1F7B9D8000A12D5E /* BaseViewController.m */; };
-		340A2896212EFE4600D4EB0A /* UINavigationController+extend.m in Sources */ = {isa = PBXBuildFile; fileRef = 340A2894212EFE4600D4EB0A /* UINavigationController+extend.m */; };
+		340A289E212F007B00D4EB0A /* SJNavigationBarTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 340A289D212F007B00D4EB0A /* SJNavigationBarTransition.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -39,8 +39,8 @@
 		1A1511CF1F7B9D8000A12D5E /* BaseViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		1AEA33DA1F7CEE1A00A2D3B4 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1AEA33DB1F7CEE1A00A2D3B4 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		340A2894212EFE4600D4EB0A /* UINavigationController+extend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+extend.m"; sourceTree = "<group>"; };
-		340A2895212EFE4600D4EB0A /* UINavigationController+extend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+extend.h"; sourceTree = "<group>"; };
+		340A289C212F007B00D4EB0A /* SJNavigationBarTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SJNavigationBarTransition.h; sourceTree = "<group>"; };
+		340A289D212F007B00D4EB0A /* SJNavigationBarTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SJNavigationBarTransition.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,7 +84,7 @@
 		1A1511AA1F7B3F1600A12D5E /* UINavigationBarDemo */ = {
 			isa = PBXGroup;
 			children = (
-				340A2893212EFE4600D4EB0A /* Category */,
+				340A289B212F007B00D4EB0A /* SJNavigationBarTransition */,
 				1A0F58911F7DE8D0001B5EE9 /* 页面跳转时NavigationBar渐变效果 */,
 				1A1511AB1F7B3F1600A12D5E /* AppDelegate.h */,
 				1A1511AC1F7B3F1600A12D5E /* AppDelegate.m */,
@@ -103,13 +103,13 @@
 			path = UINavigationBarDemo;
 			sourceTree = "<group>";
 		};
-		340A2893212EFE4600D4EB0A /* Category */ = {
+		340A289B212F007B00D4EB0A /* SJNavigationBarTransition */ = {
 			isa = PBXGroup;
 			children = (
-				340A2894212EFE4600D4EB0A /* UINavigationController+extend.m */,
-				340A2895212EFE4600D4EB0A /* UINavigationController+extend.h */,
+				340A289C212F007B00D4EB0A /* SJNavigationBarTransition.h */,
+				340A289D212F007B00D4EB0A /* SJNavigationBarTransition.m */,
 			);
-			path = Category;
+			path = SJNavigationBarTransition;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -186,11 +186,11 @@
 				1A1511C31F7B401D00A12D5E /* RootNavigationViewController.m in Sources */,
 				1A1511D01F7B9D8400A12D5E /* BaseViewController.m in Sources */,
 				1A1511B01F7B3F1600A12D5E /* HomeViewController.m in Sources */,
+				340A289E212F007B00D4EB0A /* SJNavigationBarTransition.m in Sources */,
 				1A1511BB1F7B3F1600A12D5E /* main.m in Sources */,
 				1A1511AD1F7B3F1600A12D5E /* AppDelegate.m in Sources */,
 				1A0F589E1F7E28EB001B5EE9 /* FirstViewController.m in Sources */,
 				1A0F58941F7DEBBC001B5EE9 /* GradientBarViewController.m in Sources */,
-				340A2896212EFE4600D4EB0A /* UINavigationController+extend.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

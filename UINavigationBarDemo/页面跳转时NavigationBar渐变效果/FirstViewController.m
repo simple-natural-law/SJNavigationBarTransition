@@ -7,7 +7,7 @@
 //
 
 #import "FirstViewController.h"
-#import "UINavigationController+extend.h"
+#import "SJNavigationBarTransition.h"
 
 @interface FirstViewController ()
 {

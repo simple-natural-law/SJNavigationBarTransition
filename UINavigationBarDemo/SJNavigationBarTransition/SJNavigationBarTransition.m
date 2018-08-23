@@ -1,12 +1,12 @@
 //
-//  UINavigationController+extend.m
-//  SJNavigationBar
+//  SJNavigationBarTransition.m
+//  SJNavigationBarTransition
 //
 //  Created by 如约科技 on 2017/7/10.
 //  Copyright © 2017年 如约科技. All rights reserved.
 //
 
-#import "UINavigationController+extend.h"
+#import "SJNavigationBarTransition.h"
 #import <objc/runtime.h>
 
 

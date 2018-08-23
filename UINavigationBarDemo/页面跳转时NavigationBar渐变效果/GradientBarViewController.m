@@ -8,7 +8,7 @@
 
 #import "GradientBarViewController.h"
 #import "FirstViewController.h"
-#import "UINavigationController+extend.h"
+#import "SJNavigationBarTransition.h"
 
 
 @interface GradientBarViewController ()<UITableViewDelegate, UITableViewDataSource>
