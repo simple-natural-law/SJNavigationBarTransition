@@ -184,8 +184,8 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
     self.navigationBar.background.alpha = alpha;
     
     UIView *shadow = self.navigationBar.subviews.firstObject.subviews.firstObject;
-    
-    shadow.hidden = (alpha == 0.0);
+
+    shadow.hidden = (alpha < 0.1);
 }
 
 
@@ -337,8 +337,8 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
         if (self.navigationBarBackgroundDidChanged)
         {
             UIView *shadow = self.navigationBar.subviews.firstObject.subviews.firstObject;
-            
-            shadow.hidden = (self.navigationBarAlpha == 0.0);
+
+            shadow.hidden = (self.navigationBarAlpha < 0.1);
             
             if (self.animated)
             {
