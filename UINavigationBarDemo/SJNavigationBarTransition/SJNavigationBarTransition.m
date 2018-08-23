@@ -215,10 +215,6 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
     SEL pushViewController    = @selector(pushViewController:animated:);
     SEL z_pushViewController  = @selector(z_pushViewController:animated:);
     swizzleMethod(pushViewController, z_pushViewController, [self class]);
-    
-//    SEL shouldPopItem    = @selector(navigationBar:shouldPopItem:);
-//    SEL z_shouldPopItem  = @selector(z_navigationBar:shouldPopItem:);
-//    swizzleMethod(shouldPopItem, z_shouldPopItem, [self class]);
 }
 
 
@@ -284,39 +280,6 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
     
     [self z_pushViewController:viewController animated:animated];
 }
-
-
-
-
-#pragma mark- UINavigationBarDelegate
-// 官方已经实现了这个委托方法，这里使用方法交换来添加所需的额外操作。
-//- (BOOL)z_navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item
-//{
-//    NSLog(@"shouldPopItem");
-    
-//    BOOL shouldPop = [self z_navigationBar:navigationBar shouldPopItem:item];
-    
-//    if (self.topViewController.transitionCoordinator.interactive)
-//    {
-//        if (@available(iOS 10.0, *))
-//        {
-//            [self.topViewController.transitionCoordinator notifyWhenInteractionChangesUsingBlock:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-//
-//                [self dealInteractionChanges:context];
-//            }];
-//
-//        }else
-//        {
-//            [self.topViewController.transitionCoordinator notifyWhenInteractionEndsUsingBlock:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-//
-//                [self dealInteractionChanges:context];
-//            }];
-//        }
-//    }
-//
-//    return shouldPop;
-//}
-
 
 
 #pragma mark- UINavigationControllerDelegate
