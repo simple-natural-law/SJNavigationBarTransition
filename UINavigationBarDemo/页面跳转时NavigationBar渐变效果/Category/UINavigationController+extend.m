@@ -250,15 +250,32 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
 + (void)load
 {
     SEL initWithCoder    = @selector(initWithCoder:);
-    SEL z_initWithCoder  = NSSelectorFromString(@"z_initWithCoder:");
+    SEL z_initWithCoder  = @selector(z_initWithCoder:);
     [self swizzleOriginalSelector:initWithCoder withCurrentSelector:z_initWithCoder];
     
     SEL initWithRootViewController    = @selector(initWithRootViewController:);
-    SEL z_initWithRootViewController  = NSSelectorFromString(@"z_initWithRootViewController:");
+    SEL z_initWithRootViewController  = @selector(z_initWithRootViewController:);
     [self swizzleOriginalSelector:initWithRootViewController withCurrentSelector:z_initWithRootViewController];
     
+    SEL popToViewController    = @selector(popToViewController:animated:);
+    SEL z_popToViewController  = @selector(z_popToViewController:animated:);
+    [self swizzleOriginalSelector:popToViewController withCurrentSelector:z_popToViewController];
+    
+    SEL popViewControllerAnimated    = @selector(popViewControllerAnimated:);
+    SEL z_popViewControllerAnimated  = @selector(z_popViewControllerAnimated:);
+    [self swizzleOriginalSelector:popViewControllerAnimated withCurrentSelector:z_popViewControllerAnimated];
+    
+    SEL popToRootViewControllerAnimated    = @selector(popToRootViewControllerAnimated:);
+    SEL z_popToRootViewControllerAnimated  = @selector(z_popToRootViewControllerAnimated:);
+    [self swizzleOriginalSelector:popToRootViewControllerAnimated withCurrentSelector:z_popToRootViewControllerAnimated];
+    
+    SEL pushViewController    = @selector(pushViewController:animated:);
+    SEL z_pushViewController  = @selector(z_pushViewController:animated:);
+    [self swizzleOriginalSelector:pushViewController withCurrentSelector:z_pushViewController];
+    
+    
     SEL shouldPopItem    = @selector(navigationBar:shouldPopItem:);
-    SEL z_shouldPopItem  = NSSelectorFromString(@"z_navigationBar:shouldPopItem:");
+    SEL z_shouldPopItem  = @selector(z_navigationBar:shouldPopItem:);
     [self swizzleOriginalSelector:shouldPopItem withCurrentSelector:z_shouldPopItem];
 }
 
