@@ -7,7 +7,7 @@
 //
 
 #import "FirstViewController.h"
-#import "UIViewController+Bar.h"
+#import "UINavigationController+extend.h"
 
 @interface FirstViewController ()
 
@@ -26,6 +26,11 @@
     UIBarButtonItem * backButtonItem = [[UIBarButtonItem alloc] init];
     backButtonItem.title = @"Back";
     self.navigationItem.backBarButtonItem = backButtonItem;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
     
     int a = arc4random()%256;
     int b = arc4random()%256;
@@ -36,18 +41,13 @@
     
     if (a%5 == 0)
     {
-        self.navigationBarBackgroundImage = [UIImage imageNamed:@"bar"];
+        [self.navigationController setNavigationBarBackgroundImage:[UIImage imageNamed:@"bar"]];
     }else
     {
-        self.navigationBarBackgroundColor = [UIColor colorWithRed:r green:g blue:blue alpha:1.0];
+        [self.navigationController setNavigationBarBackgroundColor:[UIColor colorWithRed:r green:g blue:blue alpha:1.0]];
     }
     
     self.view.backgroundColor = [UIColor colorWithRed:r green:g blue:blue alpha:1.0];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
 }
 
 - (IBAction)popToRoot:(id)sender

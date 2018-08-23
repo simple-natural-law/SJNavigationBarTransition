@@ -10,7 +10,6 @@
 		1A0F588F1F7CF2C2001B5EE9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AEA33DA1F7CEE1A00A2D3B4 /* LaunchScreen.storyboard */; };
 		1A0F58901F7CF2C2001B5EE9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AEA33DB1F7CEE1A00A2D3B4 /* Main.storyboard */; };
 		1A0F58941F7DEBBC001B5EE9 /* GradientBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A0F58931F7DEBBC001B5EE9 /* GradientBarViewController.m */; };
-		1A0F58981F7DF298001B5EE9 /* UIViewController+Bar.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A0F58971F7DF298001B5EE9 /* UIViewController+Bar.m */; };
 		1A0F589B1F7E1BA7001B5EE9 /* UINavigationController+extend.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A0F589A1F7E1BA6001B5EE9 /* UINavigationController+extend.m */; };
 		1A0F589E1F7E28EB001B5EE9 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A0F589D1F7E28EB001B5EE9 /* FirstViewController.m */; };
 		1A1511AD1F7B3F1600A12D5E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A1511AC1F7B3F1600A12D5E /* AppDelegate.m */; };
@@ -26,8 +25,6 @@
 /* Begin PBXFileReference section */
 		1A0F58921F7DEBBC001B5EE9 /* GradientBarViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GradientBarViewController.h; sourceTree = "<group>"; };
 		1A0F58931F7DEBBC001B5EE9 /* GradientBarViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GradientBarViewController.m; sourceTree = "<group>"; };
-		1A0F58961F7DF298001B5EE9 /* UIViewController+Bar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Bar.h"; sourceTree = "<group>"; };
-		1A0F58971F7DF298001B5EE9 /* UIViewController+Bar.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Bar.m"; sourceTree = "<group>"; };
 		1A0F58991F7E1BA6001B5EE9 /* UINavigationController+extend.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+extend.h"; sourceTree = "<group>"; };
 		1A0F589A1F7E1BA6001B5EE9 /* UINavigationController+extend.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+extend.m"; sourceTree = "<group>"; };
 		1A0F589C1F7E28EB001B5EE9 /* FirstViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FirstViewController.h; sourceTree = "<group>"; };
@@ -78,8 +75,6 @@
 		1A0F58951F7DEED0001B5EE9 /* Category */ = {
 			isa = PBXGroup;
 			children = (
-				1A0F58961F7DF298001B5EE9 /* UIViewController+Bar.h */,
-				1A0F58971F7DF298001B5EE9 /* UIViewController+Bar.m */,
 				1A0F58991F7E1BA6001B5EE9 /* UINavigationController+extend.h */,
 				1A0F589A1F7E1BA6001B5EE9 /* UINavigationController+extend.m */,
 			);
@@ -222,7 +217,6 @@
 				1A1511BB1F7B3F1600A12D5E /* main.m in Sources */,
 				1A1511AD1F7B3F1600A12D5E /* AppDelegate.m in Sources */,
 				1A0F589E1F7E28EB001B5EE9 /* FirstViewController.m in Sources */,
-				1A0F58981F7DF298001B5EE9 /* UIViewController+Bar.m in Sources */,
 				1A0F58941F7DEBBC001B5EE9 /* GradientBarViewController.m in Sources */,
 				1A9E80551F944A5D007534DF /* BarItemSettingViewController.m in Sources */,
 			);

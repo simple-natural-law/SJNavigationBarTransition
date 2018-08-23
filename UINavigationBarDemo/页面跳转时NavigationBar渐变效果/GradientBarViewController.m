@@ -8,7 +8,6 @@
 
 #import "GradientBarViewController.h"
 #import "FirstViewController.h"
-#import "UIViewController+Bar.h"
 #import "UINavigationController+extend.h"
 
 
@@ -36,9 +35,7 @@
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
     
-    self.navigationBarAlpha = 0.0;
-    
-    self.navigationBarBackgroundColor = [UIColor whiteColor];
+    [self.navigationController setNavigationBarBackgroundAlpha:0.0];
 }
 
 
@@ -47,6 +44,8 @@
     [super viewWillAppear:animated];
     
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    
+    [self.navigationController setNavigationBarBackgroundColor:[UIColor whiteColor]];
 }
 
 
@@ -103,7 +102,7 @@
         self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     }
     
-    [self.navigationController setNavigationBarAlpha:alpha];
+    [self.navigationController setNavigationBarBackgroundAlpha:alpha];
 }
 
 
