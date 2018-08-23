@@ -10,12 +10,26 @@
 #import <objc/runtime.h>
 
 
-typedef NS_ENUM(NSInteger, UINavigationBarBackgroundAnimationType) {
+void swizzleMethod (SEL originalSelector, SEL currentSelector, Class class)
+{
+    Method originalMethod = class_getInstanceMethod(class, originalSelector);
+    Method swizzledMethod = class_getInstanceMethod(class, currentSelector);
     
-    UINavigationBarBackgroundAnimationTypeNone = 0,
-    UINavigationBarBackgroundAnimationTypePush = 1,
-    UINavigationBarBackgroundAnimationTypePop  = 2
-};
+    BOOL didAddMethod =
+    class_addMethod(class,
+                    originalSelector,
+                    method_getImplementation(swizzledMethod),
+                    method_getTypeEncoding(swizzledMethod));
+    
+    if (didAddMethod) {
+        class_replaceMethod(class,
+                            currentSelector,
+                            method_getImplementation(originalMethod),
+                            method_getTypeEncoding(originalMethod));
+    } else {
+        method_exchangeImplementations(originalMethod, swizzledMethod);
+    }
+}
 
 
 static char * const backgroundKey = "backgroundKey";
@@ -30,6 +44,12 @@ static char * const backgroundKey = "backgroundKey";
 
 @implementation UINavigationBar (extend)
 
++ (void)load
+{
+    SEL setTranslucent   = @selector(setTranslucent:);
+    SEL z_setTranslucent = @selector(z_setTranslucent:);
+    swizzleMethod(setTranslucent, z_setTranslucent, [self class]);
+}
 
 - (void)installBackground
 {
@@ -53,70 +73,6 @@ static char * const backgroundKey = "backgroundKey";
 }
 
 
-
-- (void)setBackgroundImage:(UIImage *)image andAlpha:(CGFloat)alpha withTransitionCoordinator:(id <UIViewControllerTransitionCoordinator>)transitionCoordinator animation:(UINavigationBarBackgroundAnimationType)animation
-{
-    switch (animation)
-    {
-        case UINavigationBarBackgroundAnimationTypeNone:
-        {
-
-        }
-            break;
-            
-        case UINavigationBarBackgroundAnimationTypePush:
-        {
-            
-            [transitionCoordinator animateAlongsideTransitionInView:self.subviews.firstObject animation:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-                
-                
-                
-            } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-                
-              
-            }];
-        }
-            break;
-            
-        case UINavigationBarBackgroundAnimationTypePop:
-        {
-            
-        }
-            break;
-            
-        default:
-            break;
-    }
-}
-
-
-- (void)setBackgroundImage:(UIImage *)image alpha:(CGFloat)alpha withAnimation:(UINavigationBarBackgroundAnimationType)animation
-{
-    switch (animation)
-    {
-        case UINavigationBarBackgroundAnimationTypeNone:
-        {
-            
-        }
-            break;
-            
-        case UINavigationBarBackgroundAnimationTypePush:
-        {
-            
-        }
-            break;
-            
-        case UINavigationBarBackgroundAnimationTypePop:
-        {
-            
-        }
-            break;
-            
-        default:
-            break;
-    }
-}
-
 #pragma mark- Setter And Getter
 - (void)setBackground:(UIImageView *)background
 {
@@ -126,6 +82,11 @@ static char * const backgroundKey = "backgroundKey";
 - (UIImageView *)background
 {
     return objc_getAssociatedObject(self, backgroundKey);
+}
+
+- (void)z_setTranslucent:(BOOL)translucent
+{
+    [self z_setTranslucent:NO];
 }
 
 @end
@@ -195,27 +156,29 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
     UIView *barBgView = self.navigationBar.subviews.firstObject;
     
     barBgView.alpha = alpha;
+    
+    self.navigationBar.background.alpha = alpha;
 
-    if (self.navigationBar.translucent)
-    {
-        if (@available(iOS 10.0, *))
-        {
-            UIView *bgEffectView = [barBgView valueForKey:@"_backgroundEffectView"];
-
-            if (bgEffectView && [self.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault] == nil)
-            {
-                bgEffectView.alpha = alpha;
-            }
-        }else
-        {
-            UIView *adaptiveBackDrop = [barBgView valueForKey:@"_adaptiveBackdrop"];
-            UIView *backDropEffectView = [adaptiveBackDrop valueForKey:@"_backdropEffectView"];
-            if (adaptiveBackDrop && backDropEffectView)
-            {
-                backDropEffectView.alpha = alpha;
-            }
-        }
-    }
+//    if (self.navigationBar.translucent)
+//    {
+//        if (@available(iOS 10.0, *))
+//        {
+//            UIView *bgEffectView = [barBgView valueForKey:@"_backgroundEffectView"];
+//
+//            if (bgEffectView && [self.navigationBar backgroundImageForBarMetrics:UIBarMetricsDefault] == nil)
+//            {
+//                bgEffectView.alpha = alpha;
+//            }
+//        }else
+//        {
+//            UIView *adaptiveBackDrop = [barBgView valueForKey:@"_adaptiveBackdrop"];
+//            UIView *backDropEffectView = [adaptiveBackDrop valueForKey:@"_backdropEffectView"];
+//            if (adaptiveBackDrop && backDropEffectView)
+//            {
+//                backDropEffectView.alpha = alpha;
+//            }
+//        }
+//    }
     
     UIView *shadow = [self.navigationBar.subviews.firstObject valueForKey:@"_shadowView"];
     
@@ -224,59 +187,35 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
 
 
 #pragma mark- Method Swizzling
-+ (void)swizzleOriginalSelector:(SEL)originalSelector withCurrentSelector:(SEL)currentSelector
-{
-    Class class = [self class];
-    
-    Method originalMethod = class_getInstanceMethod(class, originalSelector);
-    Method swizzledMethod = class_getInstanceMethod(class, currentSelector);
-    
-    BOOL didAddMethod =
-    class_addMethod(class,
-                    originalSelector,
-                    method_getImplementation(swizzledMethod),
-                    method_getTypeEncoding(swizzledMethod));
-    
-    if (didAddMethod) {
-        class_replaceMethod(class,
-                            currentSelector,
-                            method_getImplementation(originalMethod),
-                            method_getTypeEncoding(originalMethod));
-    } else {
-        method_exchangeImplementations(originalMethod, swizzledMethod);
-    }
-}
-
 + (void)load
 {
     SEL initWithCoder    = @selector(initWithCoder:);
     SEL z_initWithCoder  = @selector(z_initWithCoder:);
-    [self swizzleOriginalSelector:initWithCoder withCurrentSelector:z_initWithCoder];
+    swizzleMethod(initWithCoder, z_initWithCoder, [self class]);
     
     SEL initWithRootViewController    = @selector(initWithRootViewController:);
     SEL z_initWithRootViewController  = @selector(z_initWithRootViewController:);
-    [self swizzleOriginalSelector:initWithRootViewController withCurrentSelector:z_initWithRootViewController];
+    swizzleMethod(initWithRootViewController, z_initWithRootViewController, [self class]);
     
     SEL popToViewController    = @selector(popToViewController:animated:);
     SEL z_popToViewController  = @selector(z_popToViewController:animated:);
-    [self swizzleOriginalSelector:popToViewController withCurrentSelector:z_popToViewController];
+    swizzleMethod(popToViewController, z_popToViewController, [self class]);
     
     SEL popViewControllerAnimated    = @selector(popViewControllerAnimated:);
     SEL z_popViewControllerAnimated  = @selector(z_popViewControllerAnimated:);
-    [self swizzleOriginalSelector:popViewControllerAnimated withCurrentSelector:z_popViewControllerAnimated];
+    swizzleMethod(popViewControllerAnimated, z_popViewControllerAnimated, [self class]);
     
     SEL popToRootViewControllerAnimated    = @selector(popToRootViewControllerAnimated:);
     SEL z_popToRootViewControllerAnimated  = @selector(z_popToRootViewControllerAnimated:);
-    [self swizzleOriginalSelector:popToRootViewControllerAnimated withCurrentSelector:z_popToRootViewControllerAnimated];
+    swizzleMethod(popToRootViewControllerAnimated, z_popToRootViewControllerAnimated, [self class]);
     
     SEL pushViewController    = @selector(pushViewController:animated:);
     SEL z_pushViewController  = @selector(z_pushViewController:animated:);
-    [self swizzleOriginalSelector:pushViewController withCurrentSelector:z_pushViewController];
+    swizzleMethod(pushViewController, z_pushViewController, [self class]);
     
-    
-    SEL shouldPopItem    = @selector(navigationBar:shouldPopItem:);
-    SEL z_shouldPopItem  = @selector(z_navigationBar:shouldPopItem:);
-    [self swizzleOriginalSelector:shouldPopItem withCurrentSelector:z_shouldPopItem];
+//    SEL shouldPopItem    = @selector(navigationBar:shouldPopItem:);
+//    SEL z_shouldPopItem  = @selector(z_navigationBar:shouldPopItem:);
+//    swizzleMethod(shouldPopItem, z_shouldPopItem, [self class]);
 }
 
 
@@ -284,6 +223,8 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
 - (instancetype)z_initWithCoder:(NSCoder *)aDecoder
 {
     UINavigationController *nav = [self z_initWithCoder:aDecoder];
+    
+    nav.navigationBar.translucent = NO;
     
     nav.delegate = nav;
 
@@ -293,6 +234,8 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
 - (instancetype)z_initWithRootViewController:(UIViewController *)rootViewController
 {
     UINavigationController *nav = [self z_initWithRootViewController:rootViewController];
+    
+    nav.navigationBar.translucent = NO;
     
     nav.delegate = nav;
     
@@ -352,32 +295,32 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
 
 #pragma mark- UINavigationBarDelegate
 // 官方已经实现了这个委托方法，这里使用方法交换来添加所需的额外操作。
-- (BOOL)z_navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item
-{
-    NSLog(@"shouldPopItem");
+//- (BOOL)z_navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item
+//{
+//    NSLog(@"shouldPopItem");
     
-    BOOL shouldPop = [self z_navigationBar:navigationBar shouldPopItem:item];
+//    BOOL shouldPop = [self z_navigationBar:navigationBar shouldPopItem:item];
     
-    if (self.topViewController.transitionCoordinator.interactive)
-    {
-        if (@available(iOS 10.0, *))
-        {
-            [self.topViewController.transitionCoordinator notifyWhenInteractionChangesUsingBlock:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-                
-                [self dealInteractionChanges:context];
-            }];
-            
-        }else
-        {
-            [self.topViewController.transitionCoordinator notifyWhenInteractionEndsUsingBlock:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-                
-                [self dealInteractionChanges:context];
-            }];
-        }
-    }
-    
-    return shouldPop;
-}
+//    if (self.topViewController.transitionCoordinator.interactive)
+//    {
+//        if (@available(iOS 10.0, *))
+//        {
+//            [self.topViewController.transitionCoordinator notifyWhenInteractionChangesUsingBlock:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+//
+//                [self dealInteractionChanges:context];
+//            }];
+//
+//        }else
+//        {
+//            [self.topViewController.transitionCoordinator notifyWhenInteractionEndsUsingBlock:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+//
+//                [self dealInteractionChanges:context];
+//            }];
+//        }
+//    }
+//
+//    return shouldPop;
+//}
 
 
 #pragma mark- UINavigationControllerDelegate
@@ -393,7 +336,7 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
         
         self.navigationBar.background.backgroundColor = self.navigationBarColor;
         
-        self.navigationBar.background.alpha = self.navigationBarAlpha;
+        [self setNavigationBarBackgroundAlpha:self.navigationBarAlpha];
         
     }else
     {
@@ -429,7 +372,7 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
                     
                     self.navigationBar.background.backgroundColor = self.navigationBarColor;
                     
-                    self.navigationBar.background.alpha = self.navigationBarAlpha;
+                    [self setNavigationBarBackgroundAlpha:self.navigationBarAlpha];
                     
                     self.navigationBar.background.transform = CGAffineTransformIdentity;
                     
@@ -464,7 +407,7 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
                     
                     self.navigationBar.background.backgroundColor = self.navigationBarColor;
                     
-                    self.navigationBar.background.alpha = self.navigationBarAlpha;
+                    [self setNavigationBarBackgroundAlpha:self.navigationBarAlpha];
                     
                     self.navigationBar.background.transform = CGAffineTransformIdentity;
                     
@@ -477,7 +420,7 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
             
             self.navigationBar.background.backgroundColor = self.navigationBarColor;
             
-            self.navigationBar.background.alpha = self.navigationBarAlpha;
+            [self setNavigationBarBackgroundAlpha:self.navigationBarAlpha];
         }
     }
 }

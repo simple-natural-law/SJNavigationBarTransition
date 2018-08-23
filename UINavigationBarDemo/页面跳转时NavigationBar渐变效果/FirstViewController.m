@@ -10,7 +10,15 @@
 #import "UINavigationController+extend.h"
 
 @interface FirstViewController ()
-
+{
+    int a;
+    int b;
+    int c;
+    
+    CGFloat red;
+    CGFloat green;
+    CGFloat blue;
+}
 
 @end
 
@@ -26,28 +34,28 @@
     UIBarButtonItem * backButtonItem = [[UIBarButtonItem alloc] init];
     backButtonItem.title = @"Back";
     self.navigationItem.backBarButtonItem = backButtonItem;
+    
+    a = arc4random()%256;
+    b = arc4random()%256;
+    c = arc4random()%256;
+    red   = a/255.0;
+    green = b/255.0;
+    blue  = c/255.0;
+    
+    self.view.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    int a = arc4random()%256;
-    int b = arc4random()%256;
-    int c = arc4random()%256;
-    CGFloat r = a/255.0;
-    CGFloat g = b/255.0;
-    CGFloat blue = c/255.0;
-    
     if (a%5 == 0)
     {
         [self.navigationController setNavigationBarBackgroundImage:[UIImage imageNamed:@"bar"]];
     }else
     {
-        [self.navigationController setNavigationBarBackgroundColor:[UIColor colorWithRed:r green:g blue:blue alpha:1.0]];
+        [self.navigationController setNavigationBarBackgroundColor:[UIColor colorWithRed:red green:green blue:blue alpha:1.0]];
     }
-    
-    self.view.backgroundColor = [UIColor colorWithRed:r green:g blue:blue alpha:1.0];
 }
 
 - (IBAction)popToRoot:(id)sender
@@ -58,8 +66,6 @@
 - (IBAction)pushNext:(id)sender
 {
     UIViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"FirstViewController"];
-    
-    int a = arc4random()%256;
     
     [self.navigationController pushViewController:vc animated:!(a%5 == 0)];
 }

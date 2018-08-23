@@ -17,6 +17,8 @@
 
 @property (weak, nonatomic) UIColor *defaultTintColor;
 
+@property (assign, nonatomic) CGFloat barAlpha;
+
 @end
 
 @implementation GradientBarViewController
@@ -35,7 +37,7 @@
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
     
-    [self.navigationController setNavigationBarBackgroundAlpha:0.0];
+    self.barAlpha = 0.0;
 }
 
 
@@ -44,6 +46,8 @@
     [super viewWillAppear:animated];
     
     self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    
+    [self.navigationController setNavigationBarBackgroundAlpha:self.barAlpha];
     
     [self.navigationController setNavigationBarBackgroundColor:[UIColor whiteColor]];
 }
@@ -86,23 +90,23 @@
 {
     CGFloat offsetY = scrollView.contentOffset.y;
     
-    CGFloat alpha = offsetY/186.0;
+    self.barAlpha = offsetY/186.0;
     
-    if (alpha >= 1.0)
+    if (self.barAlpha >= 1.0)
     {
-        alpha = 1.0;
+        self.barAlpha = 1.0;
         
         self.navigationController.navigationBar.tintColor = self.defaultTintColor;
     }
     
-    if (alpha <= 0.0)
+    if (self.barAlpha <= 0.0)
     {
-        alpha = 0.0;
+        self.barAlpha = 0.0;
         
         self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
     }
     
-    [self.navigationController setNavigationBarBackgroundAlpha:alpha];
+    [self.navigationController setNavigationBarBackgroundAlpha:self.barAlpha];
 }
 
 
