@@ -150,6 +150,7 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
 
 @implementation UINavigationController (z_extend)
 
+#pragma mark- Methods
 - (void)setNavigationBarBackgroundColor:(UIColor *)color
 {
     [self setNavigationBarBackgroundColor:color backgroundAlpha:1.0];
@@ -211,7 +212,6 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
 }
 
 
-#pragma mark- init
 - (instancetype)z_initWithCoder:(NSCoder *)aDecoder
 {
     UINavigationController *nav = [self z_initWithCoder:aDecoder];
@@ -292,9 +292,9 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
     }else
     {
         UIView *barBackgroundView = self.navigationBar.subviews.firstObject;
-        
+
         UIView *shadow = barBackgroundView.subviews.lastObject;
-        
+
         shadow.hidden = (self.navigationBarAlpha < 0.1);
         
         /// 注意：第一次push的时候，`transitionCoordinator`的`animateAlongsideTransition...`系列方法设置的动画没有动画效果，会直接跳转到结果值。因此，这里采用另一种动画方案。
@@ -302,41 +302,9 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
         {
             if (self.animated)
             {
-                UIViewController *fromVC = [self.topViewController.transitionCoordinator viewControllerForKey:UITransitionContextFromViewControllerKey];
-                UIViewController *toVC = [self.topViewController.transitionCoordinator viewControllerForKey:UITransitionContextToViewControllerKey];
-                
-                UIImageView *fromBar = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, fromVC.view.frame.size.height - [UIScreen mainScreen].bounds.size.height, barBackgroundView.bounds.size.width, barBackgroundView.bounds.size.height)];
-
-                fromBar.image = self.navigationBar.background.image;
-                fromBar.backgroundColor = self.navigationBar.background.backgroundColor;
-                fromBar.alpha = self.navigationBar.background.alpha;
-                [fromVC.view addSubview:fromBar];
-                [fromVC.view bringSubviewToFront:fromBar];
-                
-                UIImageView *toBar = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, toVC.view.frame.size.height - [UIScreen mainScreen].bounds.size.height, barBackgroundView.bounds.size.width, barBackgroundView.bounds.size.height)];
-                toBar.image = self.navigationBarImage;
-                toBar.backgroundColor = self.navigationBarColor;
-                toBar.alpha = self.navigationBarAlpha;
-                [toVC.view addSubview:toBar];
-                [toVC.view bringSubviewToFront:toBar];
-                
-                self.navigationBar.background.hidden = YES;
-                
-                [self.topViewController.transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-                    
-                    
-                } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-                    
-                    [self updateNavigationBarAppearance];
-                    
-                    self.navigationBar.background.hidden = NO;
-                    
-                    [fromBar removeFromSuperview];
-                    [toBar removeFromSuperview];
-                }];
+                [self addFakeNavigationBarToViewController];
                 
                 self.transitionCoordinatorAnimationEffective = YES;
-                
             }else
             {
                 [self updateNavigationBarAppearance];
@@ -345,44 +313,7 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
         {
             if (self.animated)
             {
-                UIImageView *tempBackground = [[UIImageView alloc] initWithFrame:self.navigationBar.background.frame];
-                
-                CGAffineTransform transformA = CGAffineTransformMakeTranslation(tempBackground.frame.size.width, 0.0);
-                
-                CGAffineTransform transformB = CGAffineTransformMakeTranslation(-tempBackground.frame.size.width, 0.0);
-                
-                tempBackground.backgroundColor = self.navigationBarColor;
-                
-                tempBackground.image = self.navigationBarImage;
-                
-                tempBackground.alpha = self.navigationBarAlpha;
-                
-                if (self.isPush)
-                {
-                    tempBackground.transform = transformA;
-                    
-                    [barBackgroundView insertSubview:tempBackground aboveSubview:self.navigationBar.background];
-                }else
-                {
-                    tempBackground.transform = transformB;
-                    
-                    [barBackgroundView insertSubview:tempBackground belowSubview:self.navigationBar.background];
-                }
-                
-                [self.topViewController.transitionCoordinator animateAlongsideTransitionInView:barBackgroundView animation:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-                    
-                    tempBackground.transform = CGAffineTransformIdentity;
-                    
-                    self.navigationBar.background.transform = self.isPush ? transformB : transformA;
-                    
-                } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-                    
-                    [self updateNavigationBarAppearance];
-                    
-                    self.navigationBar.background.transform = CGAffineTransformIdentity;
-                    
-                    [tempBackground removeFromSuperview];
-                }];
+                [self setNavigationBarAnimation];
             }else
             {
                 [self updateNavigationBarAppearance];
@@ -403,6 +334,89 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
     [self setNavigationBarBackgroundAlpha:self.navigationBarAlpha];
 }
 
+/// 使用视图控制器的转场动画协调器`transitionCoordinator`来设置导航栏转场动画
+- (void)setNavigationBarAnimation
+{
+    UIView *barBackgroundView = self.navigationBar.subviews.firstObject;
+    
+    UIImageView *tempBackground = [[UIImageView alloc] initWithFrame:self.navigationBar.background.frame];
+    
+    CGAffineTransform transformA = CGAffineTransformMakeTranslation(tempBackground.frame.size.width, 0.0);
+    
+    CGAffineTransform transformB = CGAffineTransformMakeTranslation(-tempBackground.frame.size.width, 0.0);
+    
+    tempBackground.backgroundColor = self.navigationBarColor;
+    
+    tempBackground.image = self.navigationBarImage;
+    
+    tempBackground.alpha = self.navigationBarAlpha;
+    
+    if (self.isPush)
+    {
+        tempBackground.transform = transformA;
+        
+        [barBackgroundView insertSubview:tempBackground aboveSubview:self.navigationBar.background];
+    }else
+    {
+        tempBackground.transform = transformB;
+        
+        [barBackgroundView insertSubview:tempBackground belowSubview:self.navigationBar.background];
+    }
+    
+    [self.topViewController.transitionCoordinator animateAlongsideTransitionInView:barBackgroundView animation:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        
+        tempBackground.transform = CGAffineTransformIdentity;
+        
+        self.navigationBar.background.transform = self.isPush ? transformB : transformA;
+        
+    } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        
+        [self updateNavigationBarAppearance];
+        
+        self.navigationBar.background.transform = CGAffineTransformIdentity;
+        
+        [tempBackground removeFromSuperview];
+    }];
+}
+
+/// 分别在 fromVC 和 toVC 中添加假的导航栏背景来伪造导航栏转场动画
+- (void)addFakeNavigationBarToViewController
+{
+    UIView *barBackgroundView = self.navigationBar.subviews.firstObject;
+    
+    UIViewController *fromVC = [self.topViewController.transitionCoordinator viewControllerForKey:UITransitionContextFromViewControllerKey];
+    UIViewController *toVC = [self.topViewController.transitionCoordinator viewControllerForKey:UITransitionContextToViewControllerKey];
+    
+    UIImageView *fromBar = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, fromVC.view.frame.size.height - [UIScreen mainScreen].bounds.size.height, barBackgroundView.bounds.size.width, barBackgroundView.bounds.size.height)];
+    
+    fromBar.image = self.navigationBar.background.image;
+    fromBar.backgroundColor = self.navigationBar.background.backgroundColor;
+    fromBar.alpha = self.navigationBar.background.alpha;
+    [fromVC.view addSubview:fromBar];
+    [fromVC.view bringSubviewToFront:fromBar];
+    
+    UIImageView *toBar = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, toVC.view.frame.size.height - [UIScreen mainScreen].bounds.size.height, barBackgroundView.bounds.size.width, barBackgroundView.bounds.size.height)];
+    toBar.image = self.navigationBarImage;
+    toBar.backgroundColor = self.navigationBarColor;
+    toBar.alpha = self.navigationBarAlpha;
+    [toVC.view addSubview:toBar];
+    [toVC.view bringSubviewToFront:toBar];
+    
+    self.navigationBar.background.hidden = YES;
+    
+    [self.topViewController.transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        
+        
+    } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+        
+        [self updateNavigationBarAppearance];
+        
+        self.navigationBar.background.hidden = NO;
+        
+        [fromBar removeFromSuperview];
+        [toBar removeFromSuperview];
+    }];
+}
 
 #pragma mark- Setter And Getter
 - (void)setTransitionCoordinatorAnimationEffective:(BOOL)transitionCoordinatorAnimationEffective
