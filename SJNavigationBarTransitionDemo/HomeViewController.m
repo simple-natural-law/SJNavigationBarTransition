@@ -24,7 +24,7 @@
     
     self.title = @"SJNavigationBarTransitionDemo";
     
-    self.dataArray = @[@{@"title":@"页面跳转时NavigationBar渐变效果", @"target":@"GradientBarViewController"},@{@"title":@"测试", @"target":@"TestViewController"}];
+    self.dataArray = @[@{@"title":@"页面跳转时NavigationBar渐变效果", @"target":@"TransparentBarViewController"},@{@"title":@"测试", @"target":@"TestViewController"}];
 }
 
 

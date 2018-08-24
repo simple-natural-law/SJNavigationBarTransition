@@ -74,7 +74,7 @@
         <!--NavigationBar渐变切换-->
         <scene sceneID="6hk-ra-3qc">
             <objects>
-                <viewController storyboardIdentifier="GradientBarViewController" title="NavigationBar渐变切换" id="tps-ge-jGx" customClass="GradientBarViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TransparentBarViewController" title="NavigationBar渐变切换" id="tps-ge-jGx" customClass="TransparentBarViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="PVG-Bv-9G7"/>
                         <viewControllerLayoutGuide type="bottom" id="xCA-q3-F4R"/>

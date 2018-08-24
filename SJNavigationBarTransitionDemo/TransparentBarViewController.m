@@ -1,17 +1,17 @@
 //
-//  GradientBarViewController.m
+//  TransparentBarViewController.m
 //  SJNavigationBarTransition
 //
 //  Created by 如约科技 on 2017/9/29.
 //  Copyright © 2017年 如约科技. All rights reserved.
 //
 
-#import "GradientBarViewController.h"
+#import "TransparentBarViewController.h"
 #import "TestViewController.h"
 #import "SJNavigationBarTransition.h"
 
 
-@interface GradientBarViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface TransparentBarViewController ()<UITableViewDelegate, UITableViewDataSource>
 
 @property (weak, nonatomic) IBOutlet UITableView *tableview;
 
@@ -21,7 +21,7 @@
 
 @end
 
-@implementation GradientBarViewController
+@implementation TransparentBarViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

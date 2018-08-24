@@ -11,7 +11,7 @@
 		340E1322212F110F00D26210 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 340E1321212F110F00D26210 /* main.m */; };
 		340E132B212F114700D26210 /* SJNavigationBarTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 340E132A212F114700D26210 /* SJNavigationBarTransition.m */; };
 		340E1331212F115300D26210 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 340E132F212F115300D26210 /* TestViewController.m */; };
-		340E1332212F115300D26210 /* GradientBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 340E1330212F115300D26210 /* GradientBarViewController.m */; };
+		340E1332212F115300D26210 /* TransparentBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 340E1330212F115300D26210 /* TransparentBarViewController.m */; };
 		340E133C212F119D00D26210 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 340E1334212F119C00D26210 /* AppDelegate.m */; };
 		340E133D212F119D00D26210 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 340E1337212F119C00D26210 /* BaseViewController.m */; };
 		340E133E212F119D00D26210 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 340E1339212F119D00D26210 /* HomeViewController.m */; };
@@ -26,10 +26,10 @@
 		340E1321212F110F00D26210 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		340E1329212F114700D26210 /* SJNavigationBarTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SJNavigationBarTransition.h; sourceTree = "<group>"; };
 		340E132A212F114700D26210 /* SJNavigationBarTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SJNavigationBarTransition.m; sourceTree = "<group>"; };
-		340E132D212F115300D26210 /* GradientBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientBarViewController.h; sourceTree = "<group>"; };
+		340E132D212F115300D26210 /* TransparentBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransparentBarViewController.h; sourceTree = "<group>"; };
 		340E132E212F115300D26210 /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
 		340E132F212F115300D26210 /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
-		340E1330212F115300D26210 /* GradientBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientBarViewController.m; sourceTree = "<group>"; };
+		340E1330212F115300D26210 /* TransparentBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TransparentBarViewController.m; sourceTree = "<group>"; };
 		340E1334212F119C00D26210 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		340E1335212F119C00D26210 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		340E1336212F119C00D26210 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
@@ -77,8 +77,8 @@
 				340E1337212F119C00D26210 /* BaseViewController.m */,
 				340E1338212F119D00D26210 /* HomeViewController.h */,
 				340E1339212F119D00D26210 /* HomeViewController.m */,
-				340E132D212F115300D26210 /* GradientBarViewController.h */,
-				340E1330212F115300D26210 /* GradientBarViewController.m */,
+				340E132D212F115300D26210 /* TransparentBarViewController.h */,
+				340E1330212F115300D26210 /* TransparentBarViewController.m */,
 				340E132E212F115300D26210 /* TestViewController.h */,
 				340E132F212F115300D26210 /* TestViewController.m */,
 				340E131B212F110F00D26210 /* Assets.xcassets */,
@@ -172,7 +172,7 @@
 				340E1322212F110F00D26210 /* main.m in Sources */,
 				340E133C212F119D00D26210 /* AppDelegate.m in Sources */,
 				340E1331212F115300D26210 /* TestViewController.m in Sources */,
-				340E1332212F115300D26210 /* GradientBarViewController.m in Sources */,
+				340E1332212F115300D26210 /* TransparentBarViewController.m in Sources */,
 				340E133D212F119D00D26210 /* BaseViewController.m in Sources */,
 				340E132B212F114700D26210 /* SJNavigationBarTransition.m in Sources */,
 				340E133E212F119D00D26210 /* HomeViewController.m in Sources */,
