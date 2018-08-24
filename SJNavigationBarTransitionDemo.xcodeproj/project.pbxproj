@@ -105,9 +105,9 @@
 			isa = PBXGroup;
 			children = (
 				340E132D212F115300D26210 /* GradientBarViewController.h */,
+				340E1330212F115300D26210 /* GradientBarViewController.m */,
 				340E132E212F115300D26210 /* FirstViewController.h */,
 				340E132F212F115300D26210 /* FirstViewController.m */,
-				340E1330212F115300D26210 /* GradientBarViewController.m */,
 			);
 			path = "页面跳转时NavigationBar渐变效果";
 			sourceTree = "<group>";
