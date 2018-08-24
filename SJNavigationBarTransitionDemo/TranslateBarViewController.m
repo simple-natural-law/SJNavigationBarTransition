@@ -26,7 +26,10 @@
 {
     [super viewWillAppear:animated];
     
-    [self.navigationController setNavigationBarBackgroundColor:[UIColor lightGrayColor]];
+    if ( (arc4random()%256) % 2 == 0)
+    {
+        [self.navigationController setNavigationBarBackgroundColor:[UIColor lightGrayColor]];
+    }
 }
 
 
