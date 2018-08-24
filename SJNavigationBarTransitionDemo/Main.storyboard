@@ -123,6 +123,42 @@
             </objects>
             <point key="canvasLocation" x="630" y="-54"/>
         </scene>
+        <!--垂直移动导航栏-->
+        <scene sceneID="UEp-Bf-CUr">
+            <objects>
+                <viewController storyboardIdentifier="TranslateBarViewController" title="垂直移动导航栏" id="LZn-n1-Esk" customClass="TranslateBarViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="cww-8S-j4P"/>
+                        <viewControllerLayoutGuide type="bottom" id="bTf-IV-Xoo"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="TAS-mX-Nic">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8E3-tg-RYR">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <connections>
+                                    <outlet property="delegate" destination="LZn-n1-Esk" id="bwX-dS-mCi"/>
+                                </connections>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="8E3-tg-RYR" firstAttribute="top" secondItem="cww-8S-j4P" secondAttribute="bottom" id="5dz-DF-WTI"/>
+                            <constraint firstAttribute="trailing" secondItem="8E3-tg-RYR" secondAttribute="trailing" id="Vi6-8O-Qte"/>
+                            <constraint firstItem="bTf-IV-Xoo" firstAttribute="top" secondItem="8E3-tg-RYR" secondAttribute="bottom" id="efW-z6-tzV"/>
+                            <constraint firstItem="8E3-tg-RYR" firstAttribute="leading" secondItem="TAS-mX-Nic" secondAttribute="leading" id="kOL-RS-Zg6"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="webview" destination="8E3-tg-RYR" id="ngb-yM-b9h"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yDY-it-D26" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1396" y="-54.422788605697157"/>
+        </scene>
         <!--测试页面-->
         <scene sceneID="bwY-vN-3Et">
             <objects>

@@ -62,7 +62,8 @@ void swizzleMethod (SEL originalSelector, SEL currentSelector, Class class)
 @end
 
 
-
+////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
 
 
 static char * const backgroundKey = "backgroundKey";
@@ -305,7 +306,6 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
     {
         if (self.navigationBar.background.image == self.navigationBarImage && self.self.navigationBar.background.backgroundColor == self.navigationBarColor && self.navigationBar.background.alpha == self.navigationBarAlpha)
         {
-            NSLog(@"NavigationBar Appearance is same.");
             return;
         }
         

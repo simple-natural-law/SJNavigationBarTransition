@@ -17,6 +17,7 @@
 		340E133E212F119D00D26210 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 340E1339212F119D00D26210 /* HomeViewController.m */; };
 		340E1341212F11BC00D26210 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 340E133F212F11BC00D26210 /* LaunchScreen.storyboard */; };
 		340E1342212F11BC00D26210 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 340E1340212F11BC00D26210 /* Main.storyboard */; };
+		3419AEBB21304C1D0074292B /* TranslateBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3419AEBA21304C1D0074292B /* TranslateBarViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,8 @@
 		340E1339212F119D00D26210 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
 		340E133F212F11BC00D26210 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		340E1340212F11BC00D26210 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		3419AEB921304C1D0074292B /* TranslateBarViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TranslateBarViewController.h; sourceTree = "<group>"; };
+		3419AEBA21304C1D0074292B /* TranslateBarViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TranslateBarViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +84,8 @@
 				340E1330212F115300D26210 /* TransparentBarViewController.m */,
 				340E132E212F115300D26210 /* TestViewController.h */,
 				340E132F212F115300D26210 /* TestViewController.m */,
+				3419AEB921304C1D0074292B /* TranslateBarViewController.h */,
+				3419AEBA21304C1D0074292B /* TranslateBarViewController.m */,
 				340E131B212F110F00D26210 /* Assets.xcassets */,
 				340E133F212F11BC00D26210 /* LaunchScreen.storyboard */,
 				340E1340212F11BC00D26210 /* Main.storyboard */,
@@ -170,6 +175,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				340E1322212F110F00D26210 /* main.m in Sources */,
+				3419AEBB21304C1D0074292B /* TranslateBarViewController.m in Sources */,
 				340E133C212F119D00D26210 /* AppDelegate.m in Sources */,
 				340E1331212F115300D26210 /* TestViewController.m in Sources */,
 				340E1332212F115300D26210 /* TransparentBarViewController.m in Sources */,
@@ -233,7 +239,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -285,7 +291,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
