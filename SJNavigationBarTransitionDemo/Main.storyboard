@@ -71,10 +71,10 @@
             </objects>
             <point key="canvasLocation" x="-126" y="-53"/>
         </scene>
-        <!--NavigationBar渐变切换-->
+        <!--透明导航栏-->
         <scene sceneID="6hk-ra-3qc">
             <objects>
-                <viewController storyboardIdentifier="TransparentBarViewController" title="NavigationBar渐变切换" id="tps-ge-jGx" customClass="TransparentBarViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TransparentBarViewController" title="透明导航栏" id="tps-ge-jGx" customClass="TransparentBarViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="PVG-Bv-9G7"/>
                         <viewControllerLayoutGuide type="bottom" id="xCA-q3-F4R"/>
@@ -173,10 +173,10 @@
             </objects>
             <point key="canvasLocation" x="-127" y="766"/>
         </scene>
-        <!--Base View Controller-->
+        <!--测试页面-->
         <scene sceneID="RNk-oT-7KF">
             <objects>
-                <viewController storyboardIdentifier="SameAppearanceViewController" id="Fvn-wE-zhu" customClass="BaseViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SameAppearanceViewController" title="测试页面" id="Fvn-wE-zhu" customClass="BaseViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="w9u-jm-uLe"/>
                         <viewControllerLayoutGuide type="bottom" id="vaU-Dd-ju5"/>
