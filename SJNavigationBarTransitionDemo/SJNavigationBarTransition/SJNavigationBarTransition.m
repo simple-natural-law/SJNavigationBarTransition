@@ -44,7 +44,7 @@ void swizzleMethod (SEL originalSelector, SEL currentSelector, Class class)
     swizzleMethod(setBackgroundColor, z_setBackgroundColor, [self class]);
 }
 
-
+/// 设置导航栏透明时，防止UIKit框架内部重置`_UIBarBackground`的颜色。
 - (void)z_setBackgroundColor:(UIColor *)backgroundColor
 {
     if ([self isMemberOfClass:NSClassFromString(@"_UIBarBackground")])
@@ -106,6 +106,7 @@ static char * const backgroundKey = "backgroundKey";
     return objc_getAssociatedObject(self, backgroundKey);
 }
 
+/// SJNavigationBarTransition暂不支持半透明导航栏
 - (void)z_setTranslucent:(BOOL)translucent
 {
     [self z_setTranslucent:NO];
@@ -118,7 +119,7 @@ static char * const backgroundKey = "backgroundKey";
 ////////////////////////////////////////////////////////////////////////////
 
 
-static char * const isFirstPushKey = "isFirstPushKey";
+static char * const transitionCoordinatorAnimationEffectiveKey = "transitionCoordinatorAnimationEffectiveKey";
 static char * const animatedKey = "animatedKey";
 static char * const isPushKey   = "isPushKey";
 static char * const navigationBarAlphaKey = "navigationBarAlphaKey";
@@ -127,8 +128,8 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
 
 @interface UINavigationController  ()<UINavigationBarDelegate,UINavigationControllerDelegate>
 
-/// 是否是第一次push（并非设置导航控制器的根视图控制器）
-@property (nonatomic, assign) BOOL isFirstPush;
+/// 转场动画协调器`transitionCoordinator`设置的动画是否已经生效
+@property (nonatomic, assign) BOOL transitionCoordinatorAnimationEffective;
 
 /// 是否动画设置导航栏背景颜色或者背景图片
 @property (nonatomic, assign) BOOL animated;
@@ -217,7 +218,7 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
     
     nav.navigationBar.translucent = NO;
     
-    nav.isFirstPush = YES;
+    nav.transitionCoordinatorAnimationEffective = NO;
     
     nav.delegate = nav;
 
@@ -230,7 +231,7 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
     
     nav.navigationBar.translucent = NO;
     
-    nav.isFirstPush = YES;
+    nav.transitionCoordinatorAnimationEffective = NO;
     
     nav.delegate = nav;
     
@@ -283,6 +284,7 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
 {
     if (!self.navigationBar.background)
     {
+        /// 将navigationBar的`_UIBarBackground`设置为透明色后，给导航栏添加一个background，通过设置该background的相关属性来控制导航栏的外观。
         [self.navigationBar installBackground];
         
         self.navigationBar.background.image = self.navigationBarImage;
@@ -299,22 +301,23 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
         
         shadow.hidden = (self.navigationBarAlpha < 0.1);
         
-        if (self.isFirstPush)
+        /// 注意：第一次push的时候，`transitionCoordinator`的`animateAlongsideTransition...`系列方法设置的动画没有动画效果，会直接跳转到结果值。因此，这里采用另一种动画方案。
+        if (!self.transitionCoordinatorAnimationEffective)
         {
-            self.isFirstPush = NO;
-            
             if (self.animated)
             {
                 UIViewController *fromVC = [self.topViewController.transitionCoordinator viewControllerForKey:UITransitionContextFromViewControllerKey];
                 UIViewController *toVC = [self.topViewController.transitionCoordinator viewControllerForKey:UITransitionContextToViewControllerKey];
-                UIImageView *viewA = [[UIImageView alloc] initWithFrame:barBackgroundView.bounds];
+                
+                UIImageView *viewA = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, fromVC.view.frame.size.height - [UIScreen mainScreen].bounds.size.height, barBackgroundView.bounds.size.width, barBackgroundView.bounds.size.height)];
+
                 viewA.image = self.navigationBar.background.image;
                 viewA.backgroundColor = self.navigationBar.background.backgroundColor;
                 viewA.alpha = self.navigationBar.background.alpha;
                 [fromVC.view addSubview:viewA];
                 [fromVC.view bringSubviewToFront:viewA];
                 
-                UIImageView *viewB = [[UIImageView alloc] initWithFrame:barBackgroundView.bounds];
+                UIImageView *viewB = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, toVC.view.frame.size.height - [UIScreen mainScreen].bounds.size.height, barBackgroundView.bounds.size.width, barBackgroundView.bounds.size.height)];
                 viewB.image = self.navigationBarImage;
                 viewB.backgroundColor = self.navigationBarColor;
                 viewB.alpha = self.navigationBarAlpha;
@@ -339,6 +342,8 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
                     [viewA removeFromSuperview];
                     [viewB removeFromSuperview];
                 }];
+                
+                self.transitionCoordinatorAnimationEffective = YES;
                 
             }else
             {
@@ -408,16 +413,16 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
 
 
 #pragma mark- Setter And Getter
-- (void)setIsFirstPush:(BOOL)isFirstPush
+- (void)setTransitionCoordinatorAnimationEffective:(BOOL)transitionCoordinatorAnimationEffective
 {
-    objc_setAssociatedObject(self, isFirstPushKey, @(isFirstPush), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, transitionCoordinatorAnimationEffectiveKey, @(transitionCoordinatorAnimationEffective), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
-- (BOOL)isFirstPush
+- (BOOL)transitionCoordinatorAnimationEffective
 {
-    id isFirstPush = objc_getAssociatedObject(self, isFirstPushKey);
+    id transitionCoordinatorAnimationEffective = objc_getAssociatedObject(self, transitionCoordinatorAnimationEffectiveKey);
     
-    return [isFirstPush boolValue];
+    return [transitionCoordinatorAnimationEffective boolValue];
 }
 
 - (void)setAnimated:(BOOL)animated
