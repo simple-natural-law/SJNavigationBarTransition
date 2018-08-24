@@ -287,11 +287,7 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
         /// 将navigationBar的`_UIBarBackground`设置为透明色后，给导航栏添加一个background，通过设置该background的相关属性来控制导航栏的外观。
         [self.navigationBar installBackground];
         
-        self.navigationBar.background.image = self.navigationBarImage;
-        
-        self.navigationBar.background.backgroundColor = self.navigationBarColor;
-        
-        [self setNavigationBarBackgroundAlpha:self.navigationBarAlpha];
+        [self updateNavigationBarAppearance];
         
     }else
     {
@@ -309,20 +305,20 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
                 UIViewController *fromVC = [self.topViewController.transitionCoordinator viewControllerForKey:UITransitionContextFromViewControllerKey];
                 UIViewController *toVC = [self.topViewController.transitionCoordinator viewControllerForKey:UITransitionContextToViewControllerKey];
                 
-                UIImageView *viewA = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, fromVC.view.frame.size.height - [UIScreen mainScreen].bounds.size.height, barBackgroundView.bounds.size.width, barBackgroundView.bounds.size.height)];
+                UIImageView *fromBar = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, fromVC.view.frame.size.height - [UIScreen mainScreen].bounds.size.height, barBackgroundView.bounds.size.width, barBackgroundView.bounds.size.height)];
 
-                viewA.image = self.navigationBar.background.image;
-                viewA.backgroundColor = self.navigationBar.background.backgroundColor;
-                viewA.alpha = self.navigationBar.background.alpha;
-                [fromVC.view addSubview:viewA];
-                [fromVC.view bringSubviewToFront:viewA];
+                fromBar.image = self.navigationBar.background.image;
+                fromBar.backgroundColor = self.navigationBar.background.backgroundColor;
+                fromBar.alpha = self.navigationBar.background.alpha;
+                [fromVC.view addSubview:fromBar];
+                [fromVC.view bringSubviewToFront:fromBar];
                 
-                UIImageView *viewB = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, toVC.view.frame.size.height - [UIScreen mainScreen].bounds.size.height, barBackgroundView.bounds.size.width, barBackgroundView.bounds.size.height)];
-                viewB.image = self.navigationBarImage;
-                viewB.backgroundColor = self.navigationBarColor;
-                viewB.alpha = self.navigationBarAlpha;
-                [toVC.view addSubview:viewB];
-                [toVC.view bringSubviewToFront:viewB];
+                UIImageView *toBar = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, toVC.view.frame.size.height - [UIScreen mainScreen].bounds.size.height, barBackgroundView.bounds.size.width, barBackgroundView.bounds.size.height)];
+                toBar.image = self.navigationBarImage;
+                toBar.backgroundColor = self.navigationBarColor;
+                toBar.alpha = self.navigationBarAlpha;
+                [toVC.view addSubview:toBar];
+                [toVC.view bringSubviewToFront:toBar];
                 
                 self.navigationBar.background.hidden = YES;
                 
@@ -331,27 +327,19 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
                     
                 } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
                     
-                    self.navigationBar.background.backgroundColor = self.navigationBarColor;
-                    
-                    self.navigationBar.background.image = self.navigationBarImage;
-                    
-                    [self setNavigationBarBackgroundAlpha:self.navigationBarAlpha];
+                    [self updateNavigationBarAppearance];
                     
                     self.navigationBar.background.hidden = NO;
                     
-                    [viewA removeFromSuperview];
-                    [viewB removeFromSuperview];
+                    [fromBar removeFromSuperview];
+                    [toBar removeFromSuperview];
                 }];
                 
                 self.transitionCoordinatorAnimationEffective = YES;
                 
             }else
             {
-                self.navigationBar.background.backgroundColor = self.navigationBarColor;
-                
-                self.navigationBar.background.image = self.navigationBarImage;
-                
-                [self setNavigationBarBackgroundAlpha:self.navigationBarAlpha];
+                [self updateNavigationBarAppearance];
             }
         }else
         {
@@ -389,11 +377,7 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
                     
                 } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
                     
-                    self.navigationBar.background.backgroundColor = self.navigationBarColor;
-                    
-                    self.navigationBar.background.image = self.navigationBarImage;
-                    
-                    [self setNavigationBarBackgroundAlpha:self.navigationBarAlpha];
+                    [self updateNavigationBarAppearance];
                     
                     self.navigationBar.background.transform = CGAffineTransformIdentity;
                     
@@ -401,14 +385,22 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
                 }];
             }else
             {
-                self.navigationBar.background.backgroundColor = self.navigationBarColor;
-                
-                self.navigationBar.background.image = self.navigationBarImage;
-                
-                [self setNavigationBarBackgroundAlpha:self.navigationBarAlpha];
+                [self updateNavigationBarAppearance];
             }
         }
     }
+}
+
+
+#pragma mark- Private Methods
+/// 更新导航栏外观
+- (void)updateNavigationBarAppearance
+{
+    self.navigationBar.background.backgroundColor = self.navigationBarColor;
+    
+    self.navigationBar.background.image = self.navigationBarImage;
+    
+    [self setNavigationBarBackgroundAlpha:self.navigationBarAlpha];
 }
 
 
