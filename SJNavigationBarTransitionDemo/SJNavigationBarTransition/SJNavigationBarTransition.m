@@ -306,7 +306,22 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
     {
         if (self.navigationBar.background.image == self.navigationBarImage && self.self.navigationBar.background.backgroundColor == self.navigationBarColor && self.navigationBar.background.alpha == self.navigationBarAlpha)
         {
+            if (self.navigationBar.transform.ty != 0.0)
+            {
+                [self.topViewController.transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+                    
+                    self.navigationBar.transform = CGAffineTransformIdentity;
+                    
+                } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+                    
+                }];
+            }
             return;
+        }
+        
+        if (self.navigationBar.transform.ty != 0.0)
+        {
+            self.navigationBar.transform = CGAffineTransformIdentity;
         }
         
         UIView *barBackgroundView = self.navigationBar.subviews.firstObject;
