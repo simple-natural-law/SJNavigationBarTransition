@@ -171,7 +171,7 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
 }
 
 
-- (void)setNavigationBarBackgroundAlpha:(CGFloat)alpha
+- (void)updateNavigationBarBackgroundAlpha:(CGFloat)alpha
 {
     self.navigationBar.background.alpha = alpha;
     
@@ -331,7 +331,7 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
     
     self.navigationBar.background.image = self.navigationBarImage;
     
-    [self setNavigationBarBackgroundAlpha:self.navigationBarAlpha];
+    [self updateNavigationBarBackgroundAlpha:self.navigationBarAlpha];
 }
 
 /// 使用视图控制器的转场动画协调器`transitionCoordinator`来设置导航栏转场动画
@@ -508,6 +508,5 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
         return image;
     }
 }
-
 
 @end
