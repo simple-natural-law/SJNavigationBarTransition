@@ -22,5 +22,8 @@
 /// 实时更新导航栏透明度
 - (void)updateNavigationBarBackgroundAlpha:(CGFloat)alpha;
 
+/// 设置导航栏在垂直方向上的位移
+- (void)setNavigationBarTranslationY:(CGFloat)translationY;
+
 @end
 

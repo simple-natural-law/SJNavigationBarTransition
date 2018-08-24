@@ -12,7 +12,6 @@
 		340E132B212F114700D26210 /* SJNavigationBarTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = 340E132A212F114700D26210 /* SJNavigationBarTransition.m */; };
 		340E1331212F115300D26210 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 340E132F212F115300D26210 /* TestViewController.m */; };
 		340E1332212F115300D26210 /* GradientBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 340E1330212F115300D26210 /* GradientBarViewController.m */; };
-		340E133B212F119D00D26210 /* RootNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 340E1333212F119C00D26210 /* RootNavigationViewController.m */; };
 		340E133C212F119D00D26210 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 340E1334212F119C00D26210 /* AppDelegate.m */; };
 		340E133D212F119D00D26210 /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 340E1337212F119C00D26210 /* BaseViewController.m */; };
 		340E133E212F119D00D26210 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 340E1339212F119D00D26210 /* HomeViewController.m */; };
@@ -31,14 +30,12 @@
 		340E132E212F115300D26210 /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
 		340E132F212F115300D26210 /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		340E1330212F115300D26210 /* GradientBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientBarViewController.m; sourceTree = "<group>"; };
-		340E1333212F119C00D26210 /* RootNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootNavigationViewController.m; sourceTree = "<group>"; };
 		340E1334212F119C00D26210 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		340E1335212F119C00D26210 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		340E1336212F119C00D26210 /* BaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseViewController.h; sourceTree = "<group>"; };
 		340E1337212F119C00D26210 /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		340E1338212F119D00D26210 /* HomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeViewController.h; sourceTree = "<group>"; };
 		340E1339212F119D00D26210 /* HomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeViewController.m; sourceTree = "<group>"; };
-		340E133A212F119D00D26210 /* RootNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootNavigationViewController.h; sourceTree = "<group>"; };
 		340E133F212F11BC00D26210 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		340E1340212F11BC00D26210 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -74,15 +71,16 @@
 			isa = PBXGroup;
 			children = (
 				340E1328212F114700D26210 /* SJNavigationBarTransition */,
-				340E132C212F115300D26210 /* 页面跳转时NavigationBar渐变效果 */,
 				340E1335212F119C00D26210 /* AppDelegate.h */,
 				340E1334212F119C00D26210 /* AppDelegate.m */,
 				340E1336212F119C00D26210 /* BaseViewController.h */,
 				340E1337212F119C00D26210 /* BaseViewController.m */,
 				340E1338212F119D00D26210 /* HomeViewController.h */,
 				340E1339212F119D00D26210 /* HomeViewController.m */,
-				340E133A212F119D00D26210 /* RootNavigationViewController.h */,
-				340E1333212F119C00D26210 /* RootNavigationViewController.m */,
+				340E132D212F115300D26210 /* GradientBarViewController.h */,
+				340E1330212F115300D26210 /* GradientBarViewController.m */,
+				340E132E212F115300D26210 /* TestViewController.h */,
+				340E132F212F115300D26210 /* TestViewController.m */,
 				340E131B212F110F00D26210 /* Assets.xcassets */,
 				340E133F212F11BC00D26210 /* LaunchScreen.storyboard */,
 				340E1340212F11BC00D26210 /* Main.storyboard */,
@@ -99,17 +97,6 @@
 				340E132A212F114700D26210 /* SJNavigationBarTransition.m */,
 			);
 			path = SJNavigationBarTransition;
-			sourceTree = "<group>";
-		};
-		340E132C212F115300D26210 /* 页面跳转时NavigationBar渐变效果 */ = {
-			isa = PBXGroup;
-			children = (
-				340E132D212F115300D26210 /* GradientBarViewController.h */,
-				340E1330212F115300D26210 /* GradientBarViewController.m */,
-				340E132E212F115300D26210 /* TestViewController.h */,
-				340E132F212F115300D26210 /* TestViewController.m */,
-			);
-			path = "页面跳转时NavigationBar渐变效果";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -182,7 +169,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				340E133B212F119D00D26210 /* RootNavigationViewController.m in Sources */,
 				340E1322212F110F00D26210 /* main.m in Sources */,
 				340E133C212F119D00D26210 /* AppDelegate.m in Sources */,
 				340E1331212F115300D26210 /* TestViewController.m in Sources */,

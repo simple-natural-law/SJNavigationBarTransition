@@ -31,6 +31,9 @@ void swizzleMethod (SEL originalSelector, SEL currentSelector, Class class)
     }
 }
 
+
+
+
 @interface UIView (z_extend)
 
 @end
@@ -60,6 +63,8 @@ void swizzleMethod (SEL originalSelector, SEL currentSelector, Class class)
 
 
 
+
+
 static char * const backgroundKey = "backgroundKey";
 
 
@@ -68,6 +73,7 @@ static char * const backgroundKey = "backgroundKey";
 @property (nonatomic, strong) UIImageView *background;
 
 @end
+
 
 
 @implementation UINavigationBar (z_extend)
@@ -148,6 +154,8 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
 
 @end
 
+
+
 @implementation UINavigationController (z_extend)
 
 #pragma mark- Methods
@@ -182,6 +190,10 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
     shadow.hidden = (alpha < 0.1);
 }
 
+- (void)setNavigationBarTranslationY:(CGFloat)translationY
+{
+    self.navigationBar.transform = CGAffineTransformMakeTranslation(0, translationY);
+}
 
 #pragma mark- Method Swizzling
 + (void)load
