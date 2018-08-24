@@ -7,12 +7,10 @@
 //
 
 #import "TranslateBarViewController.h"
+#import "SJNavigationBarTransition.h"
 
-@interface TranslateBarViewController ()<UIWebViewDelegate>
 
-@property (weak, nonatomic) IBOutlet UIWebView *webview;
-
-@property (strong, nonatomic) UIActivityIndicatorView *indicatorView;
+@interface TranslateBarViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @end
 
@@ -22,46 +20,43 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    [self.webview loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.jianshu.com/p/c07de5cb4cd0"]]];
-    
-    self.indicatorView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0.0, 0.0, 70.0, 70.0)];
-    self.indicatorView.center = self.view.center;
-    self.indicatorView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhiteLarge;
-    self.indicatorView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
-    self.indicatorView.layer.cornerRadius = 5.0;
-    [self.view addSubview:self.indicatorView];
 }
 
-- (void)viewDidAppear:(BOOL)animated
+
+#pragma mark- UITableViewDataSource
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    [super viewDidAppear:animated];
+    return 40;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     
-    if (self.indicatorView)
+    return cell;
+}
+
+
+#pragma mark- UIScrollViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGFloat offsetY = scrollView.contentOffset.y;
+    
+    if (offsetY > 0)
     {
-        [self.indicatorView startAnimating];
+        if (offsetY >= self.navigationController.navigationBar.subviews.firstObject.frame.size.height)
+        {
+            [self.navigationController setNavigationBarTranslationY:-self.navigationController.navigationBar.subviews.firstObject.frame.size.height];
+        }else
+        {
+            [self.navigationController setNavigationBarTranslationY:-offsetY];
+        }
+    }else
+    {
+        [self.navigationController setNavigationBarTranslationY:0.0];
     }
 }
 
-
-#pragma mark- UIWebViewDelegate
-- (void)webViewDidFinishLoad:(UIWebView *)webView
-{
-    [self.indicatorView stopAnimating];
-    
-    [self.indicatorView removeFromSuperview];
-    
-    NSString *title = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
-    
-    self.title = title;
-}
-
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
-{
-    [self.indicatorView stopAnimating];
-    
-    [self.indicatorView removeFromSuperview];
-}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
