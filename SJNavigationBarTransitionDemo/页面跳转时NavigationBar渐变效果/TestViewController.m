@@ -1,15 +1,15 @@
 //
-//  FirstViewController.m
+//  TestViewController.m
 //  SJNavigationBarTransition
 //
 //  Created by 如约科技 on 2017/9/29.
 //  Copyright © 2017年 如约科技. All rights reserved.
 //
 
-#import "FirstViewController.h"
+#import "TestViewController.h"
 #import "SJNavigationBarTransition.h"
 
-@interface FirstViewController ()
+@interface TestViewController ()
 {
     int a;
     int b;
@@ -23,13 +23,11 @@
 @end
 
 
-@implementation FirstViewController
+@implementation TestViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    self.view.backgroundColor = [UIColor whiteColor];
     
     UIBarButtonItem * backButtonItem = [[UIBarButtonItem alloc] init];
     backButtonItem.title = @"Back";
@@ -67,7 +65,7 @@
 
 - (IBAction)pushNext:(id)sender
 {
-    UIViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"FirstViewController"];
+    UIViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"TestViewController"];
     
     [self.navigationController pushViewController:vc animated:!(a%5 == 0)];
 }

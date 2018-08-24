@@ -7,7 +7,7 @@
 //
 
 #import "GradientBarViewController.h"
-#import "FirstViewController.h"
+#import "TestViewController.h"
 #import "SJNavigationBarTransition.h"
 
 
@@ -77,7 +77,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    UIViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"FirstViewController"];
+    UIViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"TestViewController"];
     
     [self.navigationController pushViewController:vc animated:YES];
 }

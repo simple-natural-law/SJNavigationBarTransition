@@ -1,5 +1,5 @@
 //
-//  FirstViewController.h
+//  TestViewController.h
 //  SJNavigationBarTransition
 //
 //  Created by 如约科技 on 2017/9/29.
@@ -8,7 +8,7 @@
 
 #import "BaseViewController.h"
 
-@interface FirstViewController : BaseViewController
+@interface TestViewController : BaseViewController
 
 
 @end
