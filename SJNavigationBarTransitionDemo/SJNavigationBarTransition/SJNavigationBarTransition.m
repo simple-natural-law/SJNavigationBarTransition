@@ -303,6 +303,12 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
         
     }else
     {
+        if (self.navigationBar.background.image == self.navigationBarImage && self.self.navigationBar.background.backgroundColor == self.navigationBarColor && self.navigationBar.background.alpha == self.navigationBarAlpha)
+        {
+            NSLog(@"NavigationBar Appearance is same.");
+            return;
+        }
+        
         UIView *barBackgroundView = self.navigationBar.subviews.firstObject;
 
         UIView *shadow = barBackgroundView.subviews.lastObject;

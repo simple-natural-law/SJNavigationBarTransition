@@ -41,8 +41,6 @@
     blue  = c/255.0;
     
     self.view.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
-    
-    //self.view.backgroundColor = [UIColor whiteColor];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -65,9 +63,17 @@
 
 - (IBAction)pushNext:(id)sender
 {
-    UIViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"TestViewController"];
-    
-    [self.navigationController pushViewController:vc animated:!(a%5 == 0)];
+    if (a%3 == 0)
+    {
+        UIViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"TransparentBarViewController"];
+        
+        [self.navigationController pushViewController:vc animated:YES];
+    }else
+    {
+        UIViewController *vc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"TestViewController"];
+        
+        [self.navigationController pushViewController:vc animated:!(a%6 == 0)];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

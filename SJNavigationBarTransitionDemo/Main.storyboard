@@ -121,7 +121,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nPH-9I-iN3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="636" y="282.90854572713647"/>
+            <point key="canvasLocation" x="630" y="-54"/>
         </scene>
         <!--测试页面-->
         <scene sceneID="bwY-vN-3Et">
@@ -171,7 +171,25 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ep1-WA-8LQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="630" y="965"/>
+            <point key="canvasLocation" x="-127" y="766"/>
+        </scene>
+        <!--Base View Controller-->
+        <scene sceneID="RNk-oT-7KF">
+            <objects>
+                <viewController storyboardIdentifier="SameAppearanceViewController" id="Fvn-wE-zhu" customClass="BaseViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="w9u-jm-uLe"/>
+                        <viewControllerLayoutGuide type="bottom" id="vaU-Dd-ju5"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="h40-yI-tUi">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2D7-cN-1Kp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="630" y="766"/>
         </scene>
     </scenes>
 </document>

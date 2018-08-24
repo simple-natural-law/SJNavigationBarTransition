@@ -24,7 +24,7 @@
     
     self.title = @"SJNavigationBarTransitionDemo";
     
-    self.dataArray = @[@{@"title":@"页面跳转时NavigationBar渐变效果", @"target":@"TransparentBarViewController"},@{@"title":@"测试", @"target":@"TestViewController"}];
+    self.dataArray = @[@{@"title":@"跳转到导航栏透明的页面", @"target":@"TransparentBarViewController"}, @{@"title":@"跳转到导航栏颜色或者图片不同的页面", @"target":@"TestViewController"}, @{@"title":@"跳转到导航栏颜色或者背片相同的页面", @"target":@"SameAppearanceViewController"}];
 }
 
 
