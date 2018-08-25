@@ -14,7 +14,7 @@
 
 将`SJNavigationBarTransition`文件夹放到项目中，并导入头文件`SJNavigationBarTransitio.h`。
 
-设置导航栏背景颜色：
+### 设置导航栏背景颜色：
 ```
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -28,7 +28,7 @@
 }
 ```
 
-设置导航栏背景图片：
+### 设置导航栏背景图片：
 ```
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -42,12 +42,12 @@
 }
 ```
 
-实时更新导航栏透明度：
+### 实时更新导航栏透明度：
 ```
 [self.navigationController updateNavigationBarBackgroundAlpha:0.5];
 ```
 
-设置导航栏在垂直方向上的位移：
+### 设置导航栏在垂直方向上的位移：
 ```
 [self.navigationController setNavigationBarTranslationY:44.0];
 ```
