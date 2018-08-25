@@ -48,13 +48,13 @@
 {
     [super viewWillAppear:animated];
     
-//    if (a%3 == 0)
-//    {
+    if (a%3 == 0)
+    {
         [self.navigationController setNavigationBarBackgroundImage:[UIImage imageNamed:@"bar"]];
-//    }else
-//    {
-//        [self.navigationController setNavigationBarBackgroundColor:[UIColor colorWithRed:red green:green blue:blue alpha:1.0]];
-//    }
+    }else
+    {
+        [self.navigationController setNavigationBarBackgroundColor:[UIColor colorWithRed:red green:green blue:blue alpha:1.0]];
+    }
 }
 
 - (IBAction)popToRoot:(id)sender
