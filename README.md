@@ -12,4 +12,5 @@
 
 ## 如何使用
 
+> 将`SJNavigationBarTransition`文件夹放到项目中，并导入头文件`SJNavigationBarTransitio.h`。
 
