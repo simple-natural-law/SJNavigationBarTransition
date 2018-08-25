@@ -29,16 +29,6 @@
     }
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    if ( (arc4random()%256) % 2 == 0)
-    {
-        [self.navigationController setNavigationBarBackgroundColor:[UIColor lightGrayColor]];
-    }
-}
-
 
 #pragma mark- UITableViewDataSource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
