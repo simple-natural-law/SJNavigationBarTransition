@@ -51,3 +51,7 @@
 ```
 [self.navigationController setNavigationBarTranslationY:44.0];
 ```
+
+## 相关技术文章
+
+[导航栏颜色、透明度渐变](https://www.jianshu.com/p/c07de5cb4cd0)
