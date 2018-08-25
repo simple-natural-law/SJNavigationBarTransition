@@ -40,20 +40,21 @@
     green = b/255.0;
     blue  = c/255.0;
     
-    self.view.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
+    //self.view.backgroundColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
+    self.view.backgroundColor = [UIColor whiteColor];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    if (a%5 == 0)
-    {
+//    if (a%3 == 0)
+//    {
         [self.navigationController setNavigationBarBackgroundImage:[UIImage imageNamed:@"bar"]];
-    }else
-    {
-        [self.navigationController setNavigationBarBackgroundColor:[UIColor colorWithRed:red green:green blue:blue alpha:1.0]];
-    }
+//    }else
+//    {
+//        [self.navigationController setNavigationBarBackgroundColor:[UIColor colorWithRed:red green:green blue:blue alpha:1.0]];
+//    }
 }
 
 - (IBAction)popToRoot:(id)sender

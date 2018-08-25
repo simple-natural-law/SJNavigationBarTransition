@@ -176,9 +176,15 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
 
 - (void)setNavigationBarBackgroundImage:(UIImage *)image
 {
-    self.navigationBarImage = image;
+    [self setNavigationBarBackgroundImage:image backgroundAlpha:1.0];
 }
 
+- (void)setNavigationBarBackgroundImage:(UIImage *)image backgroundAlpha:(CGFloat)alpha
+{
+    self.navigationBarImage = image;
+    
+    self.navigationBarAlpha = alpha;
+}
 
 - (void)updateNavigationBarBackgroundAlpha:(CGFloat)alpha
 {
@@ -304,21 +310,6 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
         
     }else
     {
-        if (self.navigationBar.background.image == self.navigationBarImage && self.self.navigationBar.background.backgroundColor == self.navigationBarColor && self.navigationBar.background.alpha == self.navigationBarAlpha)
-        {
-            if (self.navigationBar.transform.ty != 0.0)
-            {
-                [self.topViewController.transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-                    
-                    self.navigationBar.transform = CGAffineTransformIdentity;
-                    
-                } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-                    
-                }];
-            }
-            return;
-        }
-        
         if (self.navigationBar.transform.ty != 0.0)
         {
             self.navigationBar.transform = CGAffineTransformIdentity;

@@ -12,6 +12,8 @@
 
 @interface TranslateBarViewController ()<UITableViewDelegate,UITableViewDataSource>
 
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *tableviewTop;
+
 @end
 
 
@@ -20,6 +22,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    if ([UIScreen mainScreen].bounds.size.height == 812.0)
+    {
+        self.tableviewTop.constant = 44.0;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated

@@ -32,7 +32,7 @@
 {
     [super viewWillAppear:animated];
     
-    [self.navigationController setNavigationBarBackgroundColor:[UIColor orangeColor]];
+    [self.navigationController setNavigationBarBackgroundColor:[UIColor colorWithRed:0.337255 green:0.384314 blue:0.643137 alpha:1.0]];
 }
 
 
