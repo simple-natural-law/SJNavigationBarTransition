@@ -21,6 +21,7 @@
 
 @end
 
+
 @implementation TransparentBarViewController
 
 - (void)viewDidLoad {
