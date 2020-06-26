@@ -86,7 +86,7 @@ static char * const backgroundKey = "backgroundKey";
     swizzleMethod(setTranslucent, z_setTranslucent, [self class]);
 }
 
-- (void)installBackground
+- (void)addBackground
 {
     UIView *barBackgroundView = self.subviews.firstObject;
     
@@ -304,7 +304,7 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
     if (!self.navigationBar.background)
     {
         /// 将navigationBar的`_UIBarBackground`设置为透明色后，给导航栏添加一个background，通过设置该background的相关属性来控制导航栏的外观。
-        [self.navigationBar installBackground];
+        [self.navigationBar addBackground];
         
         [self updateNavigationBarAppearance];
         
