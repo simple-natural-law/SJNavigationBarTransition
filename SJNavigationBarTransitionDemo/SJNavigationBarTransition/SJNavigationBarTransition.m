@@ -34,32 +34,32 @@ void swizzleMethod (SEL originalSelector, SEL currentSelector, Class class)
 
 
 
-@interface UIView (z_extend)
-
-@end
-
-@implementation UIView (z_extend)
-
-+ (void)load
-{
-    SEL setBackgroundColor   = @selector(setBackgroundColor:);
-    SEL z_setBackgroundColor = @selector(z_setBackgroundColor:);
-    swizzleMethod(setBackgroundColor, z_setBackgroundColor, [self class]);
-}
+//@interface UIView (z_extend)
+//
+//@end
+//
+//@implementation UIView (z_extend)
+//
+//+ (void)load
+//{
+//    SEL setBackgroundColor   = @selector(setBackgroundColor:);
+//    SEL z_setBackgroundColor = @selector(z_setBackgroundColor:);
+//    swizzleMethod(setBackgroundColor, z_setBackgroundColor, [self class]);
+//}
 
 /// 设置导航栏透明时，防止UIKit框架内部重置`_UIBarBackground`的颜色。
-- (void)z_setBackgroundColor:(UIColor *)backgroundColor
-{
-    if ([self isMemberOfClass:NSClassFromString(@"_UIBarBackground")])
-    {
-        [self z_setBackgroundColor:[UIColor clearColor]];
-    }else
-    {
-        [self z_setBackgroundColor:backgroundColor];
-    }
-}
+//- (void)z_setBackgroundColor:(UIColor *)backgroundColor
+//{
+//    if ([self isMemberOfClass:NSClassFromString(@"_UIBarBackground")])
+//    {
+//        [self z_setBackgroundColor:[UIColor clearColor]];
+//    }else
+//    {
+//        [self z_setBackgroundColor:backgroundColor];
+//    }
+//}
 
-@end
+//@end
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -98,7 +98,17 @@ static char * const backgroundKey = "backgroundKey";
     
     self.background.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     
-    [barBackgroundView insertSubview:self.background atIndex:0];
+    if (@available(iOS 13.0, *))
+    {
+        [barBackgroundView addSubview:self.background];
+        
+        [self.standardAppearance configureWithOpaqueBackground];
+        [self.standardAppearance setBackgroundColor:[UIColor clearColor]];
+        
+    }else
+    {
+        [barBackgroundView insertSubview:self.background atIndex:0];
+    }
 }
 
 
@@ -192,8 +202,16 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
     
     UIView *barBackgroundView = self.navigationBar.subviews.firstObject;
     
-    UIView *shadow = barBackgroundView.subviews.lastObject;
-
+    UIView *shadow;
+    
+    if (@available(iOS 13.0, *))
+    {
+        shadow = barBackgroundView.subviews.firstObject;
+    }else
+    {
+        shadow = barBackgroundView.subviews.lastObject;
+    }
+    
     shadow.hidden = (alpha < 0.1);
 }
 
@@ -316,9 +334,17 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
         }
         
         UIView *barBackgroundView = self.navigationBar.subviews.firstObject;
-
-        UIView *shadow = barBackgroundView.subviews.lastObject;
-
+        
+        UIView *shadow;
+        
+        if (@available(iOS 13.0, *))
+        {
+            shadow = barBackgroundView.subviews.firstObject;
+        }else
+        {
+            shadow = barBackgroundView.subviews.lastObject;
+        }
+        
         shadow.hidden = (self.navigationBarAlpha < 0.1);
         
         /// 注意：第一次push的时候，`transitionCoordinator`的`animateAlongsideTransition...`系列方法设置的动画没有动画效果，会直接跳转到结果值。因此，这里采用另一种动画方案。
@@ -419,7 +445,7 @@ static char * const navigationBarImageKey = "navigationBarImageKey";
     [fromVC.view addSubview:fromBar];
     [fromVC.view bringSubviewToFront:fromBar];
     
-    UIImageView *toBar = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, toVC.view.frame.size.height - [UIScreen mainScreen].bounds.size.height, barBackgroundView.bounds.size.width, barBackgroundView.bounds.size.height)];
+    UIImageView *toBar = [[UIImageView alloc] initWithFrame:fromBar.frame];
     toBar.image = self.navigationBarImage;
     toBar.backgroundColor = self.navigationBarColor;
     toBar.alpha = self.navigationBarAlpha;
