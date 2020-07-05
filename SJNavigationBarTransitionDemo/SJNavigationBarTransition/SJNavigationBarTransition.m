@@ -32,36 +32,6 @@ void swizzleMethod (SEL originalSelector, SEL currentSelector, Class class)
 }
 
 
-
-
-//@interface UIView (z_extend)
-//
-//@end
-//
-//@implementation UIView (z_extend)
-//
-//+ (void)load
-//{
-//    SEL setBackgroundColor   = @selector(setBackgroundColor:);
-//    SEL z_setBackgroundColor = @selector(z_setBackgroundColor:);
-//    swizzleMethod(setBackgroundColor, z_setBackgroundColor, [self class]);
-//}
-
-/// 设置导航栏透明时，防止UIKit框架内部重置`_UIBarBackground`的颜色。
-//- (void)z_setBackgroundColor:(UIColor *)backgroundColor
-//{
-//    if ([self isMemberOfClass:NSClassFromString(@"_UIBarBackground")])
-//    {
-//        [self z_setBackgroundColor:[UIColor clearColor]];
-//    }else
-//    {
-//        [self z_setBackgroundColor:backgroundColor];
-//    }
-//}
-
-//@end
-
-
 ////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////
 
