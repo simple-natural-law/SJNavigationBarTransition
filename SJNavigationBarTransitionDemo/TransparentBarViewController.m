@@ -46,7 +46,10 @@
 {
     [super viewWillAppear:animated];
     
-    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    if (self.barAlpha <= 0.1) {
+     
+        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    }
     
     [self.navigationController setNavigationBarBackgroundColor:[UIColor whiteColor] backgroundAlpha:self.barAlpha];
 }
@@ -98,15 +101,19 @@
     if (self.barAlpha >= 1.0)
     {
         self.barAlpha = 1.0;
-        
-        self.navigationController.navigationBar.tintColor = self.defaultTintColor;
     }
     
     if (self.barAlpha <= 0.0)
     {
         self.barAlpha = 0.0;
-        
+    }
+    
+    if (self.barAlpha <= 0.1) {
         self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    }
+    
+    if (self.barAlpha >= 0.9) {
+        self.navigationController.navigationBar.tintColor = self.defaultTintColor;
     }
     
     [self.navigationController updateNavigationBarBackgroundAlpha:self.barAlpha];
